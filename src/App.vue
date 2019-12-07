@@ -1,6 +1,19 @@
 <template>
-  <el-container>
-    <el-header>Header</el-header>
+  <el-container id="app">
+    <el-header>
+      <el-row 
+        style="height: 500px;"
+      >
+        <el-col :span="22">FII</el-col>
+        <el-col :span="2">
+          <el-button 
+            icon="el-icon-switch-button" 
+            @click="logout"
+            class="dark-blue-theme"
+          >登出</el-button>
+        </el-col>
+      </el-row>
+    </el-header>
     <el-container>
       <el-aside width="200px" style="background-color: #123456">
         <el-menu
@@ -43,7 +56,7 @@
       </el-aside>
       <el-container>
         <el-main>
-          <Dashboard/>
+           <router-view/>
         </el-main>
         <el-footer
           height=30
@@ -56,20 +69,33 @@
 </template>
 
 <script>
-import Dashboard from './components/Dashboard'
+// import Dashboard from './components/Dashboard'
+// import Login from './components/Login'
 
 export default {
   name: 'App',
   components: {
-    Dashboard
+    // Dashboard,
+    // Login
   },
   data:() => ({
       
-  })
+  }),
+  methods: {
+    logout(){
+      localStorage.removeItem('token');
+      this.$router.push('/login');
+    },
+  }
 };
 </script>
 
 <style>
+#app {
+  margin-top: 0px;
+  min-height: 768px; 
+  height: 100%;
+}
 .el-header {
     background-color: #123456;
     color: #eee;
@@ -77,6 +103,7 @@ export default {
   }
 .el-main {
   hight: 100%;
+  /*padding: 0;*/
 }
 .el-aside {
   color: #eee;
@@ -84,5 +111,9 @@ export default {
 .el-footer {
   background-color: #eee;
   text-align: center;
+}
+.dark-blue-theme {
+  background-color: #123456; 
+  color: #eee;
 }
 </style>
