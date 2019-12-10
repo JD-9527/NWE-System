@@ -60,7 +60,7 @@ export default {
         this.$router.push('/dashboard');
       } else{
         this.$message.error({
-          message: '密碼錯誤！',
+          message: '帳號或密碼錯誤！',
           center: true,
           duration: 2000
         });
