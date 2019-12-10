@@ -24,15 +24,17 @@
           background-color="#123456"
           text-color="#eee"
           active-text-color="#486dd5"
+          unique-opened
+          router
         >
           <el-submenu index="1">
             <template slot="title">
               <i class="el-icon-menu"></i>
               <span>生產狀態</span>
             </template>
-              <el-menu-item index="1-1">生產總覽</el-menu-item>
+              <el-menu-item index="dashboard">生產總覽</el-menu-item>
               <el-menu-item index="1-2">工單看板</el-menu-item>
-              <el-menu-item index="1-3">機台看板</el-menu-item>
+              <el-menu-item index="machine">機台看板</el-menu-item>
               <el-menu-item index="1-4">計畫看板</el-menu-item>
           </el-submenu>
           <el-submenu index="2">
