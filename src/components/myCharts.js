@@ -4,25 +4,40 @@
  */
 
 import echarts from 'echarts'
+
 const install = function(Vue) {
   Object.defineProperties(Vue.prototype, {
     $chart: {
       get() {
         return {
-          //画一条简单的线
-          radar: function (id,chartname) {
+          radar: function (id,chartname,data) {
             this.chart = echarts.init(document.getElementById(id));
             this.chart.clear();
+            let data_keys = Object.keys(data);
+            let data_values = Object.values(data);
+            let indicators = []
+            for (let i=0;i<data_keys.length;i++) {
+              indicators.push({
+                name: data_keys[i],
+                max: 100
+              })
+            }
             const optionData = {
               title: {
                 text: chartname
               },
-              tooltip: {},
-              legend: {
-                data: ['预算分配（Allocated Budget）', '实际开销（Actual Spending）']
+              tooltip: {
+                  formatter: function (params) {
+                  let result=params.name + '<br/>'
+                  // let keys = Object.keys(params.data);
+                  let vals = Object.values(params.value);
+                  for (var i = 0;i < vals.length;i++) {
+                    result +=  data_keys[i] + ': ' + vals[i] + '%<br/>';
+                  }
+                  return result
+                },
               },
               radar: {
-              // shape: 'circle',
                 name: {
                   textStyle: {
                     color: '#fff',
@@ -31,34 +46,119 @@ const install = function(Vue) {
                     padding: [3, 5]
                   }
                 },
-                indicator: [
-                  { name: 'A線', max: 6500},
-                  { name: 'B線', max: 16000},
-                  { name: 'C線', max: 30000},
-                ]
+                indicator: indicators
               },
-                series: [{
-                  name: '预算 vs 开销（Budget vs spending）',
-                  type: 'radar',
-                  // areaStyle: {normal: {}},
-                  data : [
-                    {
-                      value : [4300, 10000, 28000],
-                      name : '预算分配（Allocated Budget）'
-                    },
-                     {
-                      value : [5000, 14000, 28000],
-                      name : '实际开销（Actual Spending）'
-                    }
-                  ]
+              series: [{
+                name: chartname,
+                type: 'radar',
+                lineStyle: {
+                  color: '#486dd5'
+                },
+                // areaStyle: {normal: {}},
+                itemStyle: {
+                  color: '#123456'
+                },
+                data : [{
+                  value : data_values,
+                  name : '開動率'
                 }]
-              };
+              }]
+            };
             this.chart.setOption(optionData);
-            setTimeout(function (){
-              window.onresize = function () {
-                this.chart.resize();
-              }
-            },200)
+          },
+          bar: function (id,chartname,data) {
+            this.chart = echarts.init(document.getElementById(id));
+            this.chart.clear();
+            let data_keys = Object.keys(data);
+            let data_values = Object.values(data);
+            const optionData = {
+              title: {
+                text: chartname
+              },
+              tooltip: {
+
+              },
+              xAxis: {
+                data: data_keys,
+                type: 'category',
+              },
+              yAxis: {
+                type: 'value'
+              },
+              series: [{
+                itemStyle: {
+                  color: '#409EFF'
+                },
+                data: data_values,
+                type: 'bar'
+              }]
+            }
+            this.chart.setOption(optionData);
+          },
+          bar_line: function (id,chartname,data) {
+            this.chart = echarts.init(document.getElementById(id));
+            this.chart.clear();
+            let data_keys = Object.keys(data);
+            let data_values = Object.values(data);
+            let valuepercent = [];    // 儲存資料累計百分比
+            let sum = 0;   // 計算資料總和
+            let percent_sum = 0    // 計算百分比總和
+            for (let i=0;i < data_values.length; i++) {
+              sum += data_values[i]
+            }
+            for (let i=0;i < data_values.length; i++) {
+              percent_sum += data_values[i]/sum
+              valuepercent.push(percent_sum*100)
+            }
+            const optionData = {
+              title: {
+                text: chartname
+              },
+              tooltip: {
+
+              },
+              xAxis: {
+                data: data_keys,
+                type: 'category',
+              },
+              yAxis: [
+                {
+                  name: '數量',
+                  type: 'value',
+                  min: 0,
+                  max: 5,
+                  interval: 1,
+                },
+                {
+                  name: '百分比',
+                  type: 'value',
+                  min: 0,
+                  max: 100,
+                  interval: 20,
+                  axisLabel: {
+                      formatter: '{value} %'
+                  }
+                },
+              ],
+              series: [
+                {
+                  itemStyle: {
+                    color: '#409EFF'
+                  },
+                  data: data_values,
+                  type: 'bar'
+                },
+                {
+                  itemStyle: {
+                    color: '#123456'
+                  },
+                  data: valuepercent,
+                  yAxisIndex: 1,
+                  type: 'line'
+                },
+              ]
+            }
+            this.chart.setOption(optionData);
           },
         }
       }
