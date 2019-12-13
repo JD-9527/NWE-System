@@ -1,9 +1,7 @@
 <template>
   <el-container id="app">
     <el-header>
-      <el-row 
-        style="height: 500px;"
-      >
+      <el-row>
         <el-col :span="22">FII</el-col>
         <el-col :span="2">
           <el-button 
@@ -103,7 +101,7 @@ export default {
   }
 .el-main {
   hight: 100%;
-  /*padding: 0;*/
+  /*padding: 10px;*/
 }
 .el-aside {
   color: #eee;
