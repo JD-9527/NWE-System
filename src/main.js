@@ -8,6 +8,11 @@ import App from './App.vue'
 import Login from './components/Login'
 import Dashboard from './components/Dashboard'
 import MachineBoard from './components/MachineBoard'
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faDesktop, faSquare, faServer } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+
+library.add(faDesktop,faSquare,faServer)
 
 Vue.config.productionTip = false;
 Vue.use(VueRouter);
@@ -15,6 +20,7 @@ Vue.use(ElementUI);
 Vue.use(echarts);
 
 Vue.component('v-chart', ECharts)
+Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 const routes = [
 	{ path: '/login', component: Login },
