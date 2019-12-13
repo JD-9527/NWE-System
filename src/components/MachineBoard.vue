@@ -500,7 +500,7 @@ let now_work_order = {
 }
 let produce_message = {
   produce_status: {
-    expect: '40.000',
+    expect: '40,000',
     real: '28,000',
     good: '27,000',
     bad: '500',
