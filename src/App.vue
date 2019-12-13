@@ -8,6 +8,7 @@
             icon="el-icon-switch-button" 
             @click="logout"
             class="dark-blue-theme"
+            type="text"
           >登出</el-button>
         </el-col>
       </el-row>
