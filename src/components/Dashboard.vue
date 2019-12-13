@@ -1,12 +1,18 @@
 <template>
   <div>
-    <el-row>NWE 成型生產總覽</el-row>
+    <el-row class="header-row">NWE 成型生產總覽</el-row>
     <el-row>
       <el-col :span="12">
         <el-card class="chart-box">
           <el-row>
             <el-col :span="16">
-              <div class="radar" id="radar" ref="radar01"></div>
+              <!-- <div class="radar" id="radar" ref="radar01" @click='onClick'></div> -->
+              <v-chart 
+                :options="Radar" 
+                class="radar"
+                autoresize
+                @click="onClick"
+              ></v-chart>
             </el-col>
             <el-col :span="8" class="row-top">
               <el-row>總達成率</el-row>
@@ -25,7 +31,12 @@
         <el-card class="chart-box">
           <el-row>
             <el-col :span="16">
-              <div class="radar" id="radar2" ref="radar02"></div>
+              <v-chart 
+                :options="Radar2" 
+                class="radar"
+                autoresize
+                @click="onClick"
+              ></v-chart>
             </el-col>
             <el-col :span="8" class="row-top">
               <el-row>總達成率</el-row>
@@ -44,17 +55,29 @@
     <el-row>
       <el-col :span="8">
         <el-card class="chart-box">
-          <div class="radar" id="bar1" ref="bar01"></div>
+          <v-chart 
+            :options="barLine" 
+            class="chart-box"
+            autoresize
+          ></v-chart>
         </el-card>
       </el-col>
       <el-col :span="8">
         <el-card class="chart-box">
-          <div class="radar" id="bar2" ref="bar02"></div>
+          <v-chart 
+            :options="bar" 
+            class="chart-box"
+            autoresize
+          ></v-chart>
         </el-card>
       </el-col>
       <el-col :span="8">
         <el-card class="chart-box">
-          <div class="radar" id="bar3" ref="bar03"></div>
+          <v-chart 
+            :options="bar2" 
+            class="chart-box"
+            autoresize
+          ></v-chart>
         </el-card>
       </el-col>
     </el-row>
@@ -62,10 +85,15 @@
 </template>
 
 <script>
+// import 'echarts/lib/chart/line'
+import radar from './radar'
+import barLine from './bar_line'
+import bar from './bar'
+
 let datasetA={
-  'D線' : 100,
-  'E線' : 80,
-  'F線' : 50,
+  'E線' : 100,
+  'F線' : 80,
+  'G線' : 50,
 }
 
 let datasetB={
@@ -90,114 +118,209 @@ let datasetD={
   '換膜': 5,
   '斷線': 1
 }
+function changeBarColor(data) {
+  let new_data=[]
+  let data_keys = Object.keys(data);
+  let data_values = Object.values(data);
+  for (let i=0;i<data_keys.length;i++) {
+    var tmp;
+    switch (data_keys[i]) {
+      case '正常' :
+        tmp = {
+          name: data_keys[i],
+          value: data_values[i],
+          itemStyle: {
+            normal: {
+              color: '#17ba6a',
+            }
+          }
+        }
+      break;
+      case '待機' : 
+          tmp = {
+          name: data_keys[i],
+          value: data_values[i],
+          itemStyle: {
+            normal: {
+              color: '#f7e31d',
+            }
+          }
+        }
+      break;
+      case '調機' : 
+          tmp = {
+          name: data_keys[i],
+          value: data_values[i],
+          itemStyle: {
+            normal: {
+              color: '#f7921d',
+            }
+          }
+        }
+      break;
+      case '維修' : 
+          tmp = {
+          name: data_keys[i],
+          value: data_values[i],
+          itemStyle: {
+            normal: {
+              color: '#FF0000',
+            }
+          }
+        }
+      break;
+      case '修膜待機' : 
+          tmp = {
+          name: data_keys[i],
+          value: data_values[i],
+          itemStyle: {
+            normal: {
+              color: '#3030FF',
+            }
+          }
+        }
+      break;
+      case '換膜' : 
+          tmp = {
+          name: data_keys[i],
+          value: data_values[i],
+          itemStyle: {
+            normal: {
+              color: '#990DFF',
+            }
+          }
+        }
+      break;
+      case '斷線' : 
+          tmp = {
+          name: data_keys[i],
+          value: data_values[i],
+          itemStyle: {
+            normal: {
+              color: '#909399',
+            }
+          }
+        }
+      break;
+    }
+  new_data[data_keys[i]]=tmp
+  }
+  return new_data
+}
+
 export default {
   data: () => ({
-    Dashboard: 'Dashboard'
+    Dashboard: 'Dashboard',
+    Radar: radar('D9 開動率',datasetA),
+    Radar2: radar('D10 開動率',datasetB),
+    barLine: barLine('D10 產品不良率總覽',datasetC),
+    bar: bar('D10 機台狀態總覽',changeBarColor(datasetD)),
+    bar2: bar('D10 機台停機累計時間',datasetC),
   }),
   methods: {
-    changeBarColor(data) {
-      let new_data=[]
-      let data_keys = Object.keys(data);
-      let data_values = Object.values(data);
-      for (let i=0;i<data_keys.length;i++) {
-        var tmp;
-        switch (data_keys[i]) {
-          case '正常' :
-            tmp = {
-              name: data_keys[i],
-              value: data_values[i],
-              itemStyle: {
-                normal: {
-                  color: '#17ba6a',
-                }
-              }
-            }
-          break;
-          case '待機' : 
-              tmp = {
-              name: data_keys[i],
-              value: data_values[i],
-              itemStyle: {
-                normal: {
-                  color: '#f7e31d',
-                }
-              }
-            }
-          break;
-          case '調機' : 
-              tmp = {
-              name: data_keys[i],
-              value: data_values[i],
-              itemStyle: {
-                normal: {
-                  color: '#f7921d',
-                }
-              }
-            }
-          break;
-          case '維修' : 
-              tmp = {
-              name: data_keys[i],
-              value: data_values[i],
-              itemStyle: {
-                normal: {
-                  color: '#FF0000',
-                }
-              }
-            }
-          break;
-          case '修膜待機' : 
-              tmp = {
-              name: data_keys[i],
-              value: data_values[i],
-              itemStyle: {
-                normal: {
-                  color: '#3030FF',
-                }
-              }
-            }
-          break;
-          case '換膜' : 
-              tmp = {
-              name: data_keys[i],
-              value: data_values[i],
-              itemStyle: {
-                normal: {
-                  color: '#990DFF',
-                }
-              }
-            }
-          break;
-          case '斷線' : 
-              tmp = {
-              name: data_keys[i],
-              value: data_values[i],
-              itemStyle: {
-                normal: {
-                  color: '#909399',
-                }
-              }
-            }
-          break;
-        }
-      new_data[data_keys[i]]=tmp
-      }
-      return new_data
+    // changeBarColor(data) {
+    //   let new_data=[]
+    //   let data_keys = Object.keys(data);
+    //   let data_values = Object.values(data);
+    //   for (let i=0;i<data_keys.length;i++) {
+    //     var tmp;
+    //     switch (data_keys[i]) {
+    //       case '正常' :
+    //         tmp = {
+    //           name: data_keys[i],
+    //           value: data_values[i],
+    //           itemStyle: {
+    //             normal: {
+    //               color: '#17ba6a',
+    //             }
+    //           }
+    //         }
+    //       break;
+    //       case '待機' : 
+    //           tmp = {
+    //           name: data_keys[i],
+    //           value: data_values[i],
+    //           itemStyle: {
+    //             normal: {
+    //               color: '#f7e31d',
+    //             }
+    //           }
+    //         }
+    //       break;
+    //       case '調機' : 
+    //           tmp = {
+    //           name: data_keys[i],
+    //           value: data_values[i],
+    //           itemStyle: {
+    //             normal: {
+    //               color: '#f7921d',
+    //             }
+    //           }
+    //         }
+    //       break;
+    //       case '維修' : 
+    //           tmp = {
+    //           name: data_keys[i],
+    //           value: data_values[i],
+    //           itemStyle: {
+    //             normal: {
+    //               color: '#FF0000',
+    //             }
+    //           }
+    //         }
+    //       break;
+    //       case '修膜待機' : 
+    //           tmp = {
+    //           name: data_keys[i],
+    //           value: data_values[i],
+    //           itemStyle: {
+    //             normal: {
+    //               color: '#3030FF',
+    //             }
+    //           }
+    //         }
+    //       break;
+    //       case '換膜' : 
+    //           tmp = {
+    //           name: data_keys[i],
+    //           value: data_values[i],
+    //           itemStyle: {
+    //             normal: {
+    //               color: '#990DFF',
+    //             }
+    //           }
+    //         }
+    //       break;
+    //       case '斷線' : 
+    //           tmp = {
+    //           name: data_keys[i],
+    //           value: data_values[i],
+    //           itemStyle: {
+    //             normal: {
+    //               color: '#909399',
+    //             }
+    //           }
+    //         }
+    //       break;
+    //     }
+    //   new_data[data_keys[i]]=tmp
+    //   }
+    //   return new_data
+    // },
+    onClick(event) {
+      // eslint-disable-next-line no-console
+      console.log(event);
     }
   },
   mounted() {
-    this.$chart.radar('radar','D9 開動率',datasetA);
-    this.$chart.radar('radar2','D10 開動率',datasetB);
-    this.$chart.bar_line('bar1','D10 產品不良率總覽',datasetC);
-    this.$chart.bar('bar2','D10 機台狀態總覽',this.changeBarColor(datasetD));
-    this.$chart.bar('bar3','D10 機台停機累計時間',datasetC);
   }
 };
 </script>
 
 <style>
 .radar {
-  height: 300px;
+  width: 100%;
+  height: 325px;
 }
 .chart-box{
   width: 95%;
@@ -206,5 +329,9 @@ export default {
 }
 .row-top {
   padding: 20px 0;
+}
+.header-row {
+  font-size: 32px;
+  font-weight:bold;
 }
 </style>
