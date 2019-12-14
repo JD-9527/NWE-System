@@ -3,6 +3,7 @@
     :data="tableData"
     style="width: 100%"
     :row-class-name="tableRowClassName"
+    @row-click="onClick"
   >
     <el-table-column
       prop="no"
@@ -39,6 +40,10 @@
 
 <script>
 export default {
+  data () {
+    return {
+    }
+  },
 	props: {
 		tableData: {
         type: Array,
@@ -52,7 +57,12 @@ export default {
         return 'warning-row';
       }
       return '';
-    }
+    },
+    onClick(row) {
+      // eslint-disable-next-line no-console
+      // console.log(row);
+      this.$emit('row-click',row)
+    },
     /* eslint-enable */
 	}
 }

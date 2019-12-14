@@ -10,10 +10,10 @@
     <el-row>
       <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
         <el-tab-pane label="排程中" name="first">
-          <Table :tableData="tableData"></Table>
+          <Table :tableData="tableData" @row-click="onClick"></Table>
         </el-tab-pane>
         <el-tab-pane label="已完成" name="second">
-          <Table :tableData="tableData"></Table>
+          <Table :tableData="tableData" @row-click="onClick"></Table>
         </el-tab-pane>
       </el-tabs>
     </el-row>
@@ -34,7 +34,7 @@
               總進度/超前
             </div>
             <div>
-              <el-progress :text-inside="true" :stroke-width="26" :percentage="70" color="#17ba6a"></el-progress>
+              <el-progress :text-inside="true" :stroke-width="26" :percentage="100" color="#17ba6a"></el-progress>
             </div>
           </el-col>
         </el-row>
@@ -60,7 +60,7 @@
               生產延遲
             </div>
             <div>
-              <el-progress :text-inside="true" :stroke-width="26" :percentage="70" color="#F50000"></el-progress>
+              <el-progress :text-inside="true" :stroke-width="20" :percentage="70" color="#F50000"></el-progress>
             </div>
           </el-col>
           <el-col :span="3">
@@ -68,7 +68,7 @@
               調機延遲
             </div>
             <div>
-              <el-progress :text-inside="true" :stroke-width="26" :percentage="70" color="#F50000"></el-progress>
+              <el-progress :text-inside="true" :stroke-width="20" :percentage="70" color="#F50000"></el-progress>
             </div>
           </el-col>
           <el-col :span="3">
@@ -76,7 +76,7 @@
               維修延遲
             </div>
             <div>
-              <el-progress :text-inside="true" :stroke-width="26" :percentage="70" color="#F50000"></el-progress>
+              <el-progress :text-inside="true" :stroke-width="20" :percentage="70" color="#F50000"></el-progress>
             </div>
           </el-col>
           <el-col :span="3">
@@ -84,7 +84,7 @@
               修模待機
             </div>
             <div>
-              <el-progress :text-inside="true" :stroke-width="26" :percentage="70" color="#F50000"></el-progress>
+              <el-progress :text-inside="true" :stroke-width="20" :percentage="70" color="#F50000"></el-progress>
             </div>
           </el-col>
           <el-col :span="3">
@@ -92,7 +92,7 @@
               換模延遲
             </div>
             <div>
-              <el-progress :text-inside="true" :stroke-width="26" :percentage="70" color="#F50000"></el-progress>
+              <el-progress :text-inside="true" :stroke-width="20" :percentage="70" color="#F50000"></el-progress>
             </div>
           </el-col>
         </el-row>
@@ -181,6 +181,10 @@ export default {
     handleClick(tab, event) {
       // eslint-disable-next-line no-console
       console.log(tab, event);
+    },
+    onClick(row) {
+      // eslint-disable-next-line no-console
+      console.log(row);
     },
     /* eslint-disable */
     tableRowClassName({row}) {
