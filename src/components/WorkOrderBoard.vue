@@ -10,86 +10,106 @@
     <el-row>
       <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
         <el-tab-pane label="排程中" name="first">
-          <el-table
-            :data="tableData"
-            style="width: 100%"
-            :row-class-name="tableRowClassName"
-          >
-            <el-table-column
-              prop="no"
-              label="工單號"
-              width="180">
-            </el-table-column>
-            <el-table-column
-              prop="part_no"
-              label="料號"
-              width="180">
-            </el-table-column>
-            <el-table-column
-              prop="machine"
-              label="生產機台">
-            </el-table-column>
-            <el-table-column
-              prop="mod_no"
-              label="模具編號">
-            </el-table-column>
-            <el-table-column
-              prop="plan_count"
-              label="計畫數量">
-            </el-table-column>
-            <el-table-column
-              prop="has_count"
-              label="已生產數量">
-            </el-table-column>
-            <el-table-column
-              prop="status"
-              label="工單狀態">
-            </el-table-column>
-          </el-table>
+          <Table :tableData="tableData"></Table>
         </el-tab-pane>
         <el-tab-pane label="已完成" name="second">
-          <el-table
-            :data="tableData"
-            style="width: 100%">
-            <el-table-column
-              prop="no"
-              label="工單號"
-              width="180">
-            </el-table-column>
-            <el-table-column
-              prop="part_no"
-              label="料號"
-              width="180">
-            </el-table-column>
-            <el-table-column
-              prop="machine"
-              label="生產機台">
-            </el-table-column>
-            <el-table-column
-              prop="mod_no"
-              label="模具編號">
-            </el-table-column>
-            <el-table-column
-              prop="plan_count"
-              label="計畫數量">
-            </el-table-column>
-            <el-table-column
-              prop="has_count"
-              label="已生產數量">
-            </el-table-column>
-            <el-table-column
-              prop="status"
-              label="工單狀態">
-            </el-table-column>
-          </el-table>
+          <Table :tableData="tableData"></Table>
         </el-tab-pane>
       </el-tabs>
+    </el-row>
+    <el-row>
+      <el-card>
+        <div slot="header" class="header"><span>工單詳情</span></div>
+        <el-row>
+          <el-col :span="9">
+            <div class="message-subtitle">
+              生產數量(件)
+            </div>
+            <div>
+              <el-progress :text-inside="true" :stroke-width="26" :percentage="70" color="#17ba6a"></el-progress>
+            </div>
+          </el-col>
+          <el-col :span="9" :offset="3">
+            <div class="message-subtitle">
+              總進度/超前
+            </div>
+            <div>
+              <el-progress :text-inside="true" :stroke-width="26" :percentage="70" color="#17ba6a"></el-progress>
+            </div>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="3">
+            <div class="message-subtitle">
+              客戶
+            </div>
+            <div class="message">
+              Cisco
+            </div>
+          </el-col>
+          <el-col :span="3">
+            <div class="message-subtitle">
+              工單負責人
+            </div>
+            <div class="message">
+              小兵
+            </div>
+          </el-col>
+          <el-col :span="3" :offset="3">
+            <div class="message-subtitle">
+              生產延遲
+            </div>
+            <div>
+              <el-progress :text-inside="true" :stroke-width="26" :percentage="70" color="#F50000"></el-progress>
+            </div>
+          </el-col>
+          <el-col :span="3">
+            <div class="message-subtitle">
+              調機延遲
+            </div>
+            <div>
+              <el-progress :text-inside="true" :stroke-width="26" :percentage="70" color="#F50000"></el-progress>
+            </div>
+          </el-col>
+          <el-col :span="3">
+            <div class="message-subtitle">
+              維修延遲
+            </div>
+            <div>
+              <el-progress :text-inside="true" :stroke-width="26" :percentage="70" color="#F50000"></el-progress>
+            </div>
+          </el-col>
+          <el-col :span="3">
+            <div class="message-subtitle">
+              修模待機
+            </div>
+            <div>
+              <el-progress :text-inside="true" :stroke-width="26" :percentage="70" color="#F50000"></el-progress>
+            </div>
+          </el-col>
+          <el-col :span="3">
+            <div class="message-subtitle">
+              換模延遲
+            </div>
+            <div>
+              <el-progress :text-inside="true" :stroke-width="26" :percentage="70" color="#F50000"></el-progress>
+            </div>
+          </el-col>
+        </el-row>
+      </el-card>
     </el-row>
   </div>
 </template>
 
 <script>
+import Table from './Table'
+
+// Vue.component('font-awesome-icon', FontAwesomeIcon)
+
 export default {
+  components : {
+    Table
+  },
   data() {
     return {
       activeName: 'first',
@@ -102,6 +122,7 @@ export default {
           plan_count: '40,000',
           has_count: '28,400',
           status: '正常',
+          isDelay: 0
         },
         {
           no: '611232322',
@@ -111,6 +132,7 @@ export default {
           plan_count: '40,000',
           has_count: '28,400',
           status: '延遲',
+          isDelay: 1
         },
         {
           no: '611232322',
@@ -120,6 +142,7 @@ export default {
           plan_count: '40,000',
           has_count: '28,400',
           status: '正常',
+          isDelay: 0
         },
         {
           no: '611232322',
@@ -129,6 +152,7 @@ export default {
           plan_count: '40,000',
           has_count: '28,400',
           status: '正常',
+          isDelay: 0
         },
         {
           no: '611232322',
@@ -138,6 +162,7 @@ export default {
           plan_count: '40,000',
           has_count: '28,400',
           status: '正常',
+          isDelay: 0
         },
         {
           no: '611232322',
@@ -147,6 +172,7 @@ export default {
           plan_count: '40,000',
           has_count: '28,400',
           status: '正常',
+          isDelay: 0
         },
       ]
     };
@@ -157,9 +183,9 @@ export default {
       console.log(tab, event);
     },
     /* eslint-disable */
-    tableRowClassName({row, rowIndex}) {
-      console.log({row, rowIndex})
-      if (row.status === '延遲') {
+    tableRowClassName({row}) {
+      // console.log({row, rowIndex})
+      if (row.isDelay === 1) {
         return 'warning-row';
       }
       return '';
@@ -171,8 +197,32 @@ export default {
 </script>
 
 <style>
-  .el-table .warning-row {
-    background: oldlace;
-    color: #000;
-  }
+.el-table .warning-row {
+  background: #FFDEDE;
+  /*color: #000;*/
+},
+.el-table .error-row {
+  background: #FFDEDE;
+  /*color: #000;*/
+}
+</style>
+
+<style scoped>
+.header {
+  font-size: 20px;
+  font-weight: bold;
+}
+.el-card >>> .el-card__header {
+  padding: 10px 20px;
+}
+.message {
+font-size: 18px;
+font-weight: bold;
+color: #333;
+}
+.message-subtitle {
+  font-size: 14px;
+  margin-bottom: 5px;
+  color: #888;
+}
 </style>
