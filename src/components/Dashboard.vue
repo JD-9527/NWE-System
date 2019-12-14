@@ -164,7 +164,7 @@ function changeBarColor(data) {
           value: data_values[i],
           itemStyle: {
             normal: {
-              color: '#FF0000',
+              color: '#F50000',
             }
           }
         }

@@ -553,7 +553,7 @@ export default {
           tmp = "color: #f7921d;";
           break;
         case 3:
-          tmp = "color: #FF0000;";
+          tmp = "color: #F50000;";
           break;
         case 4:
           tmp = "color: #3030FF;";
@@ -668,7 +668,7 @@ export default {
   color: #000;
 }
 .color-red {
-  background-color: #FF0000;
+  background-color: #F50000;
   color: #000;
 }
 .color-blue {
