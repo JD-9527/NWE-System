@@ -104,8 +104,24 @@
 <script>
 import Table from './Table'
 
-// Vue.component('font-awesome-icon', FontAwesomeIcon)
-
+let data_detail = {
+  produced: 28400,
+  plan_count: 40000,
+  customer: 'Cisco',
+  owner: '小兵',
+  // 0:超前, 1:延遲
+  progress: 1,
+  //生產延遲
+  produced_delay: 0,
+  // 調機延遲
+  config_delay: 5,
+  // 維修延遲
+  repair_delay: 5,
+  // 修模待機
+  fix_delay: 5,
+  // 換模延遲
+  change_delay: 5
+} 
 export default {
   components : {
     Table
@@ -174,7 +190,8 @@ export default {
           status: '正常',
           isDelay: 0
         },
-      ]
+      ],
+      data_detail: data_detail
     };
   },
   methods: {

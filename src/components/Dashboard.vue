@@ -85,6 +85,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 // import 'echarts/lib/chart/line'
 import radar from './radar'
 import barLine from './bar_line'
@@ -117,6 +118,12 @@ let datasetD={
   '修膜待機': 2,
   '換膜': 5,
   '斷線': 1
+}
+let datasetE={
+  'C01': 3.1,
+  'C06': 2.5, 
+  'A13': 1.8,
+  'B03': 1
 }
 function changeBarColor(data) {
   let new_data=[]
@@ -208,6 +215,17 @@ function changeBarColor(data) {
   return new_data
 }
 
+axios.get('http://172.31.8.175:8000/overview/machine/state/?line=D9')
+  .then(function(response) {
+    // eslint-disable-next-line no-console
+    console.log(response.data.data);
+  })
+  .catch(function (error) {
+    // handle error
+    // eslint-disable-next-line no-console
+    console.log(error);
+  })
+
 export default {
   data: () => ({
     Dashboard: 'Dashboard',
@@ -215,101 +233,21 @@ export default {
     Radar2: radar('D10 開動率',datasetB),
     barLine: barLine('D10 產品不良率總覽',datasetC),
     bar: bar('D10 機台狀態總覽',changeBarColor(datasetD)),
-    bar2: bar('D10 機台停機累計時間',datasetC),
+    bar2: bar('D10 機台停機累計時間',datasetE),
+    // test: this.getRadarData()
   }),
   methods: {
-    // changeBarColor(data) {
-    //   let new_data=[]
-    //   let data_keys = Object.keys(data);
-    //   let data_values = Object.values(data);
-    //   for (let i=0;i<data_keys.length;i++) {
-    //     var tmp;
-    //     switch (data_keys[i]) {
-    //       case '正常' :
-    //         tmp = {
-    //           name: data_keys[i],
-    //           value: data_values[i],
-    //           itemStyle: {
-    //             normal: {
-    //               color: '#17ba6a',
-    //             }
-    //           }
-    //         }
-    //       break;
-    //       case '待機' : 
-    //           tmp = {
-    //           name: data_keys[i],
-    //           value: data_values[i],
-    //           itemStyle: {
-    //             normal: {
-    //               color: '#f7e31d',
-    //             }
-    //           }
-    //         }
-    //       break;
-    //       case '調機' : 
-    //           tmp = {
-    //           name: data_keys[i],
-    //           value: data_values[i],
-    //           itemStyle: {
-    //             normal: {
-    //               color: '#f7921d',
-    //             }
-    //           }
-    //         }
-    //       break;
-    //       case '維修' : 
-    //           tmp = {
-    //           name: data_keys[i],
-    //           value: data_values[i],
-    //           itemStyle: {
-    //             normal: {
-    //               color: '#FF0000',
-    //             }
-    //           }
-    //         }
-    //       break;
-    //       case '修膜待機' : 
-    //           tmp = {
-    //           name: data_keys[i],
-    //           value: data_values[i],
-    //           itemStyle: {
-    //             normal: {
-    //               color: '#3030FF',
-    //             }
-    //           }
-    //         }
-    //       break;
-    //       case '換膜' : 
-    //           tmp = {
-    //           name: data_keys[i],
-    //           value: data_values[i],
-    //           itemStyle: {
-    //             normal: {
-    //               color: '#990DFF',
-    //             }
-    //           }
-    //         }
-    //       break;
-    //       case '斷線' : 
-    //           tmp = {
-    //           name: data_keys[i],
-    //           value: data_values[i],
-    //           itemStyle: {
-    //             normal: {
-    //               color: '#909399',
-    //             }
-    //           }
-    //         }
-    //       break;
-    //     }
-    //   new_data[data_keys[i]]=tmp
-    //   }
-    //   return new_data
-    // },
     onClick(event) {
       // eslint-disable-next-line no-console
       console.log(event);
+    },
+    getRadarData: (location) => {
+      return axios.get('http://172.31.8.175:8000/overview/machine/state/?line='+location)
+        .then(function(response) {
+          // eslint-disable-next-line no-console
+          // console.log(response);
+          return response.data.data
+        })
     }
   },
   mounted() {

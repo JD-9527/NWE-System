@@ -351,7 +351,7 @@
                   良品率
                 </div>
                 <div>
-                  {{ produce_message.good }} %
+                  {{ produce_message.good_rate }} %
                 </div>
               </el-col>
               <el-col :span="8">
@@ -506,7 +506,7 @@ let produce_message = {
     bad: '500',
     fix: '500'
   },
-  good: 99.99,
+  good_rate: 99.99,
   cycle_time: '57.00s / 42.51s',
   left_time: 43.07,
   end_time: '2019/11/30 05:49:36',
@@ -582,8 +582,9 @@ export default {
       })
       return new_machine_list
     },
-    convertProgess(data) {
+    convertProgess() {
       let sum = 0
+      let data = this.machine_message.detail
       let new_data = []
       for (let i=0;i< data.length;i++) {
         sum += data[i].value
@@ -607,12 +608,9 @@ export default {
       else if (data == '調機') {
         return 'color-orange'
       }
-    }
+    },
   },
   computed: {
-    // progressWidth: function() {
-    //   return this.new_machine_message
-    // }
   }
 };
 </script>
