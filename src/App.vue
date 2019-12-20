@@ -128,10 +128,8 @@ export default {
   background-color: #123456; 
   color: #eee;
 }
-.drawer {
+.drawer:not(.el-menu--collapse) {
   /*height: 100vh;*/
-  &:not(.el-menu--collapse) {
-    width: 180px;
-  }
+  width: 180px;
 }
 </style>
