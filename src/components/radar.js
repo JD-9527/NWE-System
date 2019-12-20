@@ -1,13 +1,33 @@
-export default function radar(chartname,data) {
-  let data_keys = Object.keys(data);
-  let data_values = Object.values(data);
+import axios from 'axios'
+
+// async function getRadarData(location) {
+//   const url='http://172.31.8.175:8000/overview/machine/state/?line='
+//   var data = []
+//   await axios.get(url+location).then((response) => {
+//     data=response.data
+//   });
+//   return data
+// }
+
+export default function radar(chartname,location) {
+  const url='http://172.31.8.175:8000/overview/machine/state/?line='+location
+  // var data = []
+  let data_keys = []
+  let data_values =[]
   let indicators = []
-  for (let i=0;i<data_keys.length;i++) {
-    indicators.push({
-      name: data_keys[i],
-      max: 100
-    })
-  }
+  axios.get(url).then((response) => {
+    var data=response.data
+    var keys = Object.keys(data);
+    var values = Object.values(data);
+    for (let i=0;i<keys.length;i++) {
+      indicators.push({
+        name: keys[i],
+        max: 100
+      })
+      data_keys.push(keys[i])
+      data_values.push(values[i])
+    }
+  });
   return {
     title: {
       text: chartname

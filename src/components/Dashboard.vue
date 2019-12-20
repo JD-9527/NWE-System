@@ -85,24 +85,24 @@
 </template>
 
 <script>
-import axios from 'axios'
+// import axios from 'axios'
 // import 'echarts/lib/chart/line'
 import radar from './radar'
 import barLine from './bar_line'
 import bar from './bar'
 
-let datasetA={
-  'E線' : 100,
-  'F線' : 80,
-  'G線' : 50,
-}
+// let datasetA={
+//   'E線' : 100,
+//   'F線' : 80,
+//   'G線' : 50,
+// }
 
-let datasetB={
-  'A線' : 100,
-  'B線' : 80,
-  'C線' : 50,
-  'D線' : 65,
-}
+// let datasetB={
+//   'A線' : 100,
+//   'B線' : 80,
+//   'C線' : 50,
+//   'D線' : 65,
+// }
 let datasetC={
   '料花': 4,
   '黑紋': 2, 
@@ -215,22 +215,11 @@ function changeBarColor(data) {
   return new_data
 }
 
-axios.get('http://172.31.8.175:8000/overview/machine/state/?line=D9')
-  .then(function(response) {
-    // eslint-disable-next-line no-console
-    console.log(response.data.data);
-  })
-  .catch(function (error) {
-    // handle error
-    // eslint-disable-next-line no-console
-    console.log(error);
-  })
-
 export default {
   data: () => ({
     Dashboard: 'Dashboard',
-    Radar: radar('D9 開動率',datasetA),
-    Radar2: radar('D10 開動率',datasetB),
+    Radar: radar('D9 開動率','D9'),
+    Radar2: radar('D10 開動率','D10'),
     barLine: barLine('D10 產品不良率總覽',datasetC),
     bar: bar('D10 機台狀態總覽',changeBarColor(datasetD)),
     bar2: bar('D10 機台停機累計時間',datasetE),
@@ -241,14 +230,6 @@ export default {
       // eslint-disable-next-line no-console
       console.log(event);
     },
-    getRadarData: (location) => {
-      return axios.get('http://172.31.8.175:8000/overview/machine/state/?line='+location)
-        .then(function(response) {
-          // eslint-disable-next-line no-console
-          // console.log(response);
-          return response.data.data
-        })
-    }
   },
   mounted() {
   }

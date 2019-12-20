@@ -2,7 +2,11 @@
   <el-container id="app">
     <el-header>
       <el-row>
-        <el-col :span="22">FII</el-col>
+        <el-col :span="22" style="font-size: 24px">
+          <!-- <el-button type="text" :icon="icons" @click="onClick"></el-button>  -->
+          <i :class="icons" @click="onClick"></i>
+          FII
+        </el-col>
         <el-col :span="2">
           <el-button 
             icon="el-icon-switch-button" 
@@ -14,15 +18,16 @@
       </el-row>
     </el-header>
     <el-container>
-      <el-aside width="200px" style="background-color: #123456">
+      <el-aside width="initial" style="background-color: #424242;">
         <el-menu
+          class="drawer"
           default-active="2"
-          class="el-menu-vertical-demo"
-          background-color="#123456"
+          background-color="#424242"
           text-color="#eee"
           active-text-color="#486dd5"
           unique-opened
           router
+          :collapse="isCollapse"
         >
           <el-submenu index="1">
             <template slot="title">
@@ -78,13 +83,20 @@ export default {
     // Login
   },
   data:() => ({
-      
+      isCollapse: false,
+      asideWidth: "200px",
+      icons: "el-icon-s-fold"
   }),
   methods: {
     logout(){
       localStorage.removeItem('token');
       this.$router.push('/login');
     },
+    onClick() {
+      this.isCollapse=!this.isCollapse
+      // this.asideWidth= this.isCollapse? "60px" : "200px"
+      this.icons= this.isCollapse? "el-icon-s-unfold" : "el-icon-s-fold"
+    }
   }
 };
 </script>
@@ -106,6 +118,7 @@ export default {
 }
 .el-aside {
   color: #eee;
+
 }
 .el-footer {
   background-color: #eee;
@@ -114,5 +127,11 @@ export default {
 .dark-blue-theme {
   background-color: #123456; 
   color: #eee;
+}
+.drawer {
+  /*height: 100vh;*/
+  &:not(.el-menu--collapse) {
+    width: 180px;
+  }
 }
 </style>

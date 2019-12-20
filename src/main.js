@@ -6,7 +6,7 @@ import ECharts from 'vue-echarts'
 import 'element-ui/lib/theme-chalk/index.css';
 import App from './App.vue'
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faDesktop, faSquare, faServer } from '@fortawesome/free-solid-svg-icons'
+import { faDesktop, faSquare, faServer, faAlignCenter } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 // import axios from 'axios'
 import Login from './components/Login'
@@ -15,7 +15,7 @@ import MachineBoard from './components/MachineBoard'
 import WorkOrderBoard from './components/WorkOrderBoard'
 import PlanBoard from './components/PlanBoard'
 
-library.add(faDesktop,faSquare,faServer)
+library.add(faDesktop,faSquare,faServer,faAlignCenter)
 
 Vue.config.productionTip = false;
 Vue.use(VueRouter);
