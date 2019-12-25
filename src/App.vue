@@ -3,9 +3,8 @@
     <el-header>
       <el-row>
         <el-col :span="22" style="font-size: 24px">
-          <!-- <el-button type="text" :icon="icons" @click="onClick"></el-button>  -->
           <i :class="icons" @click="onClick"></i>
-          FII
+          <img src="./assets/fii.png"  alt="FII" style="width: 75px" />
         </el-col>
         <el-col :span="2">
           <el-button 
@@ -28,6 +27,7 @@
           unique-opened
           router
           :collapse="isCollapse"
+          style="border-right: 0px"
         >
           <el-submenu index="1">
             <template slot="title">
@@ -113,12 +113,11 @@ export default {
     line-height: 60px;
   }
 .el-main {
-  hight: 100%;
+  height: 100%;
   /*padding: 10px;*/
 }
 .el-aside {
   color: #eee;
-
 }
 .el-footer {
   background-color: #eee;
