@@ -1,24 +1,29 @@
-export default function bar(chartname,data) {
+export default function bar(data) {
   let data_keys = Object.keys(data);
   let data_values = Object.values(data);
+
   return {
-    title: {
-      text: chartname
-    },
     tooltip: {
 
+    },
+    grid:{
+      top: '8%',
+      bottom: '8%',
+      left: '5.5%',
+      right: '3%',
     },
     xAxis: {
       data: data_keys,
       type: 'category',
     },
     yAxis: {
-      type: 'value'
+      type: 'value',
     },
     series: [{
       itemStyle: {
         color: '#409EFF'
       },
+      barWidth: '60%',
       data: data_values,
       type: 'bar'
     }]

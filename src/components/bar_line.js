@@ -1,4 +1,4 @@
-export default function bar_line(chartname,data) {
+export default function bar_line(data) {
   let data_keys = Object.keys(data);
   let data_values = Object.values(data);
   let valuepercent = [];    // 儲存資料累計百分比
@@ -12,11 +12,13 @@ export default function bar_line(chartname,data) {
     valuepercent.push(percent_sum*100)
   }
   return {
-    title: {
-      text: chartname
-    },
     tooltip: {
 
+    },
+    grid:{
+      top: '8%',
+      bottom: '8%',
+      left: '3%',
     },
     xAxis: {
       data: data_keys,
@@ -47,7 +49,8 @@ export default function bar_line(chartname,data) {
           color: '#409EFF'
         },
         data: data_values,
-        type: 'bar'
+        type: 'bar',
+        barWidth: '60%',
       },
       {
         itemStyle: {
