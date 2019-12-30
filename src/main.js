@@ -11,6 +11,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 // import axios from 'axios'
 import Login from './components/Login'
 import Dashboard from './components/Dashboard'
+import DefectRate from './components/defectRate'
 import MachineBoard from './components/MachineBoard'
 import WorkOrderBoard from './components/WorkOrderBoard'
 import PlanBoard from './components/PlanBoard'
@@ -28,6 +29,7 @@ Vue.component('font-awesome-icon', FontAwesomeIcon)
 const routes = [
 	{ path: '/login', component: Login },
 	{ path: '/dashboard', component: Dashboard },
+	{ path: '/dashboard/defectrate', component: DefectRate },
 	{ path: '/machine', component: MachineBoard },
 	{ path: '/work_order', component: WorkOrderBoard },
 	{ path: '/plan', component: PlanBoard },
