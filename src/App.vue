@@ -20,7 +20,7 @@
       <el-aside width="initial" style="background-color: #424242;">
         <el-menu
           class="drawer"
-          default-active="2"
+          :default-active="activeItem"
           background-color="#424242"
           text-color="#eee"
           active-text-color="#486dd5"
@@ -34,10 +34,10 @@
               <i class="el-icon-menu"></i>
               <span>生產狀態</span>
             </template>
-              <el-menu-item index="dashboard">生產總覽</el-menu-item>
-              <el-menu-item index="work_order">工單看板</el-menu-item>
-              <el-menu-item index="machine">機台看板</el-menu-item>
-              <el-menu-item index="plan">計畫看板</el-menu-item>
+              <el-menu-item index="/dashboard">生產總覽</el-menu-item>
+              <el-menu-item index="/work_order">工單看板</el-menu-item>
+              <el-menu-item index="/machine">機台看板</el-menu-item>
+              <el-menu-item index="/plan">計畫看板</el-menu-item>
           </el-submenu>
           <el-submenu index="2">
             <template slot="title">
@@ -85,8 +85,14 @@ export default {
   data:() => ({
       isCollapse: false,
       asideWidth: "200px",
-      icons: "el-icon-s-fold"
+      icons: "el-icon-s-fold",
+      activeItem: ''
   }),
+  watch : {
+    $route: function () {
+      this.activeItem = '/'+this.$route.path.split("/")[1]
+    }
+  },
   methods: {
     logout(){
       localStorage.removeItem('token');
@@ -96,7 +102,13 @@ export default {
       this.isCollapse=!this.isCollapse
       // this.asideWidth= this.isCollapse? "60px" : "200px"
       this.icons= this.isCollapse? "el-icon-s-unfold" : "el-icon-s-fold"
+    },
+    activeTab() {
+      this.activeItem = '/'+this.$route.path.split("/")[1]
     }
+  },
+  mounted() {
+    this.activeTab();
   }
 };
 </script>
@@ -114,6 +126,7 @@ export default {
   }
 .el-main {
   height: 100%;
+  padding: 10px 20px 0 20px;
   /*padding: 10px;*/
 }
 .el-aside {
@@ -129,6 +142,6 @@ export default {
 }
 .drawer:not(.el-menu--collapse) {
   /*height: 100vh;*/
-  width: 180px;
+  width: 200px;
 }
 </style>
