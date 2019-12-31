@@ -15,6 +15,9 @@ import DefectRate from './components/defectRate'
 import MachineBoard from './components/MachineBoard'
 import WorkOrderBoard from './components/WorkOrderBoard'
 import PlanBoard from './components/PlanBoard'
+import MoldMaintain from './components/MoldMaintain'
+import MachineMaintain from './components/MachineMaintain'
+import PartNoMaintain from './components/PartNoMaintain'
 
 library.add(faDesktop,faSquare,faServer,faAlignCenter)
 
@@ -33,6 +36,9 @@ const routes = [
 	{ path: '/machine', component: MachineBoard },
 	{ path: '/work_order', component: WorkOrderBoard },
 	{ path: '/plan', component: PlanBoard },
+	{ path: '/mold_maintain', component: MoldMaintain },
+	{ path: '/machine_maintain', component: MachineMaintain },
+	{ path: '/partno_maintain', component: PartNoMaintain },
 ]
 
 const router = new VueRouter({

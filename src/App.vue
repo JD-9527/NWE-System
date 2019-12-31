@@ -48,14 +48,25 @@
               <el-menu-item index="2-2">生產利潤</el-menu-item>
               <el-menu-item index="2-3">其他查詢</el-menu-item>
           </el-submenu>
-          <el-menu-item index="3">
-            <i class="el-icon-date"></i>
-            <span slot="title">生產排程</span>
-          </el-menu-item>
-          <el-menu-item index="4">
-            <i class="el-icon-upload"></i>
-            <span slot="title">數據錄入</span>
-          </el-menu-item>
+          <el-submenu index="3">
+            <template slot="title">
+              <i class="el-icon-date"></i>
+              <span slot="title">生產排程</span>
+            </template>
+            <el-menu-item index="3-1">資料輸入</el-menu-item>
+            <el-menu-item index="3-2">計畫預覽</el-menu-item>
+            <el-menu-item index="3-3">工單計畫</el-menu-item>
+            <el-menu-item index="3-4">其他查詢</el-menu-item>
+          </el-submenu>
+          <el-submenu index="4">
+            <template slot="title">
+              <i class="el-icon-upload"></i>
+              <span slot="title">數據錄入</span>
+            </template>
+            <el-menu-item index="/mold_maintain">模具維護</el-menu-item>
+            <el-menu-item index="/machine_maintain">機台維護</el-menu-item>
+            <el-menu-item index="/partno_maintain">料號維護</el-menu-item>
+          </el-submenu>
         </el-menu>
       </el-aside>
       <el-container>
