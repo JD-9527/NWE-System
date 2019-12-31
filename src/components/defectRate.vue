@@ -10,7 +10,7 @@
       </el-button>
     </el-col>
     <el-col :span="22">
-      <div style="font-size: 36px; text-align: center;">
+      <div style="font-size: 36px; text-align: center; font-weight: bold">
         D10 產品不良率總覽
       </div>
     </el-col>
