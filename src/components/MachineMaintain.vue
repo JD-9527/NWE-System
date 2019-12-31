@@ -79,7 +79,7 @@
               </editable-cell>
             </el-table-column>
             <el-table-column
-              label="Operation"
+              label="操作"
               align="center"
             >
              <template slot-scope="{row, index}">
