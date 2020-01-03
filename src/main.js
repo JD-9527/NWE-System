@@ -30,6 +30,7 @@ Vue.component('v-chart', ECharts)
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 const routes = [
+	{ path: '/', redirect: '/login' },
 	{ path: '/login', component: Login },
 	{ path: '/dashboard', component: Dashboard },
 	{ path: '/dashboard/defectrate', component: DefectRate },
@@ -42,7 +43,9 @@ const routes = [
 ]
 
 const router = new VueRouter({
-	routes
+	mode: 'history',
+	routes: routes,
+	base: '/nwe',
 })
 
 new Vue({
