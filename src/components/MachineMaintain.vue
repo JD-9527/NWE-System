@@ -135,6 +135,7 @@
 <script>
 import axios from 'axios'
 import EditableCell from "./EditableCell.vue";
+// import { apiMachineColor } from "../api.js"
 
 export default {
   components: {
@@ -173,7 +174,7 @@ export default {
   methods: {
     /* eslint-disable */
     getTableData() {
-      const url='http://172.31.8.175:8000/data/machinecolor/'
+      const url='http://10.124.131.87:8880/data/machinecolor/'
       this.loading=true
       axios.get(url).then((response)=>{
         this.loading=false
@@ -185,9 +186,19 @@ export default {
           };
         });
       })
+      // apiMachineColor().then((response)=>{
+      //   this.loading=false
+      //   this.tableData = response.data.data
+      //   this.tableData = this.tableData.map(row => {
+      //     return {
+      //       ...row,
+      //       editMode: false
+      //     };
+      //   });
+      // })
     },
     getTableDataCT() {
-      const url='http://172.31.8.175:8000/data/cttime/'
+      const url='http://10.124.131.87:8880/data/cttime/'
       this.loading_ct=true
       axios.get(url).then((response)=>{
         this.loading_ct=false
@@ -213,7 +224,7 @@ export default {
     saveRow(row, index) {
       // console.log(row)
       var vm = this
-      const url='http://172.31.8.175:8000/data/machinecolor/'
+      const url='http://10.124.131.87:8880/data/machinecolor/'
       var bodyFormData = new FormData();
       bodyFormData.append('machine_NO', row.machine_NO);
       bodyFormData.append('product_color', row.product_color);
@@ -231,6 +242,15 @@ export default {
           vm.$message.error(response);
           // console.log(response);
         });
+      // apiMachineColorMaintain(bodyFormData)
+      //   .then(function (response) {
+      //     vm.$message.success('修改成功！');
+      //     // console.log(response);
+      //   })
+      //   .catch(function (response) {
+      //     vm.$message.error(response);
+      //     // console.log(response);
+      //   });
       row.editMode = false;
     },
     handleDelete(index) {

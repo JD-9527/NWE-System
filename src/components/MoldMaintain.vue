@@ -90,7 +90,7 @@
           this.$message.error('請輸入要搜尋的模號！');
         }
         else {
-          const url='http://172.31.8.175:8000/data/molddata/?moldno='
+          const url='http://10.124.131.87:8880/data/mold/?moldno='
           this.loading = true
           axios.get(url+mold).then((response)=>{
             this.loading = false
