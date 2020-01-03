@@ -165,7 +165,7 @@
             <el-row
               type="flex"
               justify="center"
-              align="bottom"
+              align="top"
             >
               <el-col :span="6">
                 <div class="message-subtitle">
@@ -184,42 +184,17 @@
                 </div>
               </el-col>
               <el-col :span="12">
-                <div class="progress">
-                  <div 
-                    class='progress-bar color-none'
-                    role="progressbar" 
+                <el-row class="progress-bar-text">
+                  <el-col 
                     v-for="detail in new_machine_message"
                     :key="detail.status"
-                    :style="'width: '+ detail.percent.toString() + '%;'" 
-                    :aria-valuenow="detail.percent"
-                    aria-valuemin="0" 
-                    aria-valuemax="100"
-                  > {{ detail.status }} </div>
-                </div>
-                <div class="progress">
-                  <div 
-                    :class="'progress-bar '+progressColor(detail.status) " 
-                    role="progressbar" 
-                    v-for="detail in new_machine_message"
-                    :key="detail.status"
-                    :style="'width: '+ detail.percent.toString() + '%;'" 
-                    :aria-valuenow="detail.percent"
-                    aria-valuemin="0" 
-                    aria-valuemax="100"
-                  > {{ detail.value }} </div>
-                </div>
-                <div class="progress">
-                  <div 
-                    class='progress-bar color-none'
-                    role="progressbar" 
-                    v-for="detail in new_machine_message"
-                    :key="detail.status"
-                    :style="'width: '+ detail.percent.toString() + '%;'" 
-                    :aria-valuenow="detail.percent"
-                    aria-valuemin="0" 
-                    aria-valuemax="100"
-                  > {{ detail.percent.toString() + '%' }} </div>
-                </div>
+                    :style="'width: '+ detail.percent.toString() + '%;'"
+                  >
+                    <span>{{ detail.status }}</span>
+                    <div :class="'grid-content '+ progressColor(detail.status) ">{{ detail.value }}</div>
+                    <span style="font-size: 9px; font-weight: bold;">{{ detail.percent + '%' }}</span>
+                  </el-col>
+                </el-row>
               </el-col>
             </el-row>
           </div>
@@ -395,6 +370,83 @@
     </el-row>
   </div>
 </template>
+
+<style scoped>
+.item {
+  /*font-size: 36px; */
+  border-color: #fff;
+  padding: 0;
+}
+.message {
+  font-size: 18px;
+  margin-bottom: 10px;
+  font-weight: bold;
+  color: #333;
+  /*padding: 10px 20px 0;*/
+}
+.grid-content {
+  border-radius: 4px;
+  min-height: 18px;
+}
+.progress-bar-text {
+  display: inline; 
+  text-align: center;
+  font-weight: normal;
+  font-size: 14px;
+}
+.message-subtitle {
+  font-size: 14px;
+  margin-bottom: 5px;
+  color: #888;
+  /*padding: 10px 20px 0;*/
+}
+.message-row {
+  font-size: 20px;
+  font-weight:bold;
+}
+.el-card >>> .el-card__header {
+  padding: 10px 20px;
+}
+.el-row {
+  margin-bottom: 8px;
+}
+.legend {
+  font-size: 16px;
+}
+.color-green {
+  background-color: #17ba6a;
+  color: #000;
+}
+.color-yellow {
+  background-color: #f7e31d;
+  color: #000;
+}
+.color-orange {
+  background-color: #f7921d;
+  color: #000;
+}
+.color-red {
+  background-color: #F50000;
+  color: #000;
+}
+.color-blue {
+  background-color: #3030FF;
+  color: #000;
+}
+.color-purple {
+  background-color: #990DFF;
+  color: #000;
+}
+.color-grey {
+  background-color: #909399;
+  color: #000;
+}
+.color-none {
+  background-color: #fff;
+  color: #000;
+  font-size: 14px;
+}
+</style>
 
 <script>
 const legends = [
@@ -615,75 +667,4 @@ export default {
 };
 </script>
 
-<style scoped>
-.item {
-  /*font-size: 36px; */
-  border-color: #fff;
-  padding: 0;
-}
-.message {
-  font-size: 18px;
-  margin-bottom: 10px;
-  font-weight: bold;
-  color: #333;
-  /*padding: 10px 20px 0;*/
-}
-.message-subtitle {
-  font-size: 14px;
-  margin-bottom: 5px;
-  color: #888;
-  /*padding: 10px 20px 0;*/
-}
-.message-row {
-  font-size: 20px;
-  font-weight:bold;
-}
-.el-card >>> .el-card__header {
-  padding: 10px 20px;
-}
-.progess-bar-align {
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  height:100%;
-}
-.el-row {
-  margin-bottom: 8px;
-}
-.legend {
-  font-size: 16px;
-}
-.color-green {
-  background-color: #17ba6a;
-  color: #000;
-}
-.color-yellow {
-  background-color: #f7e31d;
-  color: #000;
-}
-.color-orange {
-  background-color: #f7921d;
-  color: #000;
-}
-.color-red {
-  background-color: #F50000;
-  color: #000;
-}
-.color-blue {
-  background-color: #3030FF;
-  color: #000;
-}
-.color-purple {
-  background-color: #990DFF;
-  color: #000;
-}
-.color-grey {
-  background-color: #909399;
-  color: #000;
-}
-.color-none {
-  background-color: #fff;
-  color: #000;
-  font-size: 14px;
-}
-</style>
+

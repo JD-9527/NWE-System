@@ -2,9 +2,9 @@
   <el-container id="app">
     <el-header>
       <el-row>
-        <el-col :span="22" style="font-size: 24px">
-          <i :class="icons" @click="onClick"></i>
-          <img src="./assets/fii.png"  alt="FII" style="width: 75px" />
+        <el-col :span="22" class="header-row">
+          <el-button :icon="icons" style="font-size: 24px; color: #DDD" type="text" @click="onClick"></el-button>
+          <img src="./assets/fii.png"  alt="FII" style="padding-top: 7px" />
         </el-col>
         <el-col :span="2">
           <el-button 
@@ -126,6 +126,9 @@ export default {
 
 <style>
 #app {
+  font-family: 'Avenir', "Helvetica", "Arial","LiHei Pro","黑體-繁","微軟雅黑體", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   margin-top: 0px;
   min-height: 768px; 
   height: 100%;
@@ -134,7 +137,12 @@ export default {
     background-color: #123456;
     color: #eee;
     line-height: 60px;
-  }
+}
+.header-row {
+  padding-top: 0px;
+  display: flex;
+  align-content:center;
+}
 .el-main {
   height: 100%;
   padding: 10px 20px 0 20px;
