@@ -191,7 +191,7 @@
                     :style="'width: '+ detail.percent.toString() + '%;'"
                   >
                     <span>{{ detail.status }}</span>
-                    <div :class="'grid-content '+ progressColor(detail.status) ">{{ detail.value }}</div>
+                    <div :class="'grid-content '+ progressColor(detail.status)" style="font-weight: bold">{{ detail.value }}</div>
                     <span style="font-size: 9px; font-weight: bold;">{{ detail.percent + '%' }}</span>
                   </el-col>
                 </el-row>
@@ -538,7 +538,7 @@ let machine_message = {
   ]
 }
 let new_machine_message=[
-  {status: '正常', value: '3.8/5', percent: 76},
+  {status: '稼動率', value: '3.8/5', percent: 76},
   {status: '維修', value: '0.6/5', percent: 12},
   {status: '調機', value: '0.6/5', percent: 12},
 ]
@@ -651,7 +651,7 @@ export default {
       return new_data
     },
     progressColor(data) {
-      if (data == '正常') {
+      if (data == '稼動率') {
         return 'color-green'
       }
       else if (data == '維修') {
