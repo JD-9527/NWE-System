@@ -6,7 +6,7 @@
       align="middle"
     >
       <el-col :span="8">
-        NWE D10機台狀態看板
+        NWE {{ $route.params.line }}機台狀態看板
       </el-col>
       <el-col :span="13" :push="2">
         <el-row 
@@ -43,7 +43,7 @@
         :key="machine.name"
         :span="1"
       >
-        <el-badge value="!" :hidden="hidden">
+        <el-badge value="!" :hidden="!machine.show">
           <el-button 
             type="text" 
             @click="onClick(machine)"
@@ -73,7 +73,7 @@
         :key="machine.name"
         :span="1"
       >
-        <el-badge value="!" :hidden="hidden">
+        <el-badge value="!" :hidden="!machine.show">
           <el-button 
             type="text" 
             @click="onClick(machine)"
@@ -103,7 +103,7 @@
         :key="machine.name"
         :span="1"
       >
-        <el-badge value="!" :hidden="hidden">
+        <el-badge value="!" :hidden="!machine.show">
           <el-button 
             type="text" 
             @click="onClick(machine)"
@@ -127,13 +127,14 @@
     <el-row 
       :gutter="20"
       type="flex" 
+      v-if="$route.params.line == 'D10'"
     >
       <el-col 
         v-for="machine in machinesD" 
         :key="machine.name"
         :span="1"
       >
-        <el-badge value="!" :hidden="machine.show">
+        <el-badge value="!" :hidden="!machine.show">
           <el-button 
             type="text" 
             @click="onClick(machine)"
@@ -477,74 +478,7 @@ const legends = [
   { name:'換模', status: 5 },
   { name:'斷線', status: 6 },
 ];
-let machines = [
-  { name:'A01', status: 0, show: true},
-  { name:'A02', status: 2, show: true},
-  { name:'A03', status: 2, show: true},
-  { name:'A04', status: 0, show: true},
-  { name:'A05', status: 0, show: true},
-  { name:'A06', status: 2, show: true},
-  { name:'A07', status: 2, show: true},
-  { name:'A08', status: 0, show: true},
-  { name:'A09', status: 3, show: true},
-  { name:'A10', status: 2, show: true},
-  { name:'A11', status: 2, show: true},
-  { name:'A12', status: 1, show: true},
-  { name:'A13', status: 1, show: true},
-  { name:'A14', status: 1, show: true},
-  { name:'A15', status: 6, show: true},
-];
-let machinesB = [
-  { name:'B01', status: 0, show: true},
-  { name:'B02', status: 2, show: true},
-  { name:'B03', status: 2, show: true},
-  { name:'B04', status: 0, show: true},
-  { name:'B05', status: 0, show: true},
-  { name:'B06', status: 2, show: true},
-  { name:'B07', status: 2, show: true},
-  { name:'B08', status: 0, show: true},
-  { name:'B09', status: 3, show: true},
-  { name:'B10', status: 2, show: true},
-  { name:'B11', status: 2, show: true},
-  { name:'B12', status: 1, show: true},
-  { name:'B13', status: 1, show: true},
-  { name:'B14', status: 1, show: true},
-];
-let machinesC = [
-  { name:'C01', status: 0, show: true},
-  { name:'C02', status: 2, show: true},
-  { name:'C03', status: 2, show: true},
-  { name:'C04', status: 0, show: true},
-  { name:'C05', status: 0, show: true},
-  { name:'C06', status: 2, show: true},
-  { name:'C07', status: 2, show: true},
-  { name:'C08', status: 0, show: true},
-  { name:'C09', status: 3, show: true},
-  { name:'C10', status: 2, show: true},
-  { name:'C11', status: 2, show: true},
-  { name:'C12', status: 1, show: true},
-];
-let machinesD = [
-  { name:'D01', status: 0, show: true},
-  { name:'D02', status: 2, show: true},
-  { name:'D03', status: 2, show: true},
-  { name:'D04', status: 0, show: true},
-  { name:'D05', status: 0, show: true},
-  { name:'D06', status: 2, show: true},
-  { name:'D07', status: 2, show: true},
-  { name:'D08', status: 0, show: true},
-  { name:'D09', status: 3, show: true},
-  { name:'D10', status: 2, show: true},
-  { name:'D11', status: 2, show: true},
-  { name:'D12', status: 1, show: true},
-  { name:'D13', status: 1, show: true},
-  { name:'D14', status: 1, show: true},
-  { name:'D15', status: 6, show: true},
-  { name:'D16', status: 0, show: true},
-  { name:'D17', status: 2, show: true},
-  { name:'D18', status: 1, show: true},
-  { name:'D19', status: 6, show: true},
-];
+
 let machine_show = [true,true,true,true,true,true,true]
 let machine_message = {
   status: '調機',
@@ -588,10 +522,10 @@ export default {
   data: () => ({
     hidden: true,
     style: "",
-    machines: machines,
-    machinesB: machinesB,
-    machinesC: machinesC,
-    machinesD: machinesD,
+    machines: [],
+    machinesB: [],
+    machinesC: [],
+    machinesD: [],
     legends: legends,
     machine_show: machine_show,
     machine_message: machine_message,
@@ -680,6 +614,50 @@ export default {
         return 'color-orange'
       }
     },
+    getMachineState(line) {
+      const url='http://10.124.131.87:8880/Overview/machine/board//?line='
+      this.$http.get(url+line).then((response)=>{
+        let data=response.data.data
+        for (let i=0;i<data.length;i++) {
+          let line_cate=data[i].name.slice(0,1)
+          if (line_cate == 'A' || line_cate == 'E') {
+            // this.machines = []
+            this.machines.push({
+              name: data[i].name,
+              status: data[i].status,
+              show: data[i].show
+            })
+          }
+          if (line_cate == 'B' || line_cate == 'F') {
+            // this.machinesB = []
+            this.machinesB.push({
+              name: data[i].name,
+              status: data[i].status,
+              show: data[i].show
+            })
+          }
+          if (line_cate == 'C' || line_cate == 'G') {
+            // this.machinesC = []
+            this.machinesC.push({
+              name: data[i].name,
+              status: data[i].status,
+              show: data[i].show
+            })
+          }
+          if (line_cate == 'D') {
+            // this.machinesD = []
+            this.machinesD.push({
+              name: data[i].name,
+              status: data[i].status,
+              show: data[i].show
+            })
+          }
+        }
+      })
+    }
+  },
+  mounted() {
+    this.getMachineState(this.$route.params.line)
   },
   computed: {
   }

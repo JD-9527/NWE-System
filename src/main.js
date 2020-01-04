@@ -48,7 +48,7 @@ const routes = [
       { path: '/overview/dashboard', component: Dashboard },
       { path: '/overview/dashboard/defectrate', component: DefectRate },
       { path: '/overview/work_order', component: WorkOrderBoard },
-      { path: '/overview/machine', component: MachineBoard },
+      { path: '/overview/machine/:line', component: MachineBoard },
       { path: '/overview/plan', component: PlanBoard },
     ],
   },

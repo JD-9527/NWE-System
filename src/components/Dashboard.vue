@@ -109,7 +109,7 @@
               <el-button
                 type="text"
                 size="medium"
-                @click="$router.push('/overview/machine')"
+                @click="$router.push('/overview/machine/'+isSelect)"
               >
                 詳情
               </el-button>
