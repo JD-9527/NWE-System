@@ -1,14 +1,16 @@
 import Vue from 'vue'
+import Vuex from 'vuex'
 import VueRouter from 'vue-router'
 import ElementUI from 'element-ui';
 import echarts from 'echarts'
 import ECharts from 'vue-echarts'
 import 'element-ui/lib/theme-chalk/index.css';
 import App from './App.vue'
+// import store from './store.js'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faDesktop, faSquare, faServer, faAlignCenter } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-// import axios from 'axios'
+import axios from 'axios'
 import Login from './components/Login'
 import Dashboard from './components/Dashboard'
 import DefectRate from './components/defectRate'
@@ -21,7 +23,14 @@ import PartNoMaintain from './components/PartNoMaintain'
 
 library.add(faDesktop,faSquare,faServer,faAlignCenter)
 
+Vue.prototype.$http = axios;
+// const token = localStorage.getItem('token')
+// if (token) {
+//   Vue.prototype.$http.defaults.headers.common['Authorization'] = token
+// }
+
 Vue.config.productionTip = false;
+Vue.use(Vuex)
 Vue.use(VueRouter);
 Vue.use(ElementUI);
 Vue.use(echarts);
@@ -30,26 +39,40 @@ Vue.component('v-chart', ECharts)
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 const routes = [
-	{ path: '/', redirect: '/login' },
-	{ path: '/login', component: Login },
-	{ path: '/dashboard', component: Dashboard },
-	{ path: '/dashboard/defectrate', component: DefectRate },
-	{ path: '/machine', component: MachineBoard },
-	{ path: '/work_order', component: WorkOrderBoard },
-	{ path: '/plan', component: PlanBoard },
-	{ path: '/mold_maintain', component: MoldMaintain },
-	{ path: '/machine_maintain', component: MachineMaintain },
-	{ path: '/partno_maintain', component: PartNoMaintain },
+  { path: '/', redirect: '/login' },
+  { path: '/login', component: Login },
+  { path: '/dashboard', component: Dashboard },
+  { path: '/dashboard/defectrate', component: DefectRate },
+  { path: '/machine', component: MachineBoard },
+  { path: '/work_order', component: WorkOrderBoard },
+  { path: '/plan', component: PlanBoard },
+  { path: '/mold_maintain', component: MoldMaintain },
+  { path: '/machine_maintain', component: MachineMaintain },
+  { path: '/partno_maintain', component: PartNoMaintain },
 ]
 
 const router = new VueRouter({
-	mode: 'history',
-	routes: routes,
-	base: '/nwe',
+  mode: 'history',
+  routes: routes,
+  base: '/nwe',
 })
 
+// router.beforeEach((to, from, next) => {
+//   if(to.matched.some(record => record.meta.requiresAuth)) {
+//     if (store.getters.isLoggedIn) {
+//         next()
+//         return
+//       }
+//       next('/login') 
+//     } 
+//     else {
+//       next() 
+//   }
+// });
+
 new Vue({
-	el: '#app',
-	router,
+  el: '#app',
+  router,
+  // store,
   render: h => h(App),
 }).$mount('#app')
