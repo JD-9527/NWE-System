@@ -108,6 +108,10 @@ export default {
     logout(){
       localStorage.removeItem('token');
       this.$router.push('/login');
+      // this.$store.dispatch('logout')
+      // .then(() => {
+      //   this.$router.push('/login')
+      // })
     },
     onClick() {
       this.isCollapse=!this.isCollapse
@@ -120,6 +124,16 @@ export default {
   },
   mounted() {
     this.activeTab();
+  },
+  created: function () {
+    this.$http.interceptors.response.use(undefined, function (err) {
+      return new Promise(function () {
+        if (err.status === 401 && err.config && !err.config.__isRetryRequest) {
+          this.$store.dispatch('logout')
+        }
+        throw err;
+      });
+    });
   }
 };
 </script>
