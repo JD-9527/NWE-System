@@ -202,8 +202,8 @@ let datasetE=[
   }
 ]
 
-const radar_url='http://10.124.131.87:8880/overview/machine/state/?line='
-const machine_state='http://10.124.131.87:8880/overview/machine/statecount/?line='
+const radar_url='http://10.124.131.87:8880/Overview/machine/state/?line='
+const machine_state='http://10.124.131.87:8880/Overview/machine/statecount/?line='
 // 改變機台狀態總覽bar顏色
 function changeBarColor(data) {
   let new_data=[]
