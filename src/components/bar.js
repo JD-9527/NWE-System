@@ -15,6 +15,9 @@ export default function bar(data) {
     xAxis: {
       data: data_keys,
       type: 'category',
+      axisLabel : {
+        rotate: -20,
+      }
     },
     yAxis: {
       type: 'value',

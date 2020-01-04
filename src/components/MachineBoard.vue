@@ -210,7 +210,7 @@
           </div>
           <div class="message">
             <el-row>
-              <el-col :span="4">
+              <el-col :span="5">
                 <div class="message-subtitle">
                   工單編號
                 </div>
@@ -234,7 +234,7 @@
                   {{ now_work_order.mod_no }} 
                 </div>
               </el-col>
-              <el-col :span="10">
+              <el-col :span="9">
                 <div class="message-subtitle">
                   料號
                 </div>
@@ -244,7 +244,7 @@
               </el-col>
             </el-row>
             <el-row>
-              <el-col :span="9">
+              <el-col :span="10">
                 <div class="message-subtitle">
                   實際開始時間
                 </div>
@@ -252,7 +252,7 @@
                   {{ now_work_order.start_time }} 
                 </div>
               </el-col>
-              <el-col :span="12">
+              <el-col :span="14">
                 <div class="message-subtitle">
                   計畫完成時間
                 </div>
