@@ -84,7 +84,7 @@
               <el-button
                 type="text"
                 size="medium"
-                @click="$router.push('/dashboard/defectrate')"
+                @click="$router.push('/overview/dashboard/defectrate')"
               >
                 詳情
               </el-button>
@@ -109,7 +109,7 @@
               <el-button
                 type="text"
                 size="medium"
-                @click="$router.push('/machine')"
+                @click="$router.push('/overview/machine')"
               >
                 詳情
               </el-button>
@@ -256,7 +256,7 @@ function changeBarColor(data) {
           }
         }
       break;
-      case '修模待機' : 
+      case '修模' : 
           tmp = {
           name: data_keys[i],
           value: data_values[i],

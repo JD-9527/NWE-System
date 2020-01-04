@@ -12,6 +12,7 @@ import { faDesktop, faSquare, faServer, faAlignCenter } from '@fortawesome/free-
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import axios from 'axios'
 import Login from './components/Login'
+import Layout from './components/Layout'
 import Dashboard from './components/Dashboard'
 import DefectRate from './components/defectRate'
 import MachineBoard from './components/MachineBoard'
@@ -41,14 +42,23 @@ Vue.component('font-awesome-icon', FontAwesomeIcon)
 const routes = [
   { path: '/', redirect: '/login' },
   { path: '/login', component: Login },
-  { path: '/dashboard', component: Dashboard },
-  { path: '/dashboard/defectrate', component: DefectRate },
-  { path: '/machine', component: MachineBoard },
-  { path: '/work_order', component: WorkOrderBoard },
-  { path: '/plan', component: PlanBoard },
-  { path: '/mold_maintain', component: MoldMaintain },
-  { path: '/machine_maintain', component: MachineMaintain },
-  { path: '/partno_maintain', component: PartNoMaintain },
+  { path: '/overview', component: Layout,
+    children: [
+      { path: '/overview/dashboard', component: Dashboard },
+      { path: '/overview/dashboard/defectrate', component: DefectRate },
+      { path: '/overview/work_order', component: WorkOrderBoard },
+      { path: '/overview/machine', component: MachineBoard },
+      { path: '/overview/plan', component: PlanBoard },
+    ],
+  },
+  { path: '/maintain', component: Layout,
+    children: [
+      { path: '/maintain/mold', component: MoldMaintain },
+      { path: '/maintain/machine', component: MachineMaintain },
+      { path: '/maintain/partno', component: PartNoMaintain },
+    ],
+  }
+ 
 ]
 
 const router = new VueRouter({
