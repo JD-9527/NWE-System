@@ -43,6 +43,7 @@ const routes = [
   { path: '/', redirect: '/login' },
   { path: '/login', component: Login },
   { path: '/overview', component: Layout,
+    redirect: '/overview/dashboard',
     children: [
       { path: '/overview/dashboard', component: Dashboard },
       { path: '/overview/dashboard/defectrate', component: DefectRate },
