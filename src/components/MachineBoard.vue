@@ -381,6 +381,13 @@
 .item {
   /*font-size: 36px; */
   border-color: #fff;
+  border-width: 2px; 
+  padding: 0;
+}
+.item:hover {
+  /*font-size: 36px; */
+  border-color: #123456;
+  border-width: 2px; 
   padding: 0;
 }
 .message {
