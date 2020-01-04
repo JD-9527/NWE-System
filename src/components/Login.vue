@@ -48,8 +48,8 @@ export default {
   },
   methods: {
     login(){
-      //write login authencation logic here!
-      if( this.userName == 'nwe' && this.password == '123456' ){
+      // write login authencation logic here!323
+      if( this.userName == 'nwe' && this.password == 'foxconn88' ){
         localStorage.setItem('token', 'ImLogin')
         this.$message({
           message: '登入成功！',
@@ -65,6 +65,19 @@ export default {
           duration: 2000
         });
       }
+      // let username=this.userName
+      // let password=this.password
+      // this.$store.dispatch('login', { username, password })
+      //   .then(() => {
+      //     this.$router.push('/dashboard')}
+      //   )
+      //   .catch(() => {
+      //    this.$message.error({
+      //     message: '帳號或密碼錯誤！',
+      //     center: true,
+      //     duration: 2000
+      //   });
+      //   })
     }
   }
 };
