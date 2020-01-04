@@ -167,7 +167,7 @@
               justify="center"
               align="top"
             >
-              <el-col :span="6">
+              <el-col :span="4">
                 <div class="message-subtitle">
                   狀態
                 </div>
@@ -175,7 +175,7 @@
                   調機 
                 </div>
               </el-col>
-              <el-col :span="6">
+              <el-col :span="4">
                 <div class="message-subtitle">
                   負責人
                 </div>
@@ -183,7 +183,7 @@
                   小賀 
                 </div>
               </el-col>
-              <el-col :span="12">
+              <el-col :span="16">
                 <el-row class="progress-bar-text">
                   <el-col 
                     v-for="detail in new_machine_message"
@@ -191,8 +191,13 @@
                     :style="'width: '+ detail.percent.toString() + '%;'"
                   >
                     <span>{{ detail.status }}</span>
-                    <div :class="'grid-content '+ progressColor(detail.status)" style="font-weight: bold">{{ detail.value }}</div>
-                    <span style="font-size: 9px; font-weight: bold;">{{ detail.percent + '%' }}</span>
+                    <div 
+                      :class="'grid-content '+ progressColor(detail.status)" 
+                      style="font-weight: bold"
+                    >
+                      <span>{{ detail.value }}</span>
+                    </div>
+                    <div style="font-size: 9px; font-weight: bold;">{{ detail.percent + '%' }}</div>
                   </el-col>
                 </el-row>
               </el-col>
@@ -205,7 +210,7 @@
           </div>
           <div class="message">
             <el-row>
-              <el-col :span="6">
+              <el-col :span="4">
                 <div class="message-subtitle">
                   工單編號
                 </div>
@@ -213,7 +218,7 @@
                   {{ now_work_order.no }} 
                 </div>
               </el-col>
-              <el-col :span="6">
+              <el-col :span="5">
                 <div class="message-subtitle">
                   工單負責人
                 </div>
@@ -221,7 +226,7 @@
                   {{ now_work_order.owner }} 
                 </div>
               </el-col>
-              <el-col :span="6">
+              <el-col :span="5">
                 <div class="message-subtitle">
                   模具編號
                 </div>
@@ -229,7 +234,7 @@
                   {{ now_work_order.mod_no }} 
                 </div>
               </el-col>
-              <el-col :span="6">
+              <el-col :span="10">
                 <div class="message-subtitle">
                   料號
                 </div>
@@ -239,7 +244,7 @@
               </el-col>
             </el-row>
             <el-row>
-              <el-col :span="12">
+              <el-col :span="9">
                 <div class="message-subtitle">
                   實際開始時間
                 </div>
@@ -400,6 +405,20 @@
   color: #888;
   /*padding: 10px 20px 0;*/
 }
+/*[data-tooltip]:before {            
+    position : absolute;
+     content : attr(data-tooltip);
+     opacity : 0;
+}
+[data-tooltip]:hover:before {        
+    opacity : 0.8;
+    transform: translate(-20px,-25px);
+    color: #ddd;
+    font-weight: bold;
+    background-color: #111;
+    border-radius: 4px;
+    padding: 5px 10px;
+}*/
 .message-row {
   font-size: 20px;
   font-weight:bold;
