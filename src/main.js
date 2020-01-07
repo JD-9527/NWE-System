@@ -21,6 +21,7 @@ import PlanBoard from './components/PlanBoard'
 import MoldMaintain from './components/MoldMaintain'
 import MachineMaintain from './components/MachineMaintain'
 import PartNoMaintain from './components/PartNoMaintain'
+import page404 from './components/404page'
 
 library.add(faDesktop,faSquare,faServer,faAlignCenter)
 
@@ -50,6 +51,7 @@ const routes = [
       { path: '/overview/work_order', component: WorkOrderBoard },
       { path: '/overview/machine/:line', component: MachineBoard },
       { path: '/overview/plan', component: PlanBoard },
+      { path: '/overview/*' , redirect: '/error/404' },
     ],
   },
   { path: '/maintain', component: Layout,
@@ -57,9 +59,16 @@ const routes = [
       { path: '/maintain/mold', component: MoldMaintain },
       { path: '/maintain/machine', component: MachineMaintain },
       { path: '/maintain/partno', component: PartNoMaintain },
+      { path: '/maintain/*' , redirect: '/error/404' },
     ],
-  }
- 
+  },
+  { path: '/error' , component: Layout,
+    redirect: '/error/404',
+    children: [
+      { path: '/error/404', component: page404 },
+    ],
+  },
+  { path: '*' , redirect: '/error/404' },
 ]
 
 const router = new VueRouter({
