@@ -109,7 +109,7 @@
         <el-row>
           <el-button size="mini" style="margin-right: 10px;" @click="addRow">新增</el-button>
           <a>
-            <el-button size="mini" @click="submitForm()" style="margin-right: 5px;" class="upload" plain>選擇檔案</el-button>
+            <el-button size="mini" style="margin-right: 5px;" class="upload" plain>選擇檔案</el-button>
             <input type="file" id="file" ref="file" @change="onChangeFileUpload()" class="change"/>
           </a>
           <span v-if="typeof(file) != 'undefined'">{{ file.name }}</span>
