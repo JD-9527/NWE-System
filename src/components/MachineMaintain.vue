@@ -263,7 +263,7 @@ export default {
         {prop: 'mold_cttime', label: "前置作業時間"},
       ],
       tableDataCT: [],
-      activeName: '2',  // 默認激活的tab
+      activeName: '1',  // 默認激活的tab
       colorlist: [],
       tonList: [],
       input: '',
