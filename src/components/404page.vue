@@ -1,7 +1,7 @@
 <template>
   <div style="height: 100%">
     <el-row>
-      <el-col :span="1">
+      <el-col :span="2">
         <el-button
           type="text"
           @click="$router.go(-1)"
@@ -10,10 +10,14 @@
           <i class="el-icon-back"></i>返回
         </el-button>
       </el-col>
-      <el-col :span="21">
+      <el-col :span="20">
         <div class="title">
          404 Error
         </div>
+      </el-col>
+    </el-row>
+    <el-row>
+      <el-col>
         <div class="highlight">
           施工中
         </div>
@@ -48,7 +52,7 @@ export default {
 .highlight {
   font-size: 64px;
   text-align: center;
-  line-height: 600px;
+  line-height: 500px;
   font-weight: bold;
   color: #aaa;
 }
