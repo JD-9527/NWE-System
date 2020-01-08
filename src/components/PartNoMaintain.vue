@@ -1,32 +1,117 @@
 <template>
   <div>
-    <el-row class="header-row">料號維護<span class="sub-header-row" style="display: flex; align-items: flex-end;"> 資料查詢</span></el-row>
-    <el-row :gutter="10">
-      <el-col :md="3" :lg="2">
-        <span style="line-height: 40px">請填入查詢模號：</span>
-      </el-col>
-      <el-col :span="5">
-        <el-input v-model="input"></el-input>
-      </el-col>
-      <el-col :span="5">
-        <el-button>搜尋</el-button>
-      </el-col>
-    </el-row>
-    <el-row>
-      <el-table
-        :data="tableData"
-        style="width: 100%"
-      >
-        <el-table-column
-          v-for="(column,index) in columns"
-          :key="index"
-          :prop="column.prop"
-          :label="column.label"
-          align="center"
-          show-overflow-tooltip
-        ></el-table-column>
-      </el-table>
-    </el-row>
+    <el-row class="header-row">料號維護</el-row>
+    <el-tabs v-model="activeName">
+      <el-tab-pane label="料號顏色" name="1">
+        <el-row :gutter="10">
+          <el-col :sm="7" :md="5" :lg="3" :xl="2">
+            <span style="line-height: 30px">請填入查詢料號：</span>
+          </el-col>
+          <el-col :sm="8" :md="8" :lg="5">
+            <el-input v-model="input" size="small"></el-input>
+          </el-col>
+          <el-col :sm="8" :md="8" :lg="5">
+            <el-button @click="dataSearch(input)" size="small">搜尋</el-button>
+            <el-button @click="dataClear()" size="small">清除搜索</el-button>
+          </el-col>
+          <el-col :md="24" :lg="11" :xl="12" style="text-align: right;">
+            <el-button size="small" style="margin-right: 10px; position: relative;" @click="addRow">新增</el-button>
+            <a>
+              <el-button size="small" class="upload" plain>選擇檔案</el-button>
+              <input type="file" id="file" ref="file" @change="onChangeFileUpload()" class="change"/>
+            </a>
+            <span v-if="typeof(file) != 'undefined'" class="commit">{{ file.name }}</span>
+            <el-button 
+              size="small" 
+              type="primary"
+              @click="submitForm()" 
+              class="commit"
+              style="margin-left: 5px;"
+              :disabled="typeof(file) == 'undefined'">上傳</el-button>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-table
+            :data="tableData.slice((currentPage-1)*pagesize,currentPage*pagesize)"
+            style="width: 100%"
+            :max-height="650"
+            v-loading="loading"
+          >
+            <el-table-column
+              prop="plastic_part_NO"
+              label="塑膠粒料號"
+              align="center"
+              show-overflow-tooltip
+            >
+              <editable-cell :show-input="row.editMode" slot-scope="{row}" v-model="row.plastic_part_NO">
+                <span slot="content">{{row.plastic_part_NO}}</span>
+              </editable-cell>
+            </el-table-column>
+            <el-table-column
+              prop="plastic_color"
+              label="顏色"
+              align="center"
+              show-overflow-tooltip
+            >
+              <editable-cell 
+                :show-input="row.editMode" 
+                slot-scope="{row}" 
+                editable-component="el-select"
+                v-model="row.plastic_color"
+              >
+                <span slot="content">{{row.plastic_color}}</span>
+                <template slot="edit-component-slot">
+                  <el-option 
+                    v-for="(color,index) in colorlist"
+                    :key="index"
+                    :label="color.label"
+                    :value="color.value"
+                  ></el-option>
+                </template>
+              </editable-cell>
+            </el-table-column>
+            <el-table-column
+              label="操作"
+              align="center"
+            >
+             <template slot-scope="{row, $index}">
+              <el-button
+                size="mini"
+                icon="el-icon-edit"
+                @click="setEditMode(row, $index)">
+              </el-button>
+              <el-button 
+                type="success" 
+                icon="el-icon-check"
+                size="mini"
+                @click="saveRow(row, $index)">
+              </el-button>
+              <el-button 
+                type="info" 
+                icon="el-icon-close"
+                size="mini"
+                @click="cancelEditMode(row, $index)">
+              </el-button>
+             </template>
+            </el-table-column>
+          </el-table>
+          <div>
+            <el-pagination 
+              :hide-on-single-page='true'
+              @size-change="handleSizeChange" 
+              @current-change="handleCurrentChange" 
+              :current-page="currentPage" 
+              :page-sizes="[10,20,50]" 
+              :page-size="pagesize" 
+              layout="total, sizes,prev, pager, next" 
+              :total="tableData.length" 
+              prev-text="上一頁" 
+              next-text="下一頁">
+            </el-pagination>
+          </div>
+        </el-row>
+      </el-tab-pane>
+    </el-tabs>
   </div>
 </template>
 
@@ -40,38 +125,190 @@
   color: #888; 
   font-weight: normal;
 } 
+.el-row {
+  margin-bottom: 5px;
+}
+.upload {
+  position: relative;
+  width: 80px;
+  color: #409EFF;
+}
+.commit {
+  position: relative;
+  /*margin-left: 5px;*/
+  right: 71px;
+}
+.change{
+  position: relative;
+  overflow: hidden;
+  line-height: 32px;
+  right: 80px;
+  top: 13px;
+  width: 80px;
+  opacity: 0;
+}
 </style>
 
 <script>
-  export default {
-    data() {
-      return {
-        columns: [
-          {prop: 'mold_NO', label: "模號"},
-          {prop: 'Honhi_Part_NO', label: "料號"},
-          {prop: 'mold_Serial', label: "複製魔代碼"},
-          {prop: 'mold_hole', label: "模穴數"},
-          {prop: 'machine_ton', label: "噸位"},
-          {prop: 'mold_life', label: "標準壽命"},
-          {prop: 'mold_type', label: "模具類型"},
-          {prop: 'mold_location', label: "所在模倉"},
-          {prop: 'mold_position', label: "儲位"}
-        ],
-        tableData: [
-          {
-            mold_NO: '',
-            Honhi_Part_NO: '',
-            mold_Serial: '',
-            mold_hole: '',
-            machine_ton: '',
-            mold_life: '',
-            mold_type: '',
-            mold_location: '',
-            mold_position: ''
-          }, 
-        ],
-        input: ''
-      }
+import EditableCell from "./EditableCell.vue";
+export default {
+  components: {
+    EditableCell
+  },
+  data() {
+    return {
+      tableData: [],
+      input: '',
+      currentPage: 1, //默认显示页面为1
+      pagesize: 10, //    每页的数据条数
+      activeName: '1',
+      colorlist: [],
+      loading: false,
+      file: undefined
     }
+  },
+  methods: {
+    /* eslint-disable */
+    dataSearch(data) {
+      this.getTableData(data)
+    },
+    dataClear(data) {
+      this.input=''
+      this.getTableData()
+    },
+    handleSizeChange: function(size) {
+      this.pagesize = size;
+    },
+    //点击第几页
+    handleCurrentChange: function(currentPage) {
+      this.currentPage = currentPage;
+    },
+    getTableData(data) {
+      let url=''
+      if (typeof(data) != 'undefined') {
+        url='http://10.124.131.87:8880/data/plasticcolor/?plastic_part_NO='+data
+      }
+      else {
+        url='http://10.124.131.87:8880/data/plasticcolor/'
+      }
+      this.loading=true
+      this.$http.get(url).then((response)=>{
+        this.loading=false
+        this.tableData = response.data.data
+        this.tableData = this.tableData.map(row => {
+          return {
+            ...row,
+            editMode: false
+          };
+        });
+      })
+      // apiMachineColor().then((response)=>{
+      //   this.loading=false
+      //   this.tableData = response.data.data
+      //   this.tableData = this.tableData.map(row => {
+      //     return {
+      //       ...row,
+      //       editMode: false
+      //     };
+      //   });
+      // })
+    },
+    setEditMode(row, index) {
+      row.editMode = true;
+    },
+    cancelEditMode(row, index) {
+      row.editMode = false;
+      this.getTableData();
+    },
+    saveRow(row, index) {
+      // console.log(row)
+      var vm = this
+      const url='http://10.124.131.87:8880/data/plasticcolor/'
+      var bodyFormData = new FormData();
+      bodyFormData.append('plastic_part_NO', row.plastic_part_NO);
+      bodyFormData.append('plastic_color', row.plastic_color);
+      this.$http({
+        method: 'post',
+        url: url,
+        data: bodyFormData,
+        headers: {'Content-Type': 'multipart/form-data' }
+        })
+        .then(function (response) {
+          vm.$message.success('修改成功！');
+          // 修改成功之後 刷新表格
+          this.getTableData();
+          // console.log(response);
+        })
+        .catch(function (error) {
+          let error_code = error.response.status
+          vm.$message.error('修改失敗！ Error Code: ' + error_code);
+        });
+      // apiMachineColorMaintain(bodyFormData)
+      //   .then(function (response) {
+      //     vm.$message.success('修改成功！');
+      //     // console.log(response);
+      //   })
+      //   .catch(function (response) {
+      //     vm.$message.error(response);
+      //     // console.log(response);
+      //   });
+      row.editMode = false;
+    },
+    addRow() {
+      let new_row = {
+        plastic_part_NO: '',
+        plastic_color: '',
+        editMode: true
+      }
+      this.tableData.unshift(new_row)
+    },
+    getColorList() {
+      const url = 'http://10.124.131.87:8880/data/colorlist/'
+      this.$http.get(url).then((response)=>{
+        let data = response.data.color
+        for (let i=0;i<data.length;i++) {
+          this.colorlist.push({
+            value: data[i].toString(),
+            label: data[i].toString()
+          })
+        }
+      }) 
+    },
+    submitForm(){
+      let formData = new FormData();
+      formData.append('file', this.file);
+      this.$http.post('http://10.124.131.87:8880/data/import/plasticcolor/',
+          formData,
+          {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        }
+      ).then((response) => {
+        // console.log(response.data);
+        if (response.status == 200) {
+          // console.log(response.status)
+          this.$message.success('上傳成功！')
+          this.getTableData();
+        }
+        else {
+          this.$message.error(error.response)
+        }
+      })
+      .catch((error) => {
+        this.$message.error('上傳失敗！')
+        // console.log(error.response);
+      });
+    },
+    onChangeFileUpload(){
+      // console.log(this.$refs.file.files[0])
+      this.file = this.$refs.file.files[0];
+    }
+    /* eslint-enable */
+  },
+  mounted() {
+    this.getTableData();
+    this.getColorList();
   }
+}
 </script>
