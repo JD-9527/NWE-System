@@ -112,12 +112,13 @@
             <el-button size="mini" style="margin-right: 5px;" class="upload" plain>選擇檔案</el-button>
             <input type="file" id="file" ref="file" @change="onChangeFileUpload()" class="change"/>
           </a>
-          <span v-if="typeof(file) != 'undefined'">{{ file.name }}</span>
+          <span v-if="typeof(file) != 'undefined'" class="commit">{{ file.name }}</span>
           <el-button 
             size="mini" 
             type="primary"
             @click="submitForm()" 
-            style="margin-left: 5px;" 
+            class="commit"
+            style="margin-left: 5px;"
             :disabled="typeof(file) == 'undefined'">上傳</el-button>
         </el-row>
         <el-row>
@@ -209,7 +210,6 @@
             <el-button type="danger" @click="deleteRow(dialogMessage,dialogMessageRow)" size="small">確認刪除</el-button>
           </span>
         </el-dialog>
-
       </el-tab-pane>
     </el-tabs>  
   </div>
@@ -229,7 +229,15 @@
   margin-bottom: 5px;
 }
 .upload {
+  position: absolute;
+  left: 66px;
+  width: 80px;
   color: #409EFF;
+}
+.commit {
+  position: relative;
+  /*margin-left: 5px;*/
+  left: 86px;
 }
 .change{
   position: absolute;
@@ -263,7 +271,7 @@ export default {
         {prop: 'mold_cttime', label: "前置作業時間"},
       ],
       tableDataCT: [],
-      activeName: '1',  // 默認激活的tab
+      activeName: '2',  // 默認激活的tab
       colorlist: [],
       tonList: [],
       input: '',
