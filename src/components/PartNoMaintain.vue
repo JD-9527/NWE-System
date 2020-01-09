@@ -27,7 +27,11 @@
               @click="submitForm()" 
               class="commit"
               style="margin-left: 5px;"
-              :disabled="typeof(file) == 'undefined'">上傳</el-button>
+              :disabled="typeof(file) == 'undefined'"
+            >上傳</el-button>
+            <!-- <el-col style="text-align: right;" :span="10"> -->
+            <DownloadButton file_type="plasticcolor" class="commit"/>
+          <!-- </el-col> -->
           </el-col>
         </el-row>
         <el-row>
@@ -131,12 +135,13 @@
 .upload {
   position: relative;
   width: 80px;
+  /*right: -80px;*/
   color: #409EFF;
 }
 .commit {
   position: relative;
   /*margin-left: 5px;*/
-  right: 71px;
+  right: 80px;
 }
 .change{
   position: relative;
@@ -151,9 +156,12 @@
 
 <script>
 import EditableCell from "./EditableCell.vue";
+import DownloadButton from "./DownloadButton.vue";
+
 export default {
   components: {
-    EditableCell
+    EditableCell,
+    DownloadButton
   },
   data() {
     return {

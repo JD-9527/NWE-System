@@ -4,6 +4,9 @@
     <el-tabs v-model="activeName">
       <el-tab-pane label="機台基本資料維護" name="1">
         <el-row>
+          <el-col style="text-align: right;" :span="22">
+            <DownloadButton file_type="machineton"/>
+          </el-col>
           <el-table
             :data="tableData.slice((currentPage-1)*pagesize,currentPage*pagesize)"
             style="width: 100%"
@@ -107,19 +110,26 @@
       </el-tab-pane>
       <el-tab-pane label="前置作業時間維護" name="2">
         <el-row>
-          <el-button size="mini" style="margin-right: 10px;" @click="addRow">新增</el-button>
-          <a>
-            <el-button size="mini" style="margin-right: 5px;" class="upload" plain>選擇檔案</el-button>
-            <input type="file" id="file" ref="file" @change="onChangeFileUpload()" class="change"/>
-          </a>
-          <span v-if="typeof(file) != 'undefined'" class="commit">{{ file.name }}</span>
-          <el-button 
-            size="mini" 
-            type="primary"
-            @click="submitForm()" 
-            class="commit"
-            style="margin-left: 5px;"
-            :disabled="typeof(file) == 'undefined'">上傳</el-button>
+          <el-col :span="12">
+            <el-button size="mini" style="margin-right: 10px;" @click="addRow">新增</el-button>
+            <a>
+              <el-button size="mini" style="margin-right: 5px;" class="upload" plain>選擇檔案</el-button>
+              <input type="file" id="file" ref="file" @change="onChangeFileUpload()" class="change"/>
+            </a>
+            <span v-if="typeof(file) != 'undefined'" class="commit">{{ file.name }}</span>
+            <el-button 
+              size="mini" 
+              type="primary"
+              @click="submitForm()" 
+              class="commit"
+              style="margin-left: 5px;"
+              :disabled="typeof(file) == 'undefined'"
+            >上傳
+            </el-button>
+          </el-col>
+          <el-col style="text-align: right;" :span="10">
+            <DownloadButton file_type="tondata"/>
+          </el-col>
         </el-row>
         <el-row>
           <el-table
@@ -252,11 +262,13 @@
 <script>
 import axios from 'axios'
 import EditableCell from "./EditableCell.vue";
+import DownloadButton from "./DownloadButton.vue";
 // import { apiMachineColor } from "../api.js"
 
 export default {
   components: {
-      EditableCell
+      EditableCell,
+      DownloadButton
   },
   data() {
     return {
@@ -271,7 +283,7 @@ export default {
         {prop: 'mold_cttime', label: "前置作業時間"},
       ],
       tableDataCT: [],
-      activeName: '2',  // 默認激活的tab
+      activeName: '1',  // 默認激活的tab
       colorlist: [],
       tonList: [],
       input: '',

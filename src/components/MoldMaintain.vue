@@ -1,6 +1,11 @@
 <template>
   <div>
-    <el-row class="header-row">模具維護<span class="sub-header-row" style="display: flex; align-items: flex-end;">資料查詢</span></el-row>
+    <el-row class="header-row">
+      模具維護
+      <span class="sub-header-row" style="display: flex; align-items: flex-end;">
+        資料查詢
+      </span>
+    </el-row>
     <el-row :gutter="10">
       <el-col :sm="7" :md="5" :lg="3" :xl="2">
         <span style="line-height: 40px">請填入查詢模號：</span>
