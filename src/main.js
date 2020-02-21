@@ -25,6 +25,8 @@ import page404 from './components/404page'
 
 library.add(faDesktop,faSquare,faServer,faAlignCenter)
 
+require('./mock/mock.js')
+
 Vue.prototype.$http = axios;
 // const token = localStorage.getItem('token')
 // if (token) {
