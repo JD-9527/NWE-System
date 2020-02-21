@@ -146,7 +146,6 @@
 
 <script>
 import axios from 'axios'
-// import 'echarts/lib/chart/line'
 import radar from './radar'
 import barLine from './bar_line'
 import bar from './bar'
@@ -175,7 +174,7 @@ let datasetD={
   '待機': 2, 
   '調機': 2,
   '維修': 5,
-  '修模待機': 2,
+  '修模': 2,
   '換模': 5,
   '斷線': 1
 }
@@ -202,8 +201,8 @@ let datasetE=[
   }
 ]
 
-const radar_url='http://10.124.131.87:8880/Overview/machine/state/?line='
-const machine_state='http://10.124.131.87:8880/Overview/machine/statecount/?line='
+const radar_url='http://mockjs/radar/'
+const machine_state='http://mockjs/machine_state/'
 // 改變機台狀態總覽bar顏色
 function changeBarColor(data) {
   let new_data=[]
