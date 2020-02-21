@@ -9,8 +9,8 @@ export default function bar(data) {
     grid:{
       top: '8%',
       bottom: '8%',
-      left: '5.5%',
-      right: '3%',
+      left: '25',
+      right: '1%',
     },
     xAxis: {
       data: data_keys,

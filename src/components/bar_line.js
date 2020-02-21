@@ -18,7 +18,8 @@ export default function bar_line(data) {
     grid:{
       top: '8%',
       bottom: '8%',
-      left: '3%',
+      left: '20',
+      right: '30',
     },
     xAxis: {
       data: data_keys,
