@@ -94,17 +94,44 @@
           </el-col>
         </el-row>
         <el-card style="margin-bottom: 20px;">
-          <mpchart :time_list="time_array"/>
+          <el-radio-group
+            v-model="radio1"
+            size="mini"
+            v-for="radio in radio_list"
+            :key="radio"
+          >
+            <el-radio-button :label="radio"></el-radio-button>
+          </el-radio-group>
+          <mpchart
+            :time_list="time_array"
+            v-show="radio1 == radio_list[0]"
+            :title="'D10 ' + radio_list[0]"
+          />
+          <mpchart
+            :time_list="time_array"
+            v-show="radio1 == radio_list[1]"
+            :title="'D10 ' + radio_list[1]"
+          />
+          <mpchart
+            :time_list="time_array"
+            v-show="radio1 == radio_list[2]"
+            :title="'D10 ' + radio_list[2]"
+          />
+          <mpchart
+            :time_list="time_array"
+            v-show="radio1 == radio_list[3]"
+            :title="'D10 ' + radio_list[3]"
+          />
         </el-card>
         <el-card style="margin-bottom: 20px;">
           <el-row :gutter="20">
-            <div style="font-size: 20px; margin-left: 20px;">線體 總指標分析</div>
+            <div style="font-size: 20px; margin-left: 20px; margin-bottom: 5px;">線體 總指標分析</div>
             <el-col
               :span="6"
               v-for="i in 4"
               :key="i"
             >
-              <abchart/>
+              <abchart :title="analyseTitle[i-1]"/>
             </el-col>
           </el-row>
         </el-card>
@@ -171,7 +198,10 @@ export default {
       class1: 'All',
       start_end: this.getLast7Days(),   //預設回傳今天和往前7天的日期
       value: '',
-      time_array: []            //回傳開始和結束之間的日期(array)
+      time_array: [],            //回傳開始和結束之間的日期(array)
+      analyseTitle: ['A線','B線','C線','D線'],
+      radio1: 'OEE',
+      radio_list: ['OEE','稼動率','效率','良率']
     }
   },
   watch: {

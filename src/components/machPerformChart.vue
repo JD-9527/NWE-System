@@ -1,5 +1,6 @@
 <template>
   <div>
+    <div style="text-align: center;">{{ title }}</div>
     <v-chart
       :options="getOptions()"
       class="chart-box"
@@ -17,20 +18,22 @@
 </style>
 
 <script>
+
 export default {
   props : {
     time_list: Array,
     data: {
       type: Array,
       default: () => [82.0, 93.2, 90.1, 93.4, 29.0, 33.0, 32.0]
-    }
+    },
+    title: String,
   },
   methods: {
     getOptions() {
       return {
         grid: {
           left: '5%',
-          top: '30',
+          top: '40',
           right: '5%',
           bottom: '25'
         },
@@ -64,7 +67,6 @@ export default {
               {
                 name: 'Sta.',
                 yAxis: '80',
-
               },
               {
                 name: 'Avg.',
