@@ -22,6 +22,7 @@ import MoldMaintain from './components/MoldMaintain'
 import MachineMaintain from './components/MachineMaintain'
 import PartNoMaintain from './components/PartNoMaintain'
 import page404 from './components/404page'
+import MachinePerformance from './components/MachinePerformance'
 
 library.add(faDesktop,faSquare,faServer,faAlignCenter)
 
@@ -52,6 +53,17 @@ const routes = [
       { path: '/overview/machine/:line', component: MachineBoard },
       { path: '/overview/plan', component: PlanBoard },
       { path: '/overview/*' , redirect: '/error/404' },
+    ],
+  },
+  { path: '/productStatic', component: Layout,
+    children: [
+      { path: '/productStatic/machinePerform' , component: MachinePerformance },
+      { path: '/productStatic/*' , redirect: '/error/404' },
+    ],
+  },
+  { path: '/productSchedule', component: Layout,
+    children: [
+      { path: '/productSchedule/*' , redirect: '/error/404' },
     ],
   },
   { path: '/maintain', component: Layout,
