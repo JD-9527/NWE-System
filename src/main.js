@@ -23,6 +23,7 @@ import MachineMaintain from './components/MachineMaintain'
 import PartNoMaintain from './components/PartNoMaintain'
 import page404 from './components/404page'
 import MachinePerformance from './components/MachinePerformance'
+import ElectricSavingMachine from './components/ElectricSavingMachine'
 
 library.add(faDesktop,faSquare,faServer,faAlignCenter)
 
@@ -74,6 +75,12 @@ const routes = [
       { path: '/maintain/*' , redirect: '/error/404' },
     ],
   },
+  { path: '/saving', component: Layout,
+    children: [
+      { path: '/saving/machine', component: ElectricSavingMachine },
+      { path: '/saving/*' , redirect: '/error/404' },
+    ],
+  },
   { path: '/error' , component: Layout,
     redirect: '/error/404',
     children: [
@@ -95,10 +102,10 @@ const router = new VueRouter({
 //         next()
 //         return
 //       }
-//       next('/login') 
-//     } 
+//       next('/login')
+//     }
 //     else {
-//       next() 
+//       next()
 //   }
 // });
 

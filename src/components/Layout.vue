@@ -7,8 +7,8 @@
           <img src="../assets/fii.png"  alt="FII" style="padding-top: 7px" />
         </el-col>
         <el-col :span="2">
-          <el-button 
-            icon="el-icon-switch-button" 
+          <el-button
+            icon="el-icon-switch-button"
             @click="logout"
             class="dark-blue-theme"
             type="text"
@@ -67,6 +67,13 @@
             <el-menu-item index="/maintain/machine">機台維護</el-menu-item>
             <el-menu-item index="/maintain/partno">料號維護</el-menu-item>
           </el-submenu>
+          <el-submenu index="5">
+            <template slot="title">
+              <i class="el-icon-s-opportunity"></i>
+              <span slot="title">智能節電</span>
+            </template>
+            <el-menu-item index="/saving/machine">機台看板</el-menu-item>
+          </el-submenu>
         </el-menu>
       </el-aside>
       <el-container>
@@ -102,7 +109,7 @@ export default {
   watch : {
     $route: function () {
       let tmp_path = this.$route.path.split("/")
-      this.activeItem = '/'+tmp_path[1] + '/' + tmp_path[2] 
+      this.activeItem = '/'+tmp_path[1] + '/' + tmp_path[2]
     }
   },
   methods: {
@@ -121,7 +128,7 @@ export default {
     },
     activeTab() {
       let tmp_path = this.$route.path.split("/")
-      this.activeItem = '/'+tmp_path[1] + '/' + tmp_path[2] 
+      this.activeItem = '/'+tmp_path[1] + '/' + tmp_path[2]
     }
   },
   mounted() {
@@ -146,7 +153,7 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   margin-top: 0px;
-  min-height: 768px; 
+  min-height: 768px;
   height: 100%;
 }
 .el-header {
@@ -172,7 +179,7 @@ export default {
   text-align: center;
 }
 .dark-blue-theme {
-  background-color: #123456; 
+  background-color: #123456;
   color: #eee;
 }
 .drawer:not(.el-menu--collapse) {
