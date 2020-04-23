@@ -23,7 +23,11 @@ import MachineMaintain from './components/MachineMaintain'
 import PartNoMaintain from './components/PartNoMaintain'
 import page404 from './components/404page'
 import MachinePerformance from './components/MachinePerformance'
+<<<<<<< HEAD
 import ElectricSavingMachine from './components/ElectricSavingMachine'
+=======
+import PlanPreview from './components/PlanPreview'
+>>>>>>> 248d9e70e3f127815a05ab0b357b020c9220bb0b
 
 library.add(faDesktop,faSquare,faServer,faAlignCenter)
 
@@ -64,6 +68,7 @@ const routes = [
   },
   { path: '/productSchedule', component: Layout,
     children: [
+      { path: '/productSchedule/plan_preview' , component: PlanPreview },
       { path: '/productSchedule/*' , redirect: '/error/404' },
     ],
   },
