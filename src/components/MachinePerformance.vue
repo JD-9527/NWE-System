@@ -207,6 +207,88 @@ export default {
   watch: {
     start_end: function() {
       this.time_array = this.getAllDate(this.start_end)
+    },
+    site1: function() {
+      if (this.site1 == 'D10 - 1F') {
+        this.lines = [
+          {value: 'All'},
+          {value: 'A 線'},
+          {value: 'B 線'},
+          {value: 'C 線'},
+          {value: 'D 線'}
+        ]
+        this.line1 = 'All'
+      }
+      else {
+        this.lines = [
+          {value: 'All'},
+          {value: 'E 線'},
+          {value: 'F 線'},
+          {value: 'G 線'},
+        ]
+        this.line1 = 'All'
+      }
+    },
+    line1: function() {
+      if (this.line1 == 'All') {
+        this.machs = [{ value: 'All' }]
+      }
+      else if (this.line1 == 'A 線') {
+        this.machs = []
+        this.machs.push({value: 'All'})
+        for (let i=0;i<15;i++) {
+          let num = (i+1)<10? '0'+(i+1): (i+1)
+          this.machs.push({ value: 'A'+num })
+        }
+      }
+      else if (this.line1 == 'B 線') {
+        this.machs = []
+        this.machs.push({value: 'All'})
+        for (let i=0;i<14;i++) {
+          let num = (i+1)<10? '0'+(i+1): (i+1)
+          this.machs.push({ value: 'B'+num })
+        }
+      }
+      else if (this.line1 == 'C 線') {
+        this.machs = []
+        this.machs.push({value: 'All'})
+        for (let i=0;i<12;i++) {
+          let num = (i+1)<10? '0'+(i+1): (i+1)
+          this.machs.push({ value: 'C'+num })
+        }
+      }
+      else if (this.line1 == 'D 線') {
+        this.machs = []
+        this.machs.push({value: 'All'})
+        for (let i=0;i<19;i++) {
+          let num = (i+1)<10? '0'+(i+1): (i+1)
+          this.machs.push({ value: 'D'+num })
+        }
+      }
+      else if (this.line1 == 'E 線') {
+        this.machs = []
+        this.machs.push({value: 'All'})
+        for (let i=0;i<21;i++) {
+          let num = (i+1)<10? '0'+(i+1): (i+1)
+          this.machs.push({ value: 'E'+num })
+        }
+      }
+      else if (this.line1 == 'F 線') {
+        this.machs = []
+        this.machs.push({value: 'All'})
+        for (let i=0;i<17;i++) {
+          let num = (i+1)<10? '0'+(i+1): (i+1)
+          this.machs.push({ value: 'F'+num })
+        }
+      }
+      else if (this.line1 == 'G 線') {
+        this.machs = []
+        this.machs.push({value: 'All'})
+        for (let i=0;i<9;i++) {
+          let num = (i+1)<10? '0'+(i+1): (i+1)
+          this.machs.push({ value: 'G'+num })
+        }
+      }
     }
   },
   methods: {
@@ -214,9 +296,7 @@ export default {
     loadSite() {
       return [
         {value: 'D9 - 1F'},
-        {value: 'D9 - 2F'},
         {value: 'D10 - 1F'},
-        {value: 'D10 - 2F'}
       ];
     },
     loadLine() {
@@ -224,15 +304,13 @@ export default {
         {value: 'All'},
         {value: 'A 線'},
         {value: 'B 線'},
-        {value: 'C 線'}
+        {value: 'C 線'},
+        {value: 'D 線'}
       ];
     },
     loadMach() {
       return [
-        {value: 'All'},
-        {value: 'A01'},
-        {value: 'B01'},
-        {value: 'C01'}
+        {value: 'All'}
       ];
     },
     loadClass() {
