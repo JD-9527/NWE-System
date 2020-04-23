@@ -23,6 +23,7 @@ import MachineMaintain from './components/MachineMaintain'
 import PartNoMaintain from './components/PartNoMaintain'
 import page404 from './components/404page'
 import MachinePerformance from './components/MachinePerformance'
+import PlanPreview from './components/PlanPreview'
 
 library.add(faDesktop,faSquare,faServer,faAlignCenter)
 
@@ -63,6 +64,7 @@ const routes = [
   },
   { path: '/productSchedule', component: Layout,
     children: [
+      { path: '/productSchedule/plan_preview' , component: PlanPreview },
       { path: '/productSchedule/*' , redirect: '/error/404' },
     ],
   },
@@ -95,10 +97,10 @@ const router = new VueRouter({
 //         next()
 //         return
 //       }
-//       next('/login') 
-//     } 
+//       next('/login')
+//     }
 //     else {
-//       next() 
+//       next()
 //   }
 // });
 
