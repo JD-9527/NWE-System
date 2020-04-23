@@ -97,6 +97,13 @@
         width="200"
         align="center"
       >
+        <editable-cell
+          :show-input="row.editMode"
+          slot-scope="{row}"
+          v-model="row.part_num"
+        >
+          <span slot="content">{{row.part_num}}</span>
+        </editable-cell>
       </el-table-column>
       <el-table-column
         prop="plastic_num"
@@ -111,6 +118,13 @@
         width="100"
         align="center"
       >
+        <editable-cell
+          :show-input="row.editMode"
+          slot-scope="{row}"
+          v-model="row.count"
+        >
+          <span slot="content">{{row.count}}</span>
+        </editable-cell>
       </el-table-column>
       <el-table-column
         prop="mold_num"
@@ -154,6 +168,32 @@
         align="center"
       >
       </el-table-column>
+      <el-table-column
+        label="操作"
+        align="center"
+        fixed="right"
+        width="180"
+      >
+       <template slot-scope="{row, index}">
+        <el-button
+          size="mini"
+          icon="el-icon-edit"
+          @click="setEditMode(row, index)">
+        </el-button>
+        <el-button
+          type="success"
+          icon="el-icon-check"
+          size="mini"
+          @click="saveRow(row, index)">
+        </el-button>
+        <el-button
+          type="info"
+          icon="el-icon-close"
+          size="mini"
+          @click="cancelEditMode(row, index)">
+        </el-button>
+       </template>
+      </el-table-column>
     </el-table>
   </div>
 </template>
@@ -166,7 +206,12 @@
 </style>
 
 <script>
+import EditableCell from "./EditableCell.vue";
+
 export default {
+  components: {
+      EditableCell,
+  },
   data: () => ({
     sites: [
       { value: 'D9 - 1F' },
@@ -192,6 +237,7 @@ export default {
     }
   },
   methods: {
+    /* eslint-disable */
     loadLine(site) {
       if (site == 'D9 - 1F') {
         return [
@@ -233,8 +279,30 @@ export default {
           uph: '306'
         })
       }
+      newTable = newTable.map(row => {
+        return {
+          ...row,
+          editMode: false
+        };
+      });
       return newTable
-    }
+    },
+    saveRow(row, index) {
+      row.editMode = false;
+    },
+    cancelEditMode(row, index) {
+      row.editMode = false;
+      // this.getTableData();
+    },
+    setEditMode(row, index) {
+      row.editMode = true;
+    },
+    cancelEditMode(row, index) {
+      row.editMode = false;
+      // this.getTableData();
+      // this.getTableDataCT();
+    },
+    /* eslint-enable */
   },
   mounted() {
     this.lines = this.loadLine()
