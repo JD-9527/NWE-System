@@ -53,7 +53,7 @@
               <i class="el-icon-date"></i>
               <span slot="title">生產排程</span>
             </template>
-            <el-menu-item index="/productSchedule/3-1">資料輸入</el-menu-item>
+            <el-menu-item index="/productSchedule/data_key_in">資料輸入</el-menu-item>
             <el-menu-item index="/productSchedule/plan_preview">計畫預覽</el-menu-item>
             <el-menu-item index="/productSchedule/work_order_plan">工單計畫</el-menu-item>
             <el-menu-item index="/productSchedule/3-4">其他查詢</el-menu-item>
