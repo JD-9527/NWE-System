@@ -24,6 +24,7 @@ import PartNoMaintain from './components/PartNoMaintain'
 import page404 from './components/404page'
 import MachinePerformance from './components/MachinePerformance'
 import PlanPreview from './components/PlanPreview'
+import WorkOrderPlan from './components/WorkOrderPlan'
 
 library.add(faDesktop,faSquare,faServer,faAlignCenter)
 
@@ -65,6 +66,7 @@ const routes = [
   { path: '/productSchedule', component: Layout,
     children: [
       { path: '/productSchedule/plan_preview' , component: PlanPreview },
+      { path: '/productSchedule/work_order_plan' , component: WorkOrderPlan },
       { path: '/productSchedule/*' , redirect: '/error/404' },
     ],
   },

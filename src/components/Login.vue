@@ -5,9 +5,9 @@
     </el-header>
     <el-main>
       <div>
-        <el-row 
-          type="flex" 
-          justify="center" 
+        <el-row
+          type="flex"
+          justify="center"
           align="middle"
           style="height: 85vh;"
         >
@@ -29,7 +29,7 @@
               </el-row>
               <div style="display: inline; text-align: center;">
                 <div>
-                  <el-button 
+                  <el-button
                     style="background-color: #123456; color: #eee;"
                     @click="login"
                   >Login</el-button>
@@ -38,6 +38,10 @@
               </div>
             </el-card>
           </el-col>
+          <!-- <div style="position: absolute; bottom: 15%; color: #f2f2f2; text-align: center;">
+            <strong>Username: nwe<br/>
+            Password: foxconn88</strong>
+          </div> -->
         </el-row>
       </div>
     </el-main>
@@ -52,8 +56,8 @@
 export default {
   data () {
     return {
-      userName: '',
-      password: '',
+      userName: 'nwe',
+      password: 'foxconn88',
     }
   },
   methods: {

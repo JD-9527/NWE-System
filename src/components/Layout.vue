@@ -55,7 +55,7 @@
             </template>
             <el-menu-item index="/productSchedule/3-1">資料輸入</el-menu-item>
             <el-menu-item index="/productSchedule/plan_preview">計畫預覽</el-menu-item>
-            <el-menu-item index="/productSchedule/3-3">工單計畫</el-menu-item>
+            <el-menu-item index="/productSchedule/work_order_plan">工單計畫</el-menu-item>
             <el-menu-item index="/productSchedule/3-4">其他查詢</el-menu-item>
           </el-submenu>
           <el-submenu index="4">
