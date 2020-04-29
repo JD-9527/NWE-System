@@ -869,6 +869,14 @@
     call-me-maybe "^1.0.1"
     glob-to-regexp "^0.3.0"
 
+"@neuronet.io/vido@^2.5.11":
+  version "2.6.22"
+  resolved "https://registry.yarnpkg.com/@neuronet.io/vido/-/vido-2.6.22.tgz#f124dc6919b98c008d19a664a4c7dd3dc7280cb5"
+  integrity sha512-VUz4BkrtjoZ9ASqo5hSE8rQasFw58fpl9dX8A9qieWopWBTvKPHgYKGZCoJ6s4dVeJdiItlWcAf9VZsMPOQB7Q==
+  dependencies:
+    csstype "^2.6.10"
+    lit-html-optimised "^1.1.7"
+
 "@nodelib/fs.stat@^1.1.2":
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/@nodelib/fs.stat/-/fs.stat-1.1.3.tgz#2b5a3ab3f918cca48a8c754c08168e3f03eba61b"
@@ -2538,7 +2546,7 @@ core-js@^2.4.0:
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.6.11.tgz#38831469f9922bded8ee21c9dc46985e0399308c"
   integrity sha512-5wjnpaT/3dV+XB4borEsnAYQchn00XSgTAWKDkEqv+K8KevjbzmofK6hfJ9TZIlpj2N0xQpazy7PiRQiWHqzWg==
 
-core-js@^3.4.3, core-js@^3.6.4:
+core-js@^3.4.3, core-js@^3.4.4, core-js@^3.6.4:
   version "3.6.5"
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.6.5.tgz#7395dc273af37fb2e50e9bd3d9fe841285231d1a"
   integrity sha512-vZVEEwZoIsI+vPEuoF9Iqf5H7/M3eeQqWlQnYa8FSKKePuYTf5MWnxb5SDAzCa60b3JBRS5g9b+Dq7b1y/RCrA==
@@ -2806,6 +2814,11 @@ csso@^4.0.2:
   dependencies:
     css-tree "1.0.0-alpha.39"
 
+csstype@^2.6.10:
+  version "2.6.10"
+  resolved "https://registry.yarnpkg.com/csstype/-/csstype-2.6.10.tgz#e63af50e66d7c266edb6b32909cfd0aabe03928b"
+  integrity sha512-D34BqZU4cIlMCY93rZHbrq9pjTAQJ3U8S8rfBqjwHxkGPThWFjzZDQpgMJY0QViLxth6ZKYiwFBo14RdN44U/w==
+
 currently-unhandled@^0.4.1:
   version "0.4.1"
   resolved "https://registry.yarnpkg.com/currently-unhandled/-/currently-unhandled-0.4.1.tgz#988df33feab191ef799a61369dd76c17adf957ea"
@@ -2824,6 +2837,11 @@ dashdash@^1.12.0:
   integrity sha1-hTz6D3y+L+1d4gMmuN1YEDX24vA=
   dependencies:
     assert-plus "^1.0.0"
+
+dayjs@^1.8.17:
+  version "1.8.25"
+  resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.8.25.tgz#d09a8696cee7191bc1289e739f96626391b9c73c"
+  integrity sha512-Pk36juDfQQGDCgr0Lqd1kw15w3OS6xt21JaLPE3lCfsEf8KrERGwDNwvK1tRjrjqFC0uZBJncT4smZQ4F+uV5g==
 
 de-indent@^1.0.2:
   version "1.0.2"
@@ -2884,6 +2902,11 @@ deep-is@~0.1.3:
   version "0.1.3"
   resolved "https://registry.yarnpkg.com/deep-is/-/deep-is-0.1.3.tgz#b369d6fb5dbc13eecf524f91b070feedc357cf34"
   integrity sha1-s2nW+128E+7PUk+RsHD+7cNXzzQ=
+
+deep-state-observer@^3.3.0:
+  version "3.14.3"
+  resolved "https://registry.yarnpkg.com/deep-state-observer/-/deep-state-observer-3.14.3.tgz#eef4f8c275942d5ed196a38fe597d7dbae25e614"
+  integrity sha512-wJhDe0u2yEaMI8ISe1griHBJ+dYoSkIzldG4W4F2qq8WdeEd2qg9fNOqzNoZvdQbg/VlP5sI6FOs6nS66cggpA==
 
 deepmerge@^1.2.0, deepmerge@^1.5.2:
   version "1.5.2"
@@ -3928,6 +3951,16 @@ functional-red-black-tree@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/functional-red-black-tree/-/functional-red-black-tree-1.0.1.tgz#1b0ab3bd553b2a0d6399d29c0e3ea0b252078327"
   integrity sha1-GwqzvVU7Kg1jmdKcDj6gslIHgyc=
+
+gantt-schedule-timeline-calendar@^2.6.8:
+  version "2.6.8"
+  resolved "https://registry.yarnpkg.com/gantt-schedule-timeline-calendar/-/gantt-schedule-timeline-calendar-2.6.8.tgz#95ed0a9dbd910a6da5c432ee3f8e4b35f8cb5c1a"
+  integrity sha512-+PdMlCh9B96PnI5WmPP36A4mxFA3jXXiyzKnvTxaqwX/edYknd6hvRmhZXVwPKPc8BEqtuGOQ9itSMD6mK2R4Q==
+  dependencies:
+    "@neuronet.io/vido" "^2.5.11"
+    dayjs "^1.8.17"
+    deep-state-observer "^3.3.0"
+    resize-observer-polyfill "^1.5.1"
 
 gauge@~2.7.3:
   version "2.7.4"
@@ -5156,6 +5189,11 @@ lines-and-columns@^1.1.6:
   version "1.1.6"
   resolved "https://registry.yarnpkg.com/lines-and-columns/-/lines-and-columns-1.1.6.tgz#1c00c743b433cd0a4e80758f7b64a57440d9ff00"
   integrity sha1-HADHQ7QzzQpOgHWPe2SldEDZ/wA=
+
+lit-html-optimised@^1.1.7:
+  version "1.1.7"
+  resolved "https://registry.yarnpkg.com/lit-html-optimised/-/lit-html-optimised-1.1.7.tgz#c41d7b04c325405daec8c856d18dc8462076ded9"
+  integrity sha512-BqXw2hHoalBV8nXUdqH4aHREiFhpprvnU8h/qL1H1/8XTCFdksUjAwJd0TZ9uJTyg8EKVfVHcgA5UxahS3Mk6Q==
 
 load-json-file@^1.0.0:
   version "1.1.0"
@@ -7237,7 +7275,7 @@ resize-detector@^0.1.10:
   resolved "https://registry.yarnpkg.com/resize-detector/-/resize-detector-0.1.10.tgz#1da3f961aa5f914ccbcfd3752d52fd45beeb692c"
   integrity sha512-iLcXC8A6Fb0DfA+TRiywrK/0A22bFqkhntjMJMEzXDA4XkcEkfwpNbv7W8iewUiD0xYIaeiXOfiEehTqGKsUFw==
 
-resize-observer-polyfill@^1.5.0:
+resize-observer-polyfill@^1.5.0, resize-observer-polyfill@^1.5.1:
   version "1.5.1"
   resolved "https://registry.yarnpkg.com/resize-observer-polyfill/-/resize-observer-polyfill-1.5.1.tgz#0e9020dd3d21024458d4ebd27e23e40269810464"
   integrity sha512-LwZrotdHOo12nQuZlHEmtuXdqGoOD0OhaxopaNFxWzInpEgaLWoVuAMbTzixuosCx2nEG58ngzW3vxdWoxIgdg==
@@ -8593,6 +8631,15 @@ vue-eslint-parser@^5.0.0:
     espree "^4.1.0"
     esquery "^1.0.1"
     lodash "^4.17.11"
+
+vue-gantt-schedule-timeline-calendar@^1.0.33:
+  version "1.0.33"
+  resolved "https://registry.yarnpkg.com/vue-gantt-schedule-timeline-calendar/-/vue-gantt-schedule-timeline-calendar-1.0.33.tgz#fdd4c93add062b7f19be746c41ba491fc9e4f8ca"
+  integrity sha512-a3OVCaZXXFqvVL3yD0F97IGAk6NIiMSwgUiqVmhUGcT4MzWyA9rCQdcqqPA33ZqiZn61mkJ9xWrRe7aYt0zhQA==
+  dependencies:
+    core-js "^3.4.4"
+    gantt-schedule-timeline-calendar "^2.6.8"
+    vue "^2.6.10"
 
 vue-hot-reload-api@^2.3.0:
   version "2.3.4"
