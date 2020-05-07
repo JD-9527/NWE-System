@@ -7,9 +7,9 @@ export default function bar(data) {
 
     },
     grid:{
-      top: '8%',
+      top: '20',
       bottom: '8%',
-      left: '5.5%',
+      left: '25',
       right: '3%',
     },
     xAxis: {

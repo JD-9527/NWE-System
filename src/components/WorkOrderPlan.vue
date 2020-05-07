@@ -56,6 +56,49 @@
             :name="(index+1).toString()"
           >
             <WOTable :name="line"/>
+            <el-card style="width: 100%; margin: 10px 0;">
+              <div slot="header" class="message">
+                <span>工單詳情</span>
+              </div>
+              <el-row style="margin: 0;">
+                <el-col :span="12">
+                  <div style="margin-bottom: 10px;">
+                    <div class="message-subtitle">生產數量（件）</div>
+                    <div style="padding-right: 20px;">
+                      <div class="progress-bar" style="text-align: right; width: 100%;">28,400/40,000</div>
+                      <el-progress
+                        :percentage="28/40*100"
+                        :stroke-width="20"
+                        :show-text='false'
+                        color="#17ba6a"
+                      ></el-progress>
+                    </div>
+                  </div>
+                  <div style="display: inline-block; width: 33%;">
+                    <div class="message-subtitle">客戶名稱</div>
+                    <div class="message">Cisco</div>
+                  </div>
+                  <div style="display: inline-block; width: 33%;">
+                    <div class="message-subtitle">工單負責人</div>
+                    <div class="message">小兵</div>
+                  </div>
+                  <div style="display: inline-block; width: 33%;">
+                    <div class="message-subtitle">工單號</div>
+                    <div class="message">6110394</div>
+                  </div>
+                </el-col>
+                <el-col :span="12" style="height: 105px;">
+                  <div class="message-subtitle">工單生產紀錄</div>
+                  <div style="padding: 20px 10px;">
+                    <div style=" background: #ddd; height: 20px; border-radius: 5px;">
+                      <div class="progress-bar color-green" style="width:30%">1</div>
+                      <div class="progress-bar color-yellow" style="width:30%">2</div>
+                      <div class="progress-bar color-red" style="width:30%">3</div>
+                    </div>
+                  </div>
+                </el-col>
+              </el-row>
+            </el-card>
           </el-tab-pane>
         </el-tabs>
       </el-tab-pane>
@@ -93,6 +136,12 @@
   color:#bcffc6;
   background: #bcffc6;
   border: 1px #000 solid;
+}
+.progress-bar {
+  display: inline-block;
+  border-radius: 5px;
+  height: 20px;
+  text-align: center;
 }
 </style>
 

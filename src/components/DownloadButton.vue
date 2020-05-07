@@ -1,8 +1,8 @@
 <template>
-	<el-button 
-    icon="el-icon-download" 
-    @click="downloadData()" 
-    type="primary" 
+	<el-button
+    icon="el-icon-download"
+    @click="downloadData()"
+    type="primary"
     round
     plain
     size="small"
@@ -10,6 +10,7 @@
 </template>
 
 <script>
+import {dataFileDownload} from '../api.js'
 export default {
   props: {
     file_type: {
@@ -19,13 +20,13 @@ export default {
   },
   methods: {
     downloadData() {
-      const url='http://10.124.131.87:8880/data/filedown/?filetype='+this.file_type
-      this.$http({
-        method:'get',
-        url:url,
-        responseType:'blob',
-      })
-      .then((response) => {
+      // const url='http://10.124.131.87:8880/data/filedown/?filetype='+this.file_type
+      // this.$http({
+      //   method:'get',
+      //   url:url,
+      //   responseType:'blob',
+      // })
+      dataFileDownload(this.file_type).then((response) => {
         if (!response) {
           return
         }
@@ -34,7 +35,7 @@ export default {
         let link = document.createElement('a')
         link.style.display = 'none'
         link.href = url
-        link.setAttribute('download', 'example.xlsx')
+        link.setAttribute('download', this.file_type+'_example.xlsx')
         document.body.appendChild(link)
         link.click()
       })

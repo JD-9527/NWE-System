@@ -1,32 +1,32 @@
 <template>
   <div>
-    <el-row 
+    <el-row
       class="header-row"
-      type="flex" 
+      type="flex"
       align="middle"
     >
       <el-col :span="8">
         NWE {{ $route.params.line }}機台狀態看板
       </el-col>
       <el-col :span="13" :push="2">
-        <el-row 
-          type="flex" 
+        <el-row
+          type="flex"
           align="bottom"
           justify="end"
         >
-          <el-col 
+          <el-col
             :span="4"
             v-for="legend in legends"
             :key="legend.name"
           >
-            <el-button 
-              type="text" 
-              :style="statusToColor(legend)" 
+            <el-button
+              type="text"
+              :style="statusToColor(legend)"
               class="legend"
               @click="legendClick(legend.status)"
             >
-              <font-awesome-icon 
-                :icon="['fas','square']" 
+              <font-awesome-icon
+                :icon="['fas','square']"
               ></font-awesome-icon>
               <span style="color: #333">{{ legend.name }}</span>
             </el-button>
@@ -34,28 +34,28 @@
          </el-row>
       </el-col>
     </el-row>
-    <el-row 
+    <el-row
       :gutter="20"
-      type="flex" 
+      type="flex"
     >
-      <el-col 
-        v-for="machine in machines" 
+      <el-col
+        v-for="machine in machines"
         :key="machine.name"
         :span="1"
       >
         <el-badge value="!" :hidden="!machine.show">
-          <el-button 
-            type="text" 
+          <el-button
+            type="text"
             @click="onClick(machine)"
           >
-            <el-card 
-              class="item" 
-              shadow="never" 
+            <el-card
+              class="item"
+              shadow="never"
               :style="statusToColor(machine)"
               :body-style="{ padding: '0' }"
             >
-              <font-awesome-icon 
-                :icon="['fas','server']" 
+              <font-awesome-icon
+                :icon="['fas','server']"
                 size="3x"
               ></font-awesome-icon>
               <div style="font-size: 24px; color: #333;">{{ machine.name }}</div>
@@ -64,28 +64,28 @@
         </el-badge>
       </el-col>
     </el-row>
-    <el-row 
+    <el-row
       :gutter="20"
-      type="flex" 
+      type="flex"
     >
-      <el-col 
-        v-for="machine in machinesB" 
+      <el-col
+        v-for="machine in machinesB"
         :key="machine.name"
         :span="1"
       >
         <el-badge value="!" :hidden="!machine.show">
-          <el-button 
-            type="text" 
+          <el-button
+            type="text"
             @click="onClick(machine)"
           >
-            <el-card 
-              class="item" 
-              shadow="never" 
+            <el-card
+              class="item"
+              shadow="never"
               :style="statusToColor(machine)"
               :body-style="{ padding: '0' }"
             >
-              <font-awesome-icon 
-                :icon="['fas','server']" 
+              <font-awesome-icon
+                :icon="['fas','server']"
                 size="3x"
               ></font-awesome-icon>
               <div style="font-size: 24px; color: #333;">{{ machine.name }}</div>
@@ -94,28 +94,28 @@
         </el-badge>
       </el-col>
     </el-row>
-    <el-row 
+    <el-row
       :gutter="20"
-      type="flex" 
+      type="flex"
     >
-      <el-col 
-        v-for="machine in machinesC" 
+      <el-col
+        v-for="machine in machinesC"
         :key="machine.name"
         :span="1"
       >
         <el-badge value="!" :hidden="!machine.show">
-          <el-button 
-            type="text" 
+          <el-button
+            type="text"
             @click="onClick(machine)"
           >
-            <el-card 
-              class="item" 
-              shadow="never" 
+            <el-card
+              class="item"
+              shadow="never"
               :style="statusToColor(machine)"
               :body-style="{ padding: '0' }"
             >
-              <font-awesome-icon 
-                :icon="['fas','server']" 
+              <font-awesome-icon
+                :icon="['fas','server']"
                 size="3x"
               ></font-awesome-icon>
               <div style="font-size: 24px; color: #333;">{{ machine.name }}</div>
@@ -124,29 +124,29 @@
         </el-badge>
       </el-col>
     </el-row>
-    <el-row 
+    <el-row
       :gutter="20"
-      type="flex" 
+      type="flex"
       v-if="$route.params.line == 'D10'"
     >
-      <el-col 
-        v-for="machine in machinesD" 
+      <el-col
+        v-for="machine in machinesD"
         :key="machine.name"
         :span="1"
       >
         <el-badge value="!" :hidden="!machine.show">
-          <el-button 
-            type="text" 
+          <el-button
+            type="text"
             @click="onClick(machine)"
           >
-            <el-card 
-              class="item" 
-              shadow="never" 
+            <el-card
+              class="item"
+              shadow="never"
               :style="statusToColor(machine)"
               :body-style="{ padding: '0' }"
             >
-              <font-awesome-icon 
-                :icon="['fas','server']" 
+              <font-awesome-icon
+                :icon="['fas','server']"
                 size="3x"
               ></font-awesome-icon>
               <div style="font-size: 24px; color: #333;">{{ machine.name }}</div>
@@ -173,7 +173,7 @@
                   狀態
                 </div>
                 <div>
-                  調機 
+                  調機
                 </div>
               </el-col>
               <el-col :span="4">
@@ -181,19 +181,19 @@
                   負責人
                 </div>
                 <div>
-                  小賀 
+                  小賀
                 </div>
               </el-col>
               <el-col :span="16">
                 <el-row class="progress-bar-text">
-                  <el-col 
+                  <el-col
                     v-for="detail in new_machine_message"
                     :key="detail.status"
                     :style="'width: '+ detail.percent.toString() + '%;'"
                   >
                     <span>{{ detail.status }}</span>
-                    <div 
-                      :class="'grid-content '+ progressColor(detail.status)" 
+                    <div
+                      :class="'grid-content '+ progressColor(detail.status)"
                       style="font-weight: bold"
                     >
                       <span>{{ detail.value }}</span>
@@ -216,7 +216,7 @@
                   工單編號
                 </div>
                 <div>
-                  {{ now_work_order.no }} 
+                  {{ now_work_order.no }}
                 </div>
               </el-col>
               <el-col :span="5">
@@ -224,7 +224,7 @@
                   工單負責人
                 </div>
                 <div>
-                  {{ now_work_order.owner }} 
+                  {{ now_work_order.owner }}
                 </div>
               </el-col>
               <el-col :span="5">
@@ -232,7 +232,7 @@
                   模具編號
                 </div>
                 <div>
-                  {{ now_work_order.mod_no }} 
+                  {{ now_work_order.mod_no }}
                 </div>
               </el-col>
               <el-col :span="9">
@@ -240,7 +240,7 @@
                   料號
                 </div>
                 <div>
-                  {{ now_work_order.part_no }} 
+                  {{ now_work_order.part_no }}
                 </div>
               </el-col>
             </el-row>
@@ -250,7 +250,7 @@
                   實際開始時間
                 </div>
                 <div>
-                  {{ now_work_order.start_time }} 
+                  {{ now_work_order.start_time }}
                 </div>
               </el-col>
               <el-col :span="14">
@@ -258,7 +258,7 @@
                   計畫完成時間
                 </div>
                 <div>
-                  {{ now_work_order.end_time }} 
+                  {{ now_work_order.end_time }}
                 </div>
               </el-col>
             </el-row>
@@ -287,7 +287,7 @@
                         預計
                       </div>
                       <div class="message">
-                        {{ produce_message.produce_status.expect }} 
+                        {{ produce_message.produce_status.expect }}
                       </div>
                     </el-col>
                     <el-col :span="6">
@@ -295,7 +295,7 @@
                         實際
                       </div>
                       <div class="message">
-                        {{ produce_message.produce_status.real }}  
+                        {{ produce_message.produce_status.real }}
                       </div>
                     </el-col>
                     <el-col :span="4">
@@ -303,7 +303,7 @@
                         良品
                       </div>
                       <div class="message">
-                        {{ produce_message.produce_status.good }}  
+                        {{ produce_message.produce_status.good }}
                       </div>
                     </el-col>
                     <el-col :span="4">
@@ -311,7 +311,7 @@
                         不良品
                       </div>
                       <div class="message">
-                        {{ produce_message.produce_status.bad }}  
+                        {{ produce_message.produce_status.bad }}
                       </div>
                     </el-col>
                     <el-col :span="4">
@@ -319,7 +319,7 @@
                         調機損耗
                       </div>
                       <div class="message">
-                        {{ produce_message.produce_status.fix }}  
+                        {{ produce_message.produce_status.fix }}
                       </div>
                     </el-col>
                   </el-row>
@@ -381,13 +381,13 @@
 .item {
   /*font-size: 36px; */
   border-color: #fff;
-  border-width: 2px; 
+  border-width: 2px;
   padding: 0;
 }
 .item:hover {
   /*font-size: 36px; */
   border-color: #123456;
-  border-width: 2px; 
+  border-width: 2px;
   padding: 0;
 }
 .message {
@@ -402,7 +402,7 @@
   min-height: 18px;
 }
 .progress-bar-text {
-  display: inline; 
+  display: inline;
   text-align: center;
   font-weight: normal;
   font-size: 14px;
@@ -413,20 +413,6 @@
   color: #888;
   /*padding: 10px 20px 0;*/
 }
-/*[data-tooltip]:before {            
-    position : absolute;
-     content : attr(data-tooltip);
-     opacity : 0;
-}
-[data-tooltip]:hover:before {        
-    opacity : 0.8;
-    transform: translate(-20px,-25px);
-    color: #ddd;
-    font-weight: bold;
-    background-color: #111;
-    border-radius: 4px;
-    padding: 5px 10px;
-}*/
 .message-row {
   font-size: 20px;
   font-weight:bold;
@@ -439,39 +425,6 @@
 }
 .legend {
   font-size: 16px;
-}
-.color-green {
-  background-color: #17ba6a;
-  color: #000;
-}
-.color-yellow {
-  background-color: #f7e31d;
-  color: #000;
-}
-.color-orange {
-  background-color: #f7921d;
-  color: #000;
-}
-.color-red {
-  background-color: #F50000;
-  color: #000;
-}
-.color-blue {
-  background-color: #3030FF;
-  color: #000;
-}
-.color-purple {
-  background-color: #990DFF;
-  color: #000;
-}
-.color-grey {
-  background-color: #909399;
-  color: #000;
-}
-.color-none {
-  background-color: #fff;
-  color: #000;
-  font-size: 14px;
 }
 </style>
 
@@ -616,7 +569,7 @@ export default {
       }
       else if (data == '維修') {
         return 'color-red'
-      } 
+      }
       else if (data == '調機') {
         return 'color-orange'
       }

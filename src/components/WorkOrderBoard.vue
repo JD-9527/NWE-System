@@ -2,7 +2,7 @@
   <div>
     <el-row
       class="header-row"
-      type="flex" 
+      type="flex"
       align="middle"
     >
       NWE D10 工單看板
@@ -121,7 +121,7 @@ let data_detail = {
   fix_delay: 5,
   // 換模延遲
   change_delay: 5
-} 
+}
 export default {
   components : {
     Table
@@ -217,17 +217,6 @@ export default {
 };
 </script>
 
-<style>
-.el-table .warning-row {
-  background: #FFDEDE;
-  /*color: #000;*/
-},
-.el-table .error-row {
-  background: #FFDEDE;
-  /*color: #000;*/
-}
-</style>
-
 <style scoped>
 .header {
   font-size: 20px;
@@ -235,15 +224,5 @@ export default {
 }
 .el-card >>> .el-card__header {
   padding: 10px 20px;
-}
-.message {
-font-size: 18px;
-font-weight: bold;
-color: #333;
-}
-.message-subtitle {
-  font-size: 14px;
-  margin-bottom: 5px;
-  color: #888;
 }
 </style>
