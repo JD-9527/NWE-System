@@ -21,10 +21,10 @@
               <input type="file" id="file" ref="file" @change="onChangeFileUpload()" class="change"/>
             </a>
             <span v-if="typeof(file) != 'undefined'" class="commit">{{ file.name }}</span>
-            <el-button 
-              size="small" 
+            <el-button
+              size="small"
               type="primary"
-              @click="submitForm()" 
+              @click="submitForm()"
               class="commit"
               style="margin-left: 5px;"
               :disabled="typeof(file) == 'undefined'"
@@ -57,15 +57,15 @@
               align="center"
               show-overflow-tooltip
             >
-              <editable-cell 
-                :show-input="row.editMode" 
-                slot-scope="{row}" 
+              <editable-cell
+                :show-input="row.editMode"
+                slot-scope="{row}"
                 editable-component="el-select"
                 v-model="row.plastic_color"
               >
                 <span slot="content">{{row.plastic_color}}</span>
                 <template slot="edit-component-slot">
-                  <el-option 
+                  <el-option
                     v-for="(color,index) in colorlist"
                     :key="index"
                     :label="color.label"
@@ -84,14 +84,14 @@
                 icon="el-icon-edit"
                 @click="setEditMode(row, $index)">
               </el-button>
-              <el-button 
-                type="success" 
+              <el-button
+                type="success"
                 icon="el-icon-check"
                 size="mini"
                 @click="saveRow(row, $index)">
               </el-button>
-              <el-button 
-                type="info" 
+              <el-button
+                type="info"
                 icon="el-icon-close"
                 size="mini"
                 @click="cancelEditMode(row, $index)">
@@ -100,16 +100,16 @@
             </el-table-column>
           </el-table>
           <div>
-            <el-pagination 
+            <el-pagination
               :hide-on-single-page='true'
-              @size-change="handleSizeChange" 
-              @current-change="handleCurrentChange" 
-              :current-page="currentPage" 
-              :page-sizes="[10,20,50]" 
-              :page-size="pagesize" 
-              layout="total, sizes,prev, pager, next" 
-              :total="tableData.length" 
-              prev-text="上一頁" 
+              @size-change="handleSizeChange"
+              @current-change="handleCurrentChange"
+              :current-page="currentPage"
+              :page-sizes="[10,20,50]"
+              :page-size="pagesize"
+              layout="total, sizes,prev, pager, next"
+              :total="tableData.length"
+              prev-text="上一頁"
               next-text="下一頁">
             </el-pagination>
           </div>
@@ -120,15 +120,6 @@
 </template>
 
 <style scoped>
-.header-row {
-  font-size: 32px;
-  font-weight:bold;
-} 
-.sub-header-row {
-  font-size: 20px; 
-  color: #888; 
-  font-weight: normal;
-} 
 .el-row {
   margin-bottom: 5px;
 }
@@ -280,7 +271,7 @@ export default {
             label: data[i].toString()
           })
         }
-      }) 
+      })
     },
     submitForm(){
       let formData = new FormData();

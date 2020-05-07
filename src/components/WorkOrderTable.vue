@@ -3,6 +3,7 @@
     <el-table
       :data="tableData"
       style="width: 100%"
+      height="578"
       :row-class-name="tableRowClassName"
     >
       <el-table-column
@@ -60,13 +61,13 @@
         width="200"
         align="center"
       >
-        <editable-cell
-          :show-input="row.editMode"
-          slot-scope="{row}"
-          v-model="row.part_num"
-        >
-          <span slot="content">{{row.part_num}}</span>
-        </editable-cell>
+      </el-table-column>
+      <el-table-column
+        prop="work_num"
+        label="工令號"
+        width="100"
+        align="center"
+      >
       </el-table-column>
       <el-table-column
         prop="plastic_num"
@@ -175,20 +176,6 @@
 }
 </style>
 
-<style>
-.el-table .warning-row {
-  background: #ffc8ca;
-}
-
-.el-table .success-row {
-  background: #bcffc6;
-}
-
-.el-table .safe-row {
-  background: #cbd2ff;
-}
-</style>
-
 <script>
 import EditableCell from "./EditableCell.vue";
 
@@ -256,6 +243,7 @@ export default {
           end_time: '14:00',
           name: '支架',
           part_num: '700-30985-01WA',
+          work_num: '6110394',
           plastic_num: '8M460-002E',
           count: '513',
           mold_num: 'NP10713',

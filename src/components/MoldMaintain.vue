@@ -34,34 +34,22 @@
         ></el-table-column>
       </el-table>
       <div>
-        <el-pagination 
+        <el-pagination
           :hide-on-single-page='true'
-          @size-change="handleSizeChange" 
-          @current-change="handleCurrentChange" 
-          :current-page="currentPage" 
-          :page-sizes="[10,20,50]" 
-          :page-size="pagesize" 
-          layout="total, sizes,prev, pager, next" 
-          :total="tableData.length" 
-          prev-text="上一頁" 
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="currentPage"
+          :page-sizes="[10,20,50]"
+          :page-size="pagesize"
+          layout="total, sizes,prev, pager, next"
+          :total="tableData.length"
+          prev-text="上一頁"
           next-text="下一頁">
         </el-pagination>
       </div>
     </el-row>
   </div>
 </template>
-
-<style scoped>
-.header-row {
-  font-size: 32px;
-  font-weight:bold;
-} 
-.sub-header-row {
-  font-size: 20px; 
-  color: #888; 
-  font-weight: normal;
-} 
-</style>
 
 <script>
   import axios from 'axios'

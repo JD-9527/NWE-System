@@ -5,6 +5,7 @@ import ElementUI from 'element-ui';
 import echarts from 'echarts'
 import ECharts from 'vue-echarts'
 import 'element-ui/lib/theme-chalk/index.css';
+import '@/assets/css/global.scss'
 import App from './App.vue'
 // import store from './store.js'
 import { library } from '@fortawesome/fontawesome-svg-core'
@@ -42,6 +43,7 @@ Vue.use(Vuex)
 Vue.use(VueRouter);
 Vue.use(ElementUI);
 Vue.use(echarts);
+// Vue.use(GSTC);
 
 Vue.component('v-chart', ECharts)
 Vue.component('font-awesome-icon', FontAwesomeIcon)

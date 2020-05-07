@@ -3,96 +3,9 @@
     <el-row class="header-row">機台性能總覽</el-row>
     <el-tabs v-model="activeName">
       <el-tab-pane label="車間維護" name="1">
-        <el-row>
-          <el-col :span="1" style="margin-top: 5px;">
-            <div class="sub-title">場域</div>
-          </el-col>
-          <el-col :span="3">
-            <el-select
-              v-model="site1"
-              placeholder=" "
-              size="mini"
-              @change="handleSelect"
-            >
-              <el-option
-                v-for="item in sites"
-                :key="item.value"
-                :label="item.value"
-                :value="item.value"
-              >
-              </el-option>
-            </el-select>
-          </el-col>
-          <el-col :span="1" style="margin-top: 5px;">
-            <div class="sub-title">線別</div>
-          </el-col>
-          <el-col :span="2">
-            <el-select
-              v-model="line1"
-              placeholder=" "
-              size="mini"
-              @change="handleSelect"
-            >
-              <el-option
-                v-for="item in lines"
-                :key="item.value"
-                :label="item.value"
-                :value="item.value"
-              >
-              </el-option>
-            </el-select>
-          </el-col>
-          <el-col :span="1" style="margin-top: 5px;">
-            <div class="sub-title">機台</div>
-          </el-col>
-          <el-col :span="2">
-            <el-select
-              v-model="mach1"
-              placeholder=" "
-              size="mini"
-              @change="handleSelect"
-            >
-              <el-option
-                v-for="item in machs"
-                :key="item.value"
-                :label="item.value"
-                :value="item.value"
-              >
-              </el-option>
-            </el-select>
-          </el-col>
-          <el-col :span="1" style="margin-top: 5px;">
-            <div class="sub-title">班別</div>
-          </el-col>
-          <el-col :span="3">
-            <el-select
-              v-model="class1"
-              placeholder=" "
-              size="mini"
-              @change="handleSelect"
-            >
-              <el-option
-                v-for="item in classes"
-                :key="item.value"
-                :label="item.value"
-                :value="item.value"
-              >
-              </el-option>
-            </el-select>
-          </el-col>
-          <el-col :span="1" style="margin-top: 5px;">
-            <div class="sub-title">日期</div>
-          </el-col>
-          <el-col :span="3">
-            <el-date-picker
-              v-model="start_end"
-              type="daterange"
-              size="mini"
-              value-format="yyyy-MM-dd"
-              @change="handleSelect"
-            ></el-date-picker>
-          </el-col>
-        </el-row>
+        <FactorySelection machlist time
+          @timeSelected="handleSelect"
+        />
         <el-card style="margin-bottom: 20px;">
           <el-radio-group
             v-model="radio1"
@@ -143,15 +56,6 @@
 </template>
 
 <style scoped>
-.header-row {
-  font-size: 32px;
-  font-weight:bold;
-}
-.sub-header-row {
-  font-size: 20px;
-  color: #888;
-  font-weight: normal;
-}
 .el-row {
   margin-bottom: 5px;
 }
@@ -179,11 +83,13 @@
 <script>
 import mpchart from './machPerformChart.vue'
 import abchart from './analyseBarChart.vue'
+import FactorySelection from './FactorySelection.vue'
 
 export default {
   components: {
     mpchart,
     abchart,
+    FactorySelection,
   },
   data() {
     return {
@@ -204,122 +110,8 @@ export default {
       radio_list: ['OEE','稼動率','效率','良率']
     }
   },
-  watch: {
-    start_end: function() {
-      this.time_array = this.getAllDate(this.start_end)
-    },
-    site1: function() {
-      this.lines = this.loadLine(this.site1)
-      this.line1 = 'All'
-    },
-    line1: function() {
-      this.machs = this.loadMach(this.line1)
-      this.mach1 = 'All'
-    }
-  },
   methods: {
     /* eslint-disable */
-    loadSite() {
-      return [
-        {value: 'D9 - 1F'},
-        {value: 'D10 - 1F'},
-      ];
-    },
-    loadLine(site) {
-      if (site == 'D9 - 1F') {
-        return [
-          {value: 'All'},
-          {value: 'E 線'},
-          {value: 'F 線'},
-          {value: 'G 線'},
-        ];
-      }
-      else {
-        return [
-          {value: 'All'},
-          {value: 'A 線'},
-          {value: 'B 線'},
-          {value: 'C 線'},
-          {value: 'D 線'}
-        ];
-      }
-    },
-    loadMach(line) {
-      // this.mach1 = 'All'
-      if (line == 'All') {
-        return [{ value: 'All' }]
-      }
-      else if (line == 'A 線') {
-        let mach = []
-        mach.push({value: 'All'})
-        for (let i=0;i<15;i++) {
-          let num = (i+1)<10? '0'+(i+1): (i+1)
-          mach.push({ value: 'A'+num })
-        }
-        return mach
-      }
-      else if (line == 'B 線') {
-        let mach = []
-        mach.push({value: 'All'})
-        for (let i=0;i<14;i++) {
-          let num = (i+1)<10? '0'+(i+1): (i+1)
-          mach.push({ value: 'B'+num })
-        }
-        return mach
-      }
-      else if (line == 'C 線') {
-        let mach = []
-        mach.push({value: 'All'})
-        for (let i=0;i<12;i++) {
-          let num = (i+1)<10? '0'+(i+1): (i+1)
-          mach.push({ value: 'C'+num })
-        }
-        return mach
-      }
-      else if (line == 'D 線') {
-        let mach = []
-        mach.push({value: 'All'})
-        for (let i=0;i<19;i++) {
-          let num = (i+1)<10? '0'+(i+1): (i+1)
-          mach.push({ value: 'D'+num })
-        }
-        return mach
-      }
-      else if (line == 'E 線') {
-        let mach = []
-        mach.push({value: 'All'})
-        for (let i=0;i<21;i++) {
-          let num = (i+1)<10? '0'+(i+1): (i+1)
-          mach.push({ value: 'E'+num })
-        }
-        return mach
-      }
-      else if (line == 'F 線') {
-        let mach = []
-        mach.push({value: 'All'})
-        for (let i=0;i<17;i++) {
-          let num = (i+1)<10? '0'+(i+1): (i+1)
-          mach.push({ value: 'F'+num })
-        }
-        return mach
-      }
-      else if (line == 'G 線') {
-        let mach = []
-        mach.push({value: 'All'})
-        for (let i=0;i<9;i++) {
-          let num = (i+1)<10? '0'+(i+1): (i+1)
-          mach.push({ value: 'G'+num })
-        }
-        return mach
-      }
-    },
-    loadClass() {
-      return [
-        {value: 'All'},
-        {value: '早班'},
-        {value: '晚班'},
-      ];
-    },
     //Date格式轉字串
     convertDate(time) {
       let new_time = new Date(time)
@@ -352,15 +144,11 @@ export default {
       return date_array
     },
     handleSelect(item) {
-      console.log(item);
+      this.time_array = this.getAllDate(item)
     },
     /* eslint-enable */
   },
   mounted() {
-    this.sites = this.loadSite();
-    this.lines = this.loadLine();
-    this.machs = this.loadMach('All');
-    this.classes = this.loadClass();
     this.time_array = this.getAllDate(this.getLast7Days())
   }
 }

@@ -1,43 +1,5 @@
 <template>
   <div>
-    <div>
-      <div class="sub-title select">場域</div>
-      <el-select
-        size='mini'
-        v-model="site"
-      >
-        <el-option
-          v-for="item in sites"
-          :key="item.value"
-          :label="item.value"
-          :value="item.value">
-        </el-option>
-      </el-select>
-      <div class="sub-title select">線別</div>
-      <el-select
-        size='mini'
-        v-model="line"
-      >
-        <el-option
-          v-for="item in lines"
-          :key="item.value"
-          :label="item.value"
-          :value="item.value"
-        ></el-option>
-      </el-select>
-      <div class="sub-title select">噸位</div>
-      <el-select
-        size='mini'
-        v-model="ton"
-      >
-        <el-option
-          v-for="item in tons"
-          :key="item.value"
-          :label="item.value"
-          :value="item.value">
-        </el-option>
-      </el-select>
-    </div>
     <el-table
       :data="tableData"
       style="width: 100%"
@@ -198,13 +160,6 @@
   </div>
 </template>
 
-<style scoped>
-.select {
-  width: 40px;
-  display: inline-block;
-}
-</style>
-
 <script>
 import EditableCell from "./EditableCell.vue";
 
@@ -213,50 +168,10 @@ export default {
       EditableCell,
   },
   data: () => ({
-    sites: [
-      { value: 'D9 - 1F' },
-      { value: 'D10 - 1F' }
-    ],
-    lines: [],
-    tons: [
-      { value: 'All' },
-      { value: '50' },
-      { value: '80' },
-      { value: '100' },
-      { value: '130' }
-    ],
-    site: 'D10 - 1F',
-    line: 'All',
-    ton: 'All',
     tableData: []
   }),
-  watch: {
-    site: function() {
-      this.lines = this.loadLine(this.site)
-      this.line = 'All'
-    }
-  },
   methods: {
     /* eslint-disable */
-    loadLine(site) {
-      if (site == 'D9 - 1F') {
-        return [
-          {value: 'All'},
-          {value: 'E 線'},
-          {value: 'F 線'},
-          {value: 'G 線'},
-        ];
-      }
-      else {
-        return [
-          {value: 'All'},
-          {value: 'A 線'},
-          {value: 'B 線'},
-          {value: 'C 線'},
-          {value: 'D 線'}
-        ];
-      }
-    },
     loadTable() {
       let newTable = []
       for (let i=0;i<10;i++) {
@@ -305,7 +220,7 @@ export default {
     /* eslint-enable */
   },
   mounted() {
-    this.lines = this.loadLine()
+    // this.lines = this.loadLine()
     this.tableData = this.loadTable()
   }
 }

@@ -3,16 +3,16 @@
     <el-row class="header-row">NWE 成型生產總覽</el-row>
     <el-row>
       <el-col :span="12">
-        <el-card 
-          class="chart-box" 
+        <el-card
+          class="chart-box"
           :style="isSelect == 'D9'? selectStyle: ''"
           :body-style="{ padding: '10px 30px 20px 10px' }"
         >
           <el-row>
             <el-col :span="16">
               <!-- <div class="radar" id="radar" ref="radar01" @click='onClick'></div> -->
-              <v-chart 
-                :options="Radar" 
+              <v-chart
+                :options="Radar"
                 class="radar"
                 autoresize
               ></v-chart>
@@ -38,15 +38,15 @@
         </el-card>
       </el-col>
       <el-col :span="12">
-        <el-card 
-          class="chart-box"  
+        <el-card
+          class="chart-box"
           :style="isSelect == 'D10'? selectStyle: ''"
           :body-style="{ padding: '10px 30px 20px 10px'}"
         >
           <el-row>
             <el-col :span="16">
-              <v-chart 
-                :options="Radar2" 
+              <v-chart
+                :options="Radar2"
                 class="radar"
                 autoresize
                 @click="onClick"
@@ -90,10 +90,10 @@
               </el-button>
             </el-col>
           </el-row>
-          <div class="chart-box">
-            <v-chart 
-              :options="barLine" 
-              class="chart-box"
+          <div>
+            <v-chart
+              :options="barLine"
+              class="bar-chart"
               autoresize
             ></v-chart>
           </div>
@@ -115,10 +115,10 @@
               </el-button>
             </el-col>
           </el-row>
-          <div class="chart-box">
-            <v-chart 
-              :options="bar" 
-              class="chart-box"
+          <div>
+            <v-chart
+              :options="bar"
+              class="bar-chart"
               autoresize
             ></v-chart>
           </div>
@@ -131,10 +131,10 @@
               <div class="chart-title">{{ isSelect }} 機台停機累計時間</div>
             </el-col>
           </el-row>
-          <div class="chart-box">
-            <v-chart 
-              :options="bar2" 
-              class="chart-box"
+          <div>
+            <v-chart
+              :options="bar2"
+              class="bar-chart"
               autoresize
             ></v-chart>
           </div>
@@ -144,12 +144,29 @@
   </div>
 </template>
 
+<style scoped>
+.radar {
+  width: 100%;
+  height: 325px;
+}
+.chart-box{
+  width: 95%;
+  height: 345px;
+  margin: 0 auto;
+}
+.bar-chart {
+  width: 95%;
+  height: 300px;
+  margin: 0 auto;
+}
+</style>
+
 <script>
-import axios from 'axios'
-// import 'echarts/lib/chart/line'
+// import axios from 'axios'
 import radar from './radar'
 import barLine from './bar_line'
 import bar from './bar'
+import { overviewMachineStartRate, overviewMachineStateCount } from '../api.js'
 
 let datasetA={
   'E線' : 0,
@@ -165,14 +182,14 @@ let datasetB={
 }
 let datasetC={
   '料花': 4,
-  '黑紋': 2, 
+  '黑紋': 2,
   '刮傷': 1,
   '毛邊': 1,
   '異色': 1
 }
 let datasetD={
   '正常': 43,
-  '待機': 2, 
+  '待機': 2,
   '調機': 2,
   '維修': 5,
   '修模待機': 2,
@@ -202,8 +219,8 @@ let datasetE=[
   }
 ]
 
-const radar_url='http://10.124.131.87:8880/Overview/machine/state/?line='
-const machine_state='http://10.124.131.87:8880/Overview/machine/statecount/?line='
+// const radar_url='http://10.124.131.87:8880/Overview/machine/state/?line='
+// const machine_state='http://10.124.131.87:8880/Overview/machine/statecount/?line='
 // 改變機台狀態總覽bar顏色
 function changeBarColor(data) {
   let new_data=[]
@@ -223,7 +240,7 @@ function changeBarColor(data) {
           }
         }
       break;
-      case '待機' : 
+      case '待機' :
           tmp = {
           name: data_keys[i],
           value: data_values[i],
@@ -234,7 +251,7 @@ function changeBarColor(data) {
           }
         }
       break;
-      case '調機' : 
+      case '調機' :
           tmp = {
           name: data_keys[i],
           value: data_values[i],
@@ -245,7 +262,7 @@ function changeBarColor(data) {
           }
         }
       break;
-      case '維修' : 
+      case '維修' :
           tmp = {
           name: data_keys[i],
           value: data_values[i],
@@ -256,7 +273,7 @@ function changeBarColor(data) {
           }
         }
       break;
-      case '修模' : 
+      case '修模' :
           tmp = {
           name: data_keys[i],
           value: data_values[i],
@@ -267,7 +284,7 @@ function changeBarColor(data) {
           }
         }
       break;
-      case '換模' : 
+      case '換模' :
           tmp = {
           name: data_keys[i],
           value: data_values[i],
@@ -278,7 +295,7 @@ function changeBarColor(data) {
           }
         }
       break;
-      case '斷線' : 
+      case '斷線' :
           tmp = {
           name: data_keys[i],
           value: data_values[i],
@@ -344,7 +361,7 @@ export default {
       console.log(event);
     },
     getRadarData(location) {
-      axios.get(radar_url+location).then((response) => {
+      overviewMachineStartRate(location).then((response) => {
         let data = response.data
         var keys = Object.keys(data);
         var values = Object.values(data);
@@ -364,7 +381,7 @@ export default {
       });
     },
     getMachineState(location) {
-      axios.get(machine_state+location).then((response) => {
+      overviewMachineStateCount(location).then((response) => {
         let data = changeBarColor(response.data)
         var keys = Object.keys(data);
         var values = Object.values(data);
@@ -385,27 +402,3 @@ export default {
   }
 };
 </script>
-
-<style>
-.radar {
-  width: 100%;
-  height: 325px;
-}
-.chart-box{
-  width: 95%;
-  height: 345px;  
-  margin: 0 auto;
-}
-.chart-title {
-  padding: 0px 0 8px 0;
-  font-weight: bold;
-  font-size: 18px;
-}
-.row-top {
-  padding: 20px 0;
-}
-.header-row {
-  font-size: 32px;
-  font-weight:bold;
-}
-</style>

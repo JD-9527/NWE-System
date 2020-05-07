@@ -120,10 +120,5 @@ export default {
   text-align: center;
   margin-bottom: 10px;
 }
-.sub-title {
-  font-size: 14px;
-  color: #999;
-  text-align: center;
-  margin-bottom: 20px;
-}
+
 </style>

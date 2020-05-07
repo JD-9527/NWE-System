@@ -3,7 +3,11 @@
     <el-row class="header-row">排配資料輸入</el-row>
     <el-tabs v-model="activeName" class="tabs">
       <el-tab-pane label="急單、其他製程資料導入" name="1">
-        <el-button size="small" style="margin-right: 10px; position: relative;" @click="addRow">新增</el-button>
+        <NewRowButton
+          :tableLabel="tableData_label"
+          :tableInfo="tableData.length ==0? []: Object.keys(tableData[0])"
+        />
+        <!-- <el-button size="small" style="margin-right: 10px; position: relative;" @click="addRow">新增</el-button> -->
         <a>
           <el-button size="small" class="upload" plain>選擇檔案</el-button>
           <input type="file" id="file" ref="file" @change="onChangeFileUpload()" class="change"/>
@@ -17,7 +21,7 @@
           style="margin-left: 5px;"
           :disabled="typeof(file) == 'undefined'"
         >上傳</el-button>
-        <DownloadButton file_type="plasticcolor" class="commit"/>
+        <DownloadButton file_type="dayplan" class="commit"/>
         <el-row>
           <el-table
             :data="tableData"
@@ -26,17 +30,17 @@
             v-loading="loading"
           >
             <el-table-column
-              prop="part_NO"
+              prop="sec_Part_NO"
               label="料號"
               align="center"
               show-overflow-tooltip
             >
-              <editable-cell :show-input="row.editMode" slot-scope="{row}" v-model="row.part_NO">
-                <span slot="content">{{row.part_NO}}</span>
+              <editable-cell :show-input="row.editMode" slot-scope="{row}" v-model="row.sec_Part_NO">
+                <span slot="content">{{row.sec_Part_NO}}</span>
               </editable-cell>
             </el-table-column>
             <el-table-column
-              prop="category"
+              prop="require_source"
               label="種類"
               align="center"
               show-overflow-tooltip
@@ -44,10 +48,10 @@
               <editable-cell
                 :show-input="row.editMode"
                 slot-scope="{row}"
-                v-model="row.category"
+                v-model="row.require_source"
                 editable-component="el-select"
               >
-                <span slot="content">{{row.category}}</span>
+                <span slot="content">{{row.require_source}}</span>
                 <template slot="edit-component-slot">
                   <el-option
                     v-for="(item,index) in categorylist"
@@ -59,38 +63,39 @@
               </editable-cell>
             </el-table-column>
             <el-table-column
-              prop="count"
+              prop="plan_number"
               label="數量"
               align="center"
               show-overflow-tooltip
             >
-              <editable-cell :show-input="row.editMode" slot-scope="{row}" v-model="row.count">
-                <span slot="content">{{row.count}}</span>
+              <editable-cell :show-input="row.editMode" slot-scope="{row}" v-model="row.plan_number">
+                <span slot="content">{{row.plan_number}}</span>
               </editable-cell>
             </el-table-column>
             <el-table-column
-              prop="time"
+              prop="require_date"
               label="交期"
               align="center"
               show-overflow-tooltip
             >
-              <editable-cell :show-input="row.editMode" slot-scope="{row}" v-model="row.time">
-                <span slot="content">{{row.time}}</span>
+              <editable-cell :show-input="row.editMode" slot-scope="{row}" v-model="row.require_date">
+                <span slot="content">{{row.require_date}}</span>
               </editable-cell>
             </el-table-column>
             <el-table-column
-              prop="place"
+              prop="place_of_shipment"
               label="出貨地"
               align="center"
               show-overflow-tooltip
             >
-              <editable-cell :show-input="row.editMode" slot-scope="{row}" v-model="row.place">
-                <span slot="content">{{row.place}}</span>
+              <editable-cell :show-input="row.editMode" slot-scope="{row}" v-model="row.place_of_shipment">
+                <span slot="content">{{row.place_of_shipment}}</span>
               </editable-cell>
             </el-table-column>
             <el-table-column
               label="操作"
               align="center"
+              width="200"
             >
              <template slot-scope="{row, $index}">
               <el-button
@@ -130,11 +135,15 @@
         </el-row>
       </el-tab-pane>
       <el-tab-pane label="周料號導入" name="2">
-        <el-button
+        <NewRowButton
+          :tableInfo="week_part_no.length ==0? []: Object.keys(week_part_no[0])"
+          :tableLabel="week_part_label"
+        />
+        <!-- <el-button
           size="small"
           style="margin-right: 10px; position: relative;"
           @click="addRow"
-        >新增</el-button>
+        >新增</el-button> -->
         <a>
           <el-button size="small" class="upload" plain>選擇檔案</el-button>
           <input type="file" id="file" ref="file" @change="onChangeFileUpload()" class="change"/>
@@ -148,7 +157,7 @@
           style="margin-left: 5px;"
           :disabled="typeof(file) == 'undefined'"
         >上傳</el-button>
-        <DownloadButton file_type="plasticcolor" class="commit"/>
+        <DownloadButton file_type="weekplan" class="commit"/>
         <el-row>
           <el-table
             :data="week_part_no"
@@ -162,9 +171,6 @@
               align="center"
               show-overflow-tooltip
             >
-              <editable-cell :show-input="row.editMode" slot-scope="{row}" v-model="row.part_NO">
-                <span slot="content">{{row.part_NO}}</span>
-              </editable-cell>
             </el-table-column>
             <el-table-column
               prop="count"
@@ -226,15 +232,6 @@
 </template>
 
 <style scoped>
-.header-row {
-  font-size: 32px;
-  font-weight:bold;
-}
-.sub-header-row {
-  font-size: 20px;
-  color: #888;
-  font-weight: normal;
-}
 .el-row {
   margin-bottom: 5px;
 }
@@ -266,11 +263,15 @@
 <script>
 import EditableCell from "./EditableCell.vue";
 import DownloadButton from "./DownloadButton.vue";
+import NewRowButton from "./NewRowButton.vue";
+import { dataDayPlan, dataWeekPlan, dataImportDayPlan, dataImportWeekPlan,
+         dataEditDayPlan, dataEditWeekPlan } from '../api.js'
 
 export default {
   components: {
     EditableCell,
-    DownloadButton
+    DownloadButton,
+    NewRowButton
   },
   data() {
     return {
@@ -283,6 +284,8 @@ export default {
       loading: false,
       file: undefined,
       week_part_no: [],   //周料號
+      tableData_label: ['料號', '種類', '數量', '交期', '出貨地'],
+      week_part_label: ['料號', '數量'],
     }
   },
   methods: {
@@ -304,29 +307,34 @@ export default {
     getCategoryList() {
       this.categorylist = ['急單', 'D11組裝', '成型組裝', 'NSD', '海外', '印刷', '重試' ]
     },
-    getTableData(data) {
-      this.week_part_no =[
-        { part_NO: '700-43545-03M', count: '100' },
-        { part_NO: '700-43545-03M', count: '100' },
-        { part_NO: '700-43545-03M', count: '100' },
-        { part_NO: '700-43545-03M', count: '100' },
-        { part_NO: '700-43545-03M', count: '100' },
-      ]
-      for (let i=0;i<5;i++) {
-        this.tableData.push({
-          part_NO: '700-43545-03M',
-          category: '急單',
-          count: '100',
-          time: '2020-01-01',
-          place: 'Longhua'
-        })
-      }
-      this.week_part_no = this.week_part_no.map(row => {
-        return {
-          ...row,
-          editMode: false
-        };
-      });
+    async getTableData(data) {
+      // this.week_part_no =[
+      //   { part_NO: '700-43545-03M', count: '100' },
+      //   { part_NO: '700-43545-03M', count: '100' },
+      //   { part_NO: '700-43545-03M', count: '100' },
+      //   { part_NO: '700-43545-03M', count: '100' },
+      //   { part_NO: '700-43545-03M', count: '100' },
+      // ]
+      // for (let i=0;i<5;i++) {
+      //   this.tableData.push({
+      //     part_NO: '700-43545-03M',
+      //     category: '急單',
+      //     count: '100',
+      //     time: '2020-01-01',
+      //     place: 'Longhua'
+      //   })
+      // }
+      const day = await dataDayPlan()
+      const week = await dataWeekPlan()
+      console.log(day.data.data,week.data)
+      this.tableData = day.data.data
+      // this.week_part_no = week.data.data
+      // this.week_part_no = this.week_part_no.map(row => {
+      //   return {
+      //     ...row,
+      //     editMode: false
+      //   };
+      // });
       this.tableData = this.tableData.map(row => {
         return {
           ...row,
@@ -343,28 +351,54 @@ export default {
     },
     saveRow(row, index) {
       // console.log(row)
-      row.editMode = false;
+      let EditPlan = new Object()
+      if (this.activeName == '1') {
+        EditPlan = dataEditDayPlan
+      }
+      else {
+        EditPlan = dataEditWeekPlan
+      }
+      // console.log(row)
+      EditPlan(row,'user').then((response)=>{
+        if (response.status == 200) {
+          // console.log(response.status)
+          this.$message.success('修改成功！')
+          this.getTableData();
+          row.editMode = false;
+        }
+        else {
+          this.$message.error(error.response)
+        }
+      })
     },
     addRow() {
-      let new_row = {
-        plastic_part_NO: '',
-        plastic_color: '',
-        editMode: true
+      // console.log(this.activeName)
+      if (this.activeName == '1') {
+        let new_row = {
+          plastic_part_NO: '',
+          plastic_color: '',
+          editMode: true
+        }
+        this.tableData.unshift(new_row)
       }
-      this.tableData.unshift(new_row)
+      else {
+        let new_row = {
+          plastic_part_NO: '',
+          plastic_color: '',
+          editMode: true
+        }
+        this.week_part_no.unshift(new_row)
+      }
     },
     submitForm(){
-      let formData = new FormData();
-      formData.append('file', this.file);
-      this.$http.post('http://10.124.131.87:8880/data/import/plasticcolor/',
-          formData,
-          {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        }
-      ).then((response) => {
-        // console.log(response.data);
+      let upload = new Object()
+      if (this.activeName == '1') {
+        upload = dataImportDayPlan
+      }
+      else {
+        upload = dataImportWeekPlan
+      }
+      upload('user',this.file).then((response)=>{
         if (response.status == 200) {
           // console.log(response.status)
           this.$message.success('上傳成功！')

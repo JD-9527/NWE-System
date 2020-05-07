@@ -67,14 +67,3 @@ export default {
 	}
 }
 </script>
-
-<style>
-  .el-table .warning-row {
-    background: #FFDEDE;
-    /*color: #000;*/
-  },
-  .el-table .error-row {
-    background: #FFDEDE;
-    /*color: #000;*/
-  }
-</style>

@@ -413,20 +413,6 @@
   color: #888;
   /*padding: 10px 20px 0;*/
 }
-/*[data-tooltip]:before {
-    position : absolute;
-     content : attr(data-tooltip);
-     opacity : 0;
-}
-[data-tooltip]:hover:before {
-    opacity : 0.8;
-    transform: translate(-20px,-25px);
-    color: #ddd;
-    font-weight: bold;
-    background-color: #111;
-    border-radius: 4px;
-    padding: 5px 10px;
-}*/
 .message-row {
   font-size: 20px;
   font-weight:bold;
@@ -439,39 +425,6 @@
 }
 .legend {
   font-size: 16px;
-}
-.color-green {
-  background-color: #17ba6a;
-  color: #000;
-}
-.color-yellow {
-  background-color: #f7e31d;
-  color: #000;
-}
-.color-orange {
-  background-color: #f7921d;
-  color: #000;
-}
-.color-red {
-  background-color: #F50000;
-  color: #000;
-}
-.color-blue {
-  background-color: #3030FF;
-  color: #000;
-}
-.color-purple {
-  background-color: #990DFF;
-  color: #000;
-}
-.color-grey {
-  background-color: #909399;
-  color: #000;
-}
-.color-none {
-  background-color: #fff;
-  color: #000;
-  font-size: 14px;
 }
 </style>
 
