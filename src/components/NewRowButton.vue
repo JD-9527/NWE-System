@@ -14,55 +14,84 @@
     >
       <div
         style="padding: 5px; width: 45%; display: inline-block;"
-        v-for="(column,index) in tableLabel"
+        v-for="(column,index) in tableInfo"
         :key="index"
       >
-        <div v-if="column != 'editMode'">{{column}}</div>
+        <div>{{column.label}}</div>
         <el-input
-          :placeholder="column"
+          :placeholder="column.label"
           size='small'
           style='width: 100%;'
-          v-model="new_row[column]"
-          v-if="column != 'editMode'"
+          v-model="new_row[column.prop]"
         ></el-input>
       </div>
       <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="comfirmEdit">新 增</el-button>
         <el-button @click="dialog = false">取 消</el-button>
-        <el-button type="primary" @click="dialog = false">确 定</el-button>
       </span>
     </el-dialog>
   </div>
 </template>
 
 <script>
+import { dataEditWeekPlan, dataEditDayPlan, dataWeekPlan, dataDayPlan } from '../api.js'
+
   /* eslint-disable */
 export default {
   data() {
     return {
       dialog: false,
       // tableInfo: [],
-      new_row: {}
+      new_row: {},
+      Edit: '',
+      GetData: '',
     }
   },
   props: {
+    // 欄位對應的prop
     tableInfo: {
       type: Array,
       default: () => []
     },
-    tableLabel: Array,
+    type: String,
   },
   methods: {
     addRow() {
       this.dialog = true
     },
     initNewRow() {
-      Object.keys(this.tableData[0]).forEach((key) => {
-        if (key != 'editMode') this.new_row[key] = ''
+      let row = ''
+      for (row of this.tableInfo) this.new_row[row.prop] = ''
+      // console.log(this.new_row)
+    },
+    getEditFunct() {
+      if (this.type == 'dayplan') {
+        this.GetData = dataDayPlan
+        this.Edit = dataEditDayPlan
+      }
+      else if (this.type == 'weekplan') {
+        this.GetData = dataWeekPlan
+        this.Edit = dataEditWeekPlan
+      }
+    },
+    comfirmEdit() {
+      console.log(this.new_row)
+      this.Edit(this.new_row,'user').then((response)=>{
+        this.$message.success('新增成功！')
+        this.GetData()
+        this.dialog = false
+        this.new_row = {}
+        // console.log('SUCCESS')
+      })
+      .catch((error)=>{
+        this.$message.error('新增失敗！')
+        console.log(error)
       })
     }
   },
   mounted() {
-    // this.tableInfo = Object.keys(this.tableData[0])
+    this.getEditFunct()
+    // this.initNewRow()
   }
 }
 </script>

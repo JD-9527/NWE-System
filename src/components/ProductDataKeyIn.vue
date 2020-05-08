@@ -4,8 +4,8 @@
     <el-tabs v-model="activeName" class="tabs">
       <el-tab-pane label="急單、其他製程資料導入" name="1">
         <NewRowButton
-          :tableLabel="tableData_label"
-          :tableInfo="tableData.length ==0? []: Object.keys(tableData[0])"
+          :tableInfo="tableDataInfo"
+          type="dayplan"
         />
         <!-- <el-button size="small" style="margin-right: 10px; position: relative;" @click="addRow">新增</el-button> -->
         <a>
@@ -136,8 +136,8 @@
       </el-tab-pane>
       <el-tab-pane label="周料號導入" name="2">
         <NewRowButton
-          :tableInfo="week_part_no.length ==0? []: Object.keys(week_part_no[0])"
-          :tableLabel="week_part_label"
+          :tableInfo="week_partInfo"
+          type="weekplan"
         />
         <!-- <el-button
           size="small"
@@ -166,14 +166,14 @@
             v-loading="loading"
           >
             <el-table-column
-              prop="part_NO"
+              prop="Part_NO"
               label="料號"
               align="center"
               show-overflow-tooltip
             >
             </el-table-column>
             <el-table-column
-              prop="count"
+              prop="plan_number"
               label="數量"
               align="center"
               show-overflow-tooltip
@@ -181,9 +181,9 @@
               <editable-cell
                 :show-input="row.editMode"
                 slot-scope="{row}"
-                v-model="row.count"
+                v-model="row.plan_number"
               >
-                <span slot="content">{{row.count}}</span>
+                <span slot="content">{{row.plan_number}}</span>
               </editable-cell>
             </el-table-column>
             <el-table-column
@@ -284,8 +284,17 @@ export default {
       loading: false,
       file: undefined,
       week_part_no: [],   //周料號
-      tableData_label: ['料號', '種類', '數量', '交期', '出貨地'],
-      week_part_label: ['料號', '數量'],
+      tableDataInfo: [
+        { prop: 'sec_Part_NO', label: '料號'},
+        { prop: 'require_source', label: '種類'},
+        { prop: 'plan_number', label: '數量'},
+        { prop: 'require_date', label: '交期'},
+        { prop: 'place_of_shipment', label: '出貨地'},
+      ],
+      week_partInfo: [
+        { prop: 'Part_NO', label: '料號' },
+        { prop: 'plan_number', label: '數量' },
+      ],
     }
   },
   methods: {
@@ -308,33 +317,17 @@ export default {
       this.categorylist = ['急單', 'D11組裝', '成型組裝', 'NSD', '海外', '印刷', '重試' ]
     },
     async getTableData(data) {
-      // this.week_part_no =[
-      //   { part_NO: '700-43545-03M', count: '100' },
-      //   { part_NO: '700-43545-03M', count: '100' },
-      //   { part_NO: '700-43545-03M', count: '100' },
-      //   { part_NO: '700-43545-03M', count: '100' },
-      //   { part_NO: '700-43545-03M', count: '100' },
-      // ]
-      // for (let i=0;i<5;i++) {
-      //   this.tableData.push({
-      //     part_NO: '700-43545-03M',
-      //     category: '急單',
-      //     count: '100',
-      //     time: '2020-01-01',
-      //     place: 'Longhua'
-      //   })
-      // }
       const day = await dataDayPlan()
       const week = await dataWeekPlan()
-      console.log(day.data.data,week.data)
+      // console.log(day.data.data,week.data)
       this.tableData = day.data.data
-      // this.week_part_no = week.data.data
-      // this.week_part_no = this.week_part_no.map(row => {
-      //   return {
-      //     ...row,
-      //     editMode: false
-      //   };
-      // });
+      this.week_part_no = week.data.data
+      this.week_part_no = this.week_part_no.map(row => {
+        return {
+          ...row,
+          editMode: false
+        };
+      });
       this.tableData = this.tableData.map(row => {
         return {
           ...row,
@@ -371,25 +364,25 @@ export default {
         }
       })
     },
-    addRow() {
-      // console.log(this.activeName)
-      if (this.activeName == '1') {
-        let new_row = {
-          plastic_part_NO: '',
-          plastic_color: '',
-          editMode: true
-        }
-        this.tableData.unshift(new_row)
-      }
-      else {
-        let new_row = {
-          plastic_part_NO: '',
-          plastic_color: '',
-          editMode: true
-        }
-        this.week_part_no.unshift(new_row)
-      }
-    },
+    // addRow() {
+    //   // console.log(this.activeName)
+    //   if (this.activeName == '1') {
+    //     let new_row = {
+    //       plastic_part_NO: '',
+    //       plastic_color: '',
+    //       editMode: true
+    //     }
+    //     this.tableData.unshift(new_row)
+    //   }
+    //   else {
+    //     let new_row = {
+    //       plastic_part_NO: '',
+    //       plastic_color: '',
+    //       editMode: true
+    //     }
+    //     this.week_part_no.unshift(new_row)
+    //   }
+    // },
     submitForm(){
       let upload = new Object()
       if (this.activeName == '1') {
