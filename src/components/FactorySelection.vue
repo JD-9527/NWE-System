@@ -86,6 +86,7 @@
 </template>
 
 <script>
+import { planTonList } from '../api.js'
 export default {
   data() {
     return {
@@ -137,7 +138,8 @@ export default {
     line: function() {
       this.machs = this.loadMach(this.line)
       this.mach = 'All'
-    }
+      this.tons = this.loadTons(this.line)
+    },
   },
   methods: {
     loadLine(site) {
@@ -234,6 +236,17 @@ export default {
         {value: '早班'},
         {value: '晚班'},
       ];
+    },
+    loadTons(mach) {
+      let new_tons = [{value: 'All'}]
+      planTonList(mach[0]).then((response)=>{
+        let data = response.data.data
+        let item = ''
+        for (item of data) {
+          new_tons.push({value: item})
+        }
+      })
+      return new_tons
     },
     convertDate(time) {
       let new_time = new Date(time)
