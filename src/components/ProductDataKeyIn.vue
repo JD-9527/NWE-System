@@ -10,7 +10,7 @@
         <!-- <el-button size="small" style="margin-right: 10px; position: relative;" @click="addRow">新增</el-button> -->
         <a>
           <el-button size="small" class="upload" plain>選擇檔案</el-button>
-          <input type="file" id="file" ref="file" @change="onChangeFileUpload()" class="change"/>
+          <input type="file" id="file1" ref="file1" @change="onChangeFileUpload()" class="change"/>
         </a>
         <span v-if="typeof(file) != 'undefined'" class="commit">{{ file.name }}</span>
         <el-button
@@ -106,14 +106,22 @@
               <el-button
                 type="success"
                 icon="el-icon-check"
+                v-show="row.editMode"
                 size="mini"
                 @click="saveRow(row, $index)">
               </el-button>
               <el-button
                 type="info"
                 icon="el-icon-close"
+                v-show="row.editMode"
                 size="mini"
                 @click="cancelEditMode(row, $index)">
+              </el-button>
+              <el-button
+                type="danger"
+                icon="el-icon-delete"
+                size="mini"
+                @click="deleteRow(row, $index)">
               </el-button>
              </template>
             </el-table-column>
@@ -146,7 +154,7 @@
         >新增</el-button> -->
         <a>
           <el-button size="small" class="upload" plain>選擇檔案</el-button>
-          <input type="file" id="file" ref="file" @change="onChangeFileUpload()" class="change"/>
+          <input type="file" id="file2" ref="file2" @change="onChangeFileUpload()" class="change"/>
         </a>
         <span v-if="typeof(file) != 'undefined'" class="commit">{{ file.name }}</span>
         <el-button
@@ -200,13 +208,21 @@
                 type="success"
                 icon="el-icon-check"
                 size="mini"
+                v-show="row.editMode"
                 @click="saveRow(row, $index)">
               </el-button>
               <el-button
                 type="info"
                 icon="el-icon-close"
                 size="mini"
+                v-show="row.editMode"
                 @click="cancelEditMode(row, $index)">
+              </el-button>
+              <el-button
+                type="danger"
+                icon="el-icon-delete"
+                size="mini"
+                @click="deleteRow(row, $index)">
               </el-button>
              </template>
             </el-table-column>
@@ -364,25 +380,30 @@ export default {
         }
       })
     },
-    // addRow() {
-    //   // console.log(this.activeName)
-    //   if (this.activeName == '1') {
-    //     let new_row = {
-    //       plastic_part_NO: '',
-    //       plastic_color: '',
-    //       editMode: true
-    //     }
-    //     this.tableData.unshift(new_row)
-    //   }
-    //   else {
-    //     let new_row = {
-    //       plastic_part_NO: '',
-    //       plastic_color: '',
-    //       editMode: true
-    //     }
-    //     this.week_part_no.unshift(new_row)
-    //   }
-    // },
+    deleteRow(row) {
+      let delete_ = new Object()
+      if (this.activeName == '1') {
+        let row0 = {
+          'sec_Part_NO': row.sec_Part_NO,
+          'plan_number': '0',
+          'require_source': row.require_source,
+          'require_date': row.require_date,
+          'place_of_shipment': row.place_of_shipment
+        }
+        dataEditDayPlan(row0,'delete')
+        .then((response)=>{
+          this.$message.success('刪除成功！')
+          this.getTableData();
+        })
+      }
+      else {
+        let row0 = {
+          'Part_NO': row.Part_NO,
+          'plan_number': '0',
+        }
+        dataEditWeekPlan(row0,'delete')
+      }
+    },
     submitForm(){
       let upload = new Object()
       if (this.activeName == '1') {
@@ -391,7 +412,7 @@ export default {
       else {
         upload = dataImportWeekPlan
       }
-      upload('user',this.file).then((response)=>{
+      upload('upload',this.file).then((response)=>{
         if (response.status == 200) {
           // console.log(response.status)
           this.$message.success('上傳成功！')
@@ -407,8 +428,9 @@ export default {
       });
     },
     onChangeFileUpload(){
+      if (this.activeName == '1') this.file = this.$refs.file1.files[0];
       // console.log(this.$refs.file.files[0])
-      this.file = this.$refs.file.files[0];
+      else this.file = this.$refs.file2.files[0];
     }
     /* eslint-enable */
   },
