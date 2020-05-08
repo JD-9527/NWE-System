@@ -57,9 +57,6 @@
       }
       /* eslint-enable */
     },
-    mounted() {
-      this.lines = this.loadLine()
-    }
   };
 </script>
 

@@ -162,6 +162,7 @@
 
 <script>
 import EditableCell from "./EditableCell.vue";
+import { planPreview } from '../api.js'
 
 export default {
   components: {
@@ -174,32 +175,9 @@ export default {
     /* eslint-disable */
     loadTable() {
       let newTable = []
-      for (let i=0;i<10;i++) {
-        newTable.push({
-          ton: '130',
-          number: 'A01',
-          color: '黑',
-          ch_time: '00:00',
-          start_time: '02:00',
-          end_time: '14:00',
-          name: '支架',
-          part_num: '700-30985-01WA',
-          plastic_num: '8M460-002E',
-          count: '513',
-          mold_num: 'NP10713',
-          mold_seq: 'M1',
-          mold_pos: 'D10-C2-02',
-          plan_time: '24',
-          standard_cycle: '24',
-          uph: '306'
-        })
-      }
-      newTable = newTable.map(row => {
-        return {
-          ...row,
-          editMode: false
-        };
-      });
+      planPreview().then((response)=>{
+        newTable = response.data
+      })
       return newTable
     },
     saveRow(row, index) {
