@@ -45,6 +45,7 @@ export default {
       new_row: {},
       Edit: '',
       GetData: '',
+      // categorylist = ['急單', 'D11組裝', '成型組裝', 'NSD', '海外', '印刷', '重試' ]
     }
   },
   props: {

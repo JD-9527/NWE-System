@@ -103,7 +103,7 @@ export const dataDayPlan = () => NWEData.get('/dayplan/')
 export const dataImportDayPlan = (user,files) => {
   let formData = new FormData();
   formData.append('user', user)
-  formData.append('files', files)
+  formData.append('file', files)
   return NWEData.post('/import/dayplan/', formData, { headers: {
         'Content-Type': 'multipart/form-data'
       }});
@@ -134,7 +134,7 @@ export const dataWeekPlan = () => NWEData.get('/weekplan/')
 export const dataImportWeekPlan = (user,files) => {
   let formData = new FormData();
   formData.append('user', user)
-  formData.append('files', files)
+  formData.append('file', files)
   return NWEData.post('/import/weekplan/', formData, { headers: {
         'Content-Type': 'multipart/form-data'
       }});
