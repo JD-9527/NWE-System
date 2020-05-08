@@ -161,5 +161,13 @@ export const planTonList = (line) => {
   if (typeof(line) == 'undefined') return NWEPlan.get('/tonlist/')
   else return NWEPlan.get('/tonlist/?line='+line)
 }
-export const planPreview = () => NWEPlan.get('/preview/')
-export const planEditPreview = () => NWEPlan.post('/preview/')
+export const planPreview = (field) => NWEPlan.get('/preview/?field='+field)
+export const planEditPreview = (row) => {
+  let formData = new FormData();
+  formData.append('Part_NO', row.Part_NO)
+  formData.append('plan_number', row.plan_number)
+  formData.append('Seq', row.Seq)
+  return NWEPlan.post('/preview/', formData, { headers: {
+        'Content-Type': 'multipart/form-data'
+      }});
+}
