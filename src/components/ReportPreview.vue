@@ -1,60 +1,60 @@
 <template>
   <div>
     <el-table
-      :data="tableData"
+      :data="tableData.filter(data => searchLine == 'All' || data.machine_NO.includes(searchLine[0]))"
       style="width: 100%"
     >
       <el-table-column
-        prop="ton"
+        prop="machine_ton"
         label="噸位"
         width="100"
         align="center"
       >
       </el-table-column>
       <el-table-column
-        prop="number"
+        prop="machine_NO"
         label="機台號"
         width="100"
         align="center"
       >
       </el-table-column>
       <el-table-column
-        prop="color"
+        prop="plastic_color"
         label="當前顏色"
         width="100"
         align="center"
       >
       </el-table-column>
       <el-table-column
-        prop="ch_time"
+        prop="mold_down_t"
         label="上下模時間"
         width="100"
         align="center"
       >
       </el-table-column>
       <el-table-column
-        prop="start_time"
+        prop="plan_s_time"
         label="起始時間"
         width="100"
         align="center"
       >
       </el-table-column>
       <el-table-column
-        prop="end_time"
+        prop="plan_e_time"
         label="結束時間"
         width="100"
         align="center"
       >
       </el-table-column>
       <el-table-column
-        prop="name"
+        prop="product_name"
         label="品名"
         width="100"
         align="center"
       >
       </el-table-column>
       <el-table-column
-        prop="part_num"
+        prop="Part_NO"
         label="料號"
         width="200"
         align="center"
@@ -62,20 +62,20 @@
         <editable-cell
           :show-input="row.editMode"
           slot-scope="{row}"
-          v-model="row.part_num"
+          v-model="row.Part_NO"
         >
-          <span slot="content">{{row.part_num}}</span>
+          <span slot="content">{{row.Part_NO}}</span>
         </editable-cell>
       </el-table-column>
       <el-table-column
-        prop="plastic_num"
+        prop="plastic_Part_NO"
         label="塑膠料號"
         width="100"
         align="center"
       >
       </el-table-column>
       <el-table-column
-        prop="count"
+        prop="plan_number"
         label="數量"
         width="100"
         align="center"
@@ -83,48 +83,48 @@
         <editable-cell
           :show-input="row.editMode"
           slot-scope="{row}"
-          v-model="row.count"
+          v-model="row.plan_number"
         >
-          <span slot="content">{{row.count}}</span>
+          <span slot="content">{{row.plan_number}}</span>
         </editable-cell>
       </el-table-column>
       <el-table-column
-        prop="mold_num"
+        prop="mold_NO"
         label="模號"
         width="100"
         align="center"
       >
       </el-table-column>
       <el-table-column
-        prop="mold_seq"
+        prop="mold_Serial"
         label="模序"
         width="100"
         align="center"
       >
       </el-table-column>
       <el-table-column
-        prop="mold_pos"
+        prop="mold_position"
         label="模具儲位"
         width="100"
         align="center"
       >
       </el-table-column>
       <el-table-column
-        prop="plan_time"
+        prop="plan_work_time"
         label="計畫工時"
         width="100"
         align="center"
       >
       </el-table-column>
       <el-table-column
-        prop="standard_cycle"
+        prop="machine_CT"
         label="標準週期"
         width="100"
         align="center"
       >
       </el-table-column>
       <el-table-column
-        prop="uph"
+        prop="UPH"
         label="UPH"
         width="100"
         align="center"
@@ -169,17 +169,53 @@ export default {
       EditableCell,
   },
   data: () => ({
-    tableData: []
+    tableData: [],
+    tableData_o: [], // 原始數據
+    searchLine: 'All'
   }),
+  props: {
+    field: String,
+    line: {
+      type: String,
+      default: 'All'
+    }
+  },
+  // computed: {
+  //   tableData: function() {
+  //     return this.loadTable()
+  //   }
+  // },
+  watch: {
+    field: function() {
+      this.loadTable()
+      this.searchLine = 'All'
+    },
+    line: function() {
+      this.searchLine = this.line
+    }
+  },
   methods: {
     /* eslint-disable */
     loadTable() {
-      let newTable = []
-      planPreview().then((response)=>{
-        newTable = response.data
+      planPreview(this.field).then((response)=>{
+        this.tableData = response.data.data
+        this.tableData = this.tableData.map(row => {
+          return {
+            ...row,
+            editMode: false
+          }
+        })
+        this.tableData_o = this.tableData
       })
-      return newTable
     },
+    // searchLine() {
+    //   if (this.line == 'All') this.tableData = this.tableData_o
+    //   else {
+    //     // console.log(this.line[0])
+    //     let line_tmp = this.line[0];
+    //     this.tableData = this.tableData.filter(data => data.machine_NO.includes(this.line_tmp))
+    //   }
+    // },
     saveRow(row, index) {
       row.editMode = false;
     },
@@ -198,8 +234,7 @@ export default {
     /* eslint-enable */
   },
   mounted() {
-    // this.lines = this.loadLine()
-    this.tableData = this.loadTable()
+    this.loadTable()
   }
 }
 </script>

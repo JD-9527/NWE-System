@@ -11,16 +11,16 @@
       <el-button size='mini' style="margin-left: 10px;">提交</el-button>
 
       <el-tab-pane label="推薦報表" name="first">
-        <Report/>
+        <Report :field='field' :line="line"/>
       </el-tab-pane>
       <el-tab-pane label="推薦甘特圖" name="second">
-        <Gantt v-show="line=='A 線' || (site == 'D10 - 1F') && line=='All'" draggable line="A 線"/>
-        <Gantt v-show="line=='B 線'" draggable line="B 線"/>
-        <Gantt v-show="line=='C 線'" draggable line="C 線"/>
-        <Gantt v-show="line=='D 線'" draggable line="D 線"/>
-        <Gantt v-show="line=='E 線' || (site == 'D9 - 1F') && line=='All'" draggable line="E 線"/>
-        <Gantt v-show="line=='F 線'" draggable line="F 線"/>
-        <Gantt v-show="line=='G 線'" draggable line="G 線"/>
+        <Gantt v-show="line=='A 線' || (site == 'D10 - 1F') && line=='All'" line="A 線"/>
+        <Gantt v-show="line=='B 線'" line="B 線"/>
+        <Gantt v-show="line=='C 線'" line="C 線"/>
+        <Gantt v-show="line=='D 線'" line="D 線"/>
+        <Gantt v-show="line=='E 線' || (site == 'D9 - 1F') && line=='All'" line="E 線"/>
+        <Gantt v-show="line=='F 線'" line="F 線"/>
+        <Gantt v-show="line=='G 線'" line="G 線"/>
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -43,6 +43,12 @@
         line: 'All',
         site: 'D10 - 1F'
       };
+    },
+    computed:{
+      field: function() {
+        if (this.site == 'D9 - 1F') return 'D9'
+        else return 'D10'
+      }
     },
     methods: {
       /* eslint-disable */
