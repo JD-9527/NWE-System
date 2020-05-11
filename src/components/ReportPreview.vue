@@ -146,12 +146,14 @@
           type="success"
           icon="el-icon-check"
           size="mini"
+          v-show="row.editMode"
           @click="saveRow(row, index)">
         </el-button>
         <el-button
           type="info"
           icon="el-icon-close"
           size="mini"
+          v-show="row.editMode"
           @click="cancelEditMode(row, index)">
         </el-button>
        </template>
@@ -162,7 +164,7 @@
 
 <script>
 import EditableCell from "./EditableCell.vue";
-import { planPreview } from '../api.js'
+import { planPreview, planEditPreview } from '../api.js'
 
 export default {
   components: {
@@ -218,18 +220,20 @@ export default {
     // },
     saveRow(row, index) {
       row.editMode = false;
+      planEditPreview(row).then((response)=>{
+        this.$message.success('修改成功！')
+      })
+      .catch((error)=>{
+        this.$message.error('修改失敗')
+      })
+      this.loadTable();
     },
     cancelEditMode(row, index) {
       row.editMode = false;
-      // this.getTableData();
+      this.loadTable();
     },
     setEditMode(row, index) {
       row.editMode = true;
-    },
-    cancelEditMode(row, index) {
-      row.editMode = false;
-      // this.getTableData();
-      // this.getTableDataCT();
     },
     /* eslint-enable */
   },
