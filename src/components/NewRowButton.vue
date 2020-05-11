@@ -18,11 +18,25 @@
         :key="index"
       >
         <div>{{column.label}}</div>
+        <el-select
+          v-model="new_row[column.prop]"
+          placeholder="請選擇"
+          v-if="column.prop == 'require_source'"
+          size='small'
+        >
+          <el-option
+            v-for="(item,index) in categorylist"
+            :key="index"
+            :label="item"
+            :value="item"
+          ></el-option>
+        </el-select>
         <el-input
           :placeholder="column.label"
           size='small'
           style='width: 100%;'
           v-model="new_row[column.prop]"
+          v-else
         ></el-input>
       </div>
       <span slot="footer" class="dialog-footer">
@@ -45,7 +59,7 @@ export default {
       new_row: {},
       Edit: '',
       GetData: '',
-      // categorylist = ['急單', 'D11組裝', '成型組裝', 'NSD', '海外', '印刷', '重試' ]
+      categorylist: ['急單', 'D11組裝', '成型組裝', 'NSD', '海外', '印刷', '重試' ]
     }
   },
   props: {
