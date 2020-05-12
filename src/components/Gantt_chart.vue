@@ -1,10 +1,12 @@
 <template>
-  <div id="gantt_app">
-    <GSTC
-      :config="config"
-      @state="onState"
-      id="gantt"
-    />
+  <div>
+    <div id="gantt_app">
+      <GSTC
+        :config="config"
+        @state="onState"
+        id="gantt"
+      />
+    </div>
   </div>
 </template>
 
@@ -15,6 +17,45 @@ import ItemMovement from "gantt-schedule-timeline-calendar/dist/ItemMovement.plu
 import Selection from "gantt-schedule-timeline-calendar/dist/Selection.plugin.js"
 let subs = [];
 /* eslint-disable */
+const Order_template = { //工單
+  id:'',
+  ton:'',
+  machine:'',
+  mold_no:'',
+  mold_serial:'',
+  mold_hole:'',
+  mold_uph:'',
+  mold_position:'',
+  product_name:'',
+  plan_number:0,
+  plastic_part_no:'',
+  plastic_color:'',
+  machine_state:'',
+  machine_repair_time:'',
+  prodcution_time:{
+    label :'0 d 0 h 0 m',
+    min:0,
+    hour:0,
+    day:0
+  },
+  starttime: {
+    date:null,
+    time:{
+      HH: "00",
+      mm: "00",
+      ss: "00"
+    }
+  },
+  endtime:{
+    date:null,
+    time:{
+      HH: "00",
+      mm: "00",
+      ss: "00"
+    }
+  }
+}
+
 
 export default {
   name: "app",
@@ -82,7 +123,9 @@ export default {
             end: new Date('2020-03-20').getTime() + 18 * 60 * 60 * 1000
           }
         }
-      }
+      },
+      selected_order: Order_template,
+      new_order: Order_template,
     };
   },
   props:{
@@ -208,33 +251,33 @@ export default {
     onState(state) {
       this.state = state;
       // console.log(state)
-      // subs.push(
-      //   state.subscribe("config.chart.items.1", item => {
-      //     console.log("item 1 changed", item);
-      //   })
-      // );
-      // subs.push(
-      //   state.subscribe("config.list.rows.1", row => {
-      //     console.log("row 1 changed", row);
-      //   })
-      // );
-      // subs.push(
-      //   state.subscribe("config.plugin.ItemMovement", item => {
-      //     if (!item || !item.item) return;
-      //     console.log("ItemMovement", item);
-      //   })
-      // );
-      state.subscribe("config.plugin.ItemMovement", item => {
-        // console.log(state)
-          if (!item || !item.item) return;
-          let move = item.movement
-          if (move) {
-            // console.log(move)
-            if (move.moving && move.waiting) console.log('Start Moving',item.item)
-            else if (!move.moving && !move.waiting) console.log('Stop moving')
-          }
-          // console.log("ItemMovement", item.movement);
+      subs.push(
+        state.subscribe("config.chart.items.1", item => {
+          console.log("item 1 changed", item);
         })
+      );
+      subs.push(
+        state.subscribe("config.list.rows.1", row => {
+          console.log("row 1 changed", row);
+        })
+      );
+      subs.push(
+        state.subscribe("config.plugin.ItemMovement", item => {
+          if (!item || !item.item) return;
+          console.log("ItemMovement", item);
+        })
+      );
+      // state.subscribe("config.plugin.ItemMovement", item => {
+      //   // console.log(state)
+      //     if (!item || !item.item) return;
+      //     let move = item.movement
+      //     if (move) {
+      //       // console.log(move)
+      //       if (move.moving && move.waiting) console.log('Start Moving',item.item)
+      //       else if (!move.moving && !move.waiting) console.log('Stop moving')
+      //     }
+      //     // console.log("ItemMovement", item.movement);
+      //   })
     },
     click() {
       // console.log(arguments)

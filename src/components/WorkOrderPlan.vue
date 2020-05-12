@@ -55,7 +55,7 @@
             :label="line"
             :name="(index+1).toString()"
           >
-            <WOTable :name="line"/>
+            <WOTable :name="line" editable/>
             <el-card style="width: 100%; margin: 10px 0;">
               <div slot="header" class="message">
                 <span>工單詳情</span>
@@ -103,7 +103,18 @@
         </el-tabs>
       </el-tab-pane>
       <el-tab-pane label="生產甘特圖" name="second">
-        生產甘特圖
+        <FactorySelection tonlist
+          @lineSelected="handleSelect"
+          @siteSelected="siteSelect"
+        />
+        <el-button size='mini' style="margin-left: 10px;">提交</el-button>
+        <Gantt draggable v-show="line=='A 線' || (site == 'D10 - 1F') && line=='All'" line="A 線"/>
+        <Gantt draggable v-show="line=='B 線'" line="B 線"/>
+        <Gantt draggable v-show="line=='C 線'" line="C 線"/>
+        <Gantt draggable v-show="line=='D 線'" line="D 線"/>
+        <Gantt draggable v-show="line=='E 線' || (site == 'D9 - 1F') && line=='All'" line="E 線"/>
+        <Gantt draggable v-show="line=='F 線'" line="F 線"/>
+        <Gantt draggable v-show="line=='G 線'" line="G 線"/>
       </el-tab-pane>
       <el-tab-pane label="現場作業狀況" name="third">
         現場作業狀況
@@ -147,9 +158,14 @@
 
 <script>
   import WOTable from './WorkOrderTable.vue'
+  import FactorySelection from './FactorySelection.vue'
+  import Gantt from './Gantt_chart.vue'
+
   export default {
     components:{
       WOTable,
+      FactorySelection,
+      Gantt
     },
     data() {
       return {
@@ -157,13 +173,21 @@
         activeLine: '1',
         lines: ['A線', 'B線', 'C線', 'D線', 'E線', 'F線', 'G線'],
         tons: ['50','80','100','130'],
-        ton: '130'
+        ton: '130',
+        line: 'All',
+        site: 'D10 - 1F'
       };
     },
     methods: {
       /* eslint-disable */
       handleClick(tab, event) {
         console.log(tab, event);
+      },
+      handleSelect(item) {
+        this.line = item
+      },
+      siteSelect(item) {
+        this.site = item
       }
       /* eslint-enable */
     }

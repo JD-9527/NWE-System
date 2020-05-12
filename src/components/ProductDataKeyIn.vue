@@ -6,6 +6,7 @@
         <NewRowButton
           :tableInfo="tableDataInfo"
           type="dayplan"
+          @update="getTableData"
         />
         <!-- <el-button size="small" style="margin-right: 10px; position: relative;" @click="addRow">新增</el-button> -->
         <a>
@@ -146,6 +147,7 @@
         <NewRowButton
           :tableInfo="week_partInfo"
           type="weekplan"
+          @update="getTableData"
         />
         <!-- <el-button
           size="small"

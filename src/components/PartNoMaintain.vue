@@ -15,7 +15,13 @@
             <el-button @click="dataClear()" size="small">清除搜索</el-button>
           </el-col>
           <el-col :md="24" :lg="11" :xl="12" style="text-align: right;">
-            <el-button size="small" style="margin-right: 10px; position: relative;" @click="addRow">新增</el-button>
+            <!-- <el-button size="small" style="margin-right: 10px; position: relative;" @click="addRow">新增</el-button> -->
+            <NewRowButton
+              type='partno'
+              :tableInfo="tableInfo"
+              style="text-align: left;"
+              @update="getTableData"
+            />
             <a>
               <el-button size="small" class="upload" plain>選擇檔案</el-button>
               <input type="file" id="file" ref="file" @change="onChangeFileUpload()" class="change"/>
@@ -88,12 +94,14 @@
                 type="success"
                 icon="el-icon-check"
                 size="mini"
+                v-show="row.editMode"
                 @click="saveRow(row, $index)">
               </el-button>
               <el-button
                 type="info"
                 icon="el-icon-close"
                 size="mini"
+                v-show="row.editMode"
                 @click="cancelEditMode(row, $index)">
               </el-button>
              </template>
@@ -148,11 +156,14 @@
 <script>
 import EditableCell from "./EditableCell.vue";
 import DownloadButton from "./DownloadButton.vue";
+import NewRowButton from './NewRowButton.vue'
+import { dataPlasticColor, dataImportPlasticColor, dataEditPlasticColor, dataColorList } from '../api.js'
 
 export default {
   components: {
     EditableCell,
-    DownloadButton
+    DownloadButton,
+    NewRowButton
   },
   data() {
     return {
@@ -163,7 +174,11 @@ export default {
       activeName: '1',
       colorlist: [],
       loading: false,
-      file: undefined
+      file: undefined,
+      tableInfo: [
+        { prop: 'plastic_part_NO', label: '塑膠粒料號' },
+        { prop: 'plastic_color', label: '顏色'}
+      ]
     }
   },
   methods: {
@@ -183,15 +198,8 @@ export default {
       this.currentPage = currentPage;
     },
     getTableData(data) {
-      let url=''
-      if (typeof(data) != 'undefined') {
-        url='http://10.124.131.87:8880/data/plasticcolor/?plastic_part_NO='+data
-      }
-      else {
-        url='http://10.124.131.87:8880/data/plasticcolor/'
-      }
       this.loading=true
-      this.$http.get(url).then((response)=>{
+      dataPlasticColor(data).then((response)=>{
         this.loading=false
         this.tableData = response.data.data
         this.tableData = this.tableData.map(row => {
@@ -201,16 +209,6 @@ export default {
           };
         });
       })
-      // apiMachineColor().then((response)=>{
-      //   this.loading=false
-      //   this.tableData = response.data.data
-      //   this.tableData = this.tableData.map(row => {
-      //     return {
-      //       ...row,
-      //       editMode: false
-      //     };
-      //   });
-      // })
     },
     setEditMode(row, index) {
       row.editMode = true;
@@ -220,37 +218,16 @@ export default {
       this.getTableData();
     },
     saveRow(row, index) {
-      // console.log(row)
-      var vm = this
-      const url='http://10.124.131.87:8880/data/plasticcolor/'
-      var bodyFormData = new FormData();
-      bodyFormData.append('plastic_part_NO', row.plastic_part_NO);
-      bodyFormData.append('plastic_color', row.plastic_color);
-      this.$http({
-        method: 'post',
-        url: url,
-        data: bodyFormData,
-        headers: {'Content-Type': 'multipart/form-data' }
-        })
-        .then(function (response) {
-          vm.$message.success('修改成功！');
-          // 修改成功之後 刷新表格
-          this.getTableData();
-          // console.log(response);
-        })
-        .catch(function (error) {
-          let error_code = error.response.status
-          vm.$message.error('修改失敗！ Error Code: ' + error_code);
-        });
-      // apiMachineColorMaintain(bodyFormData)
-      //   .then(function (response) {
-      //     vm.$message.success('修改成功！');
-      //     // console.log(response);
-      //   })
-      //   .catch(function (response) {
-      //     vm.$message.error(response);
-      //     // console.log(response);
-      //   });
+      dataEditPlasticColor(row,'user').then((response) => {
+        this.$message.success('修改成功！');
+        // 修改成功之後 刷新表格
+        this.getTableData();
+        // console.log(response);
+      })
+      .catch((error) => {
+        let error_code = error.response.status
+        this.$message.error('修改失敗！ Error Code: ' + error_code);
+      });
       row.editMode = false;
     },
     addRow() {
@@ -262,8 +239,7 @@ export default {
       this.tableData.unshift(new_row)
     },
     getColorList() {
-      const url = 'http://10.124.131.87:8880/data/colorlist/'
-      this.$http.get(url).then((response)=>{
+      dataColorList().then((response)=>{
         let data = response.data.color
         for (let i=0;i<data.length;i++) {
           this.colorlist.push({
@@ -274,16 +250,7 @@ export default {
       })
     },
     submitForm(){
-      let formData = new FormData();
-      formData.append('file', this.file);
-      this.$http.post('http://10.124.131.87:8880/data/import/plasticcolor/',
-          formData,
-          {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        }
-      ).then((response) => {
+      dataImportPlasticColor('user',this.file).then((response) => {
         // console.log(response.data);
         if (response.status == 200) {
           // console.log(response.status)
@@ -300,7 +267,6 @@ export default {
       });
     },
     onChangeFileUpload(){
-      // console.log(this.$refs.file.files[0])
       this.file = this.$refs.file.files[0];
     }
     /* eslint-enable */

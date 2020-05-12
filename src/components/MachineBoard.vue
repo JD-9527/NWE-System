@@ -429,6 +429,7 @@
 </style>
 
 <script>
+import { overviewMachineBoard } from '../api.js'
 const legends = [
   { name:'正常', status: 0 },
   { name:'待機', status: 1 },
@@ -575,8 +576,7 @@ export default {
       }
     },
     getMachineState(line) {
-      const url='http://10.124.131.87:8880/Overview/machine/board//?line='
-      this.$http.get(url+line).then((response)=>{
+      overviewMachineBoard(line).then((response)=>{
         let data=response.data.data
         for (let i=0;i<data.length;i++) {
           let line_cate=data[i].name.slice(0,1)

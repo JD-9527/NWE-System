@@ -26,15 +26,15 @@
               align="center"
               show-overflow-tooltip
             >
-              <editable-cell 
-                :show-input="row.editMode" 
-                slot-scope="{row}" 
+              <editable-cell
+                :show-input="row.editMode"
+                slot-scope="{row}"
                 editable-component="el-select"
                 v-model="row.machine_ton"
               >
                 <span slot="content">{{row.machine_ton}}</span>
                 <template slot="edit-component-slot">
-                  <el-option 
+                  <el-option
                     v-for="(ton,index) in tonList"
                     :key="index"
                     :label="ton.label"
@@ -50,15 +50,15 @@
               width="150"
               show-overflow-tooltip
             >
-              <editable-cell 
-                :show-input="row.editMode" 
-                slot-scope="{row}" 
+              <editable-cell
+                :show-input="row.editMode"
+                slot-scope="{row}"
                 editable-component="el-select"
                 v-model="row.product_color"
               >
                 <span slot="content">{{row.product_color}}</span>
                 <template slot="edit-component-slot">
-                  <el-option 
+                  <el-option
                     v-for="(color,index) in colorlist"
                     :key="index"
                     :label="color.label"
@@ -77,32 +77,34 @@
                 icon="el-icon-edit"
                 @click="setEditMode(row, index)">
               </el-button>
-              <el-button 
-                type="success" 
+              <el-button
+                type="success"
                 icon="el-icon-check"
                 size="mini"
+                v-show="row.editMode"
                 @click="saveRow(row, index)">
               </el-button>
-              <el-button 
-                type="info" 
+              <el-button
+                type="info"
                 icon="el-icon-close"
                 size="mini"
-                @click="cancelEditMode(row, $index)">
+                v-show="row.editMode"
+                @click="cancelEditMode(row, index)">
               </el-button>
              </template>
             </el-table-column>
           </el-table>
           <div>
-            <el-pagination 
+            <el-pagination
               :hide-on-single-page='true'
-              @size-change="handleSizeChange" 
-              @current-change="handleCurrentChange" 
-              :current-page="currentPage" 
-              :page-sizes="[10,20,50]" 
-              :page-size="pagesize" 
-              layout="total, sizes,prev, pager, next" 
-              :total="tableData.length" 
-              prev-text="上一頁" 
+              @size-change="handleSizeChange"
+              @current-change="handleCurrentChange"
+              :current-page="currentPage"
+              :page-sizes="[10,20,50]"
+              :page-size="pagesize"
+              layout="total, sizes,prev, pager, next"
+              :total="tableData.length"
+              prev-text="上一頁"
               next-text="下一頁">
             </el-pagination>
           </div>
@@ -111,16 +113,17 @@
       <el-tab-pane label="前置作業時間維護" name="2">
         <el-row>
           <el-col :span="12">
-            <el-button size="mini" style="margin-right: 10px;" @click="addRow">新增</el-button>
+            <!-- <el-button size="mini" style="margin-right: 10px;" @click="addRow">新增</el-button> -->
+            <NewRowButton type='cttime' :tableInfo='columnsCT' @update="getTableDataCT"/>
             <a>
-              <el-button size="mini" style="margin-right: 5px;" class="upload" plain>選擇檔案</el-button>
+              <el-button size="small" style="margin-right: 5px;" class="upload" plain>選擇檔案</el-button>
               <input type="file" id="file" ref="file" @change="onChangeFileUpload()" class="change"/>
             </a>
             <span v-if="typeof(file) != 'undefined'" class="commit">{{ file.name }}</span>
-            <el-button 
-              size="mini" 
+            <el-button
+              size="mini"
               type="primary"
-              @click="submitForm()" 
+              @click="submitForm()"
               class="commit"
               style="margin-left: 5px;"
               :disabled="typeof(file) == 'undefined'"
@@ -168,38 +171,40 @@
                 icon="el-icon-edit"
                 @click="setEditMode(row, $index)">
               </el-button>
-              <el-button 
-                type="success" 
+              <el-button
+                type="success"
                 icon="el-icon-check"
                 size="mini"
+                v-show="row.editMode"
                 @click="saveRowCT(row, $index)">
               </el-button>
-              <el-button 
-                type="danger" 
+              <el-button
+                type="danger"
                 icon="el-icon-delete"
                 size="mini"
                 @click="openDialog(row, $index)">
               </el-button>
-              <el-button 
-                type="info" 
+              <el-button
+                type="info"
                 icon="el-icon-close"
                 size="mini"
+                v-show="row.editMode"
                 @click="cancelEditMode(row, $index)">
               </el-button>
              </template>
             </el-table-column>
           </el-table>
           <div>
-            <el-pagination 
+            <el-pagination
               :hide-on-single-page='true'
-              @size-change="handleSizeChangeCT" 
-              @current-change="handleCurrentChangeCT" 
-              :current-page="currentPageCT" 
-              :page-sizes="[10,20,50]" 
-              :page-size="pagesizeCT" 
-              layout="total, sizes,prev, pager, next" 
-              :total="tableDataCT.length" 
-              prev-text="上一頁" 
+              @size-change="handleSizeChangeCT"
+              @current-change="handleCurrentChangeCT"
+              :current-page="currentPageCT"
+              :page-sizes="[10,20,50]"
+              :page-size="pagesizeCT"
+              layout="total, sizes,prev, pager, next"
+              :total="tableDataCT.length"
+              prev-text="上一頁"
               next-text="下一頁">
             </el-pagination>
           </div>
@@ -221,7 +226,7 @@
           </span>
         </el-dialog>
       </el-tab-pane>
-    </el-tabs>  
+    </el-tabs>
   </div>
 </template>
 
@@ -229,10 +234,10 @@
 .header-row {
   font-size: 32px;
   font-weight:bold;
-} 
+}
 .sub-header-row {
-  font-size: 20px; 
-  color: #888; 
+  font-size: 20px;
+  color: #888;
   font-weight: normal;
 }
 .el-row {
@@ -260,15 +265,17 @@
 </style>
 
 <script>
-import axios from 'axios'
 import EditableCell from "./EditableCell.vue";
 import DownloadButton from "./DownloadButton.vue";
-// import { apiMachineColor } from "../api.js"
+import NewRowButton from './NewRowButton.vue'
+import { dataMachineColor, dataEditMachineColor, dataCtTime, dataEditCtTime, dataDelCtTime,
+         dataColorList, dataTonList, dataImportCtTime } from "../api.js"
 
 export default {
   components: {
       EditableCell,
-      DownloadButton
+      DownloadButton,
+      NewRowButton
   },
   data() {
     return {
@@ -302,9 +309,8 @@ export default {
   methods: {
     /* eslint-disable */
     getTableData() {
-      const url='http://10.124.131.87:8880/data/machinecolor/'
       this.loading=true
-      axios.get(url).then((response)=>{
+      dataMachineColor().then((response)=>{
         this.loading=false
         this.tableData = response.data.data
         this.tableData = this.tableData.map(row => {
@@ -314,21 +320,10 @@ export default {
           };
         });
       })
-      // apiMachineColor().then((response)=>{
-      //   this.loading=false
-      //   this.tableData = response.data.data
-      //   this.tableData = this.tableData.map(row => {
-      //     return {
-      //       ...row,
-      //       editMode: false
-      //     };
-      //   });
-      // })
     },
     getTableDataCT() {
-      const url='http://10.124.131.87:8880/data/cttime/'
       this.loading_ct=true
-      axios.get(url).then((response)=>{
+      dataCtTime().then((response)=>{
         this.loading_ct=false
         this.tableDataCT = response.data.data
         this.tableDataCT = this.tableDataCT.map(row => {
@@ -361,105 +356,44 @@ export default {
       this.getTableDataCT();
     },
     saveRow(row, index) {
-      // console.log(row)
-      var vm = this
-      const url='http://10.124.131.87:8880/data/machinecolor/'
-      var bodyFormData = new FormData();
-      bodyFormData.append('machine_NO', row.machine_NO);
-      bodyFormData.append('machine_ton', row.machine_ton);
-      bodyFormData.append('product_color', row.product_color);
-      axios({
-        method: 'post',
-        url: url,
-        data: bodyFormData,
-        headers: {'Content-Type': 'multipart/form-data' }
-        })
-        .then(function (response) {
-          vm.$message.success('修改成功！');
-          // 修改成功之後 刷新表格
-          this.getTableData();
-          // console.log(response);
-        })
-        .catch(function (error) {
-          let error_code = error.response.status
-          vm.$message.error('修改失敗！ Error Code: ' + error_code);
-        });
-      // apiMachineColorMaintain(bodyFormData)
-      //   .then(function (response) {
-      //     vm.$message.success('修改成功！');
-      //     // console.log(response);
-      //   })
-      //   .catch(function (response) {
-      //     vm.$message.error(response);
-      //     // console.log(response);
-      //   });
+      dataEditMachineColor(row,'user').then((response) => {
+        this.$message.success('修改成功！');
+        // 修改成功之後 刷新表格
+        this.getTableData();
+        // console.log(response);
+      })
+      .catch((error) => {
+        let error_code = error.response.status
+        this.$message.error('修改失敗！ Error Code: ' + error_code);
+      });
       row.editMode = false;
     },
-    addRow() {
-      let new_row = {
-        machine_ton: '',
-        mold_cttime: '',
-        editMode: true
-      }
-      this.tableDataCT.unshift(new_row)
-    },
     deleteRow(row, index) {
-      // console.log(row,index)
-      const url='http://10.124.131.87:8880/data/delcttime/'
-      var bodyFormData = new FormData();
-      bodyFormData.append('machine_ton', row.machine_ton);
-      axios({
-        method: 'post',
-        url: url,
-        data: bodyFormData,
-        headers: {'Content-Type': 'multipart/form-data' }
-        })
-        .then((response) => {
-          this.$message.success('刪除成功！');
-          // 刪除成功之後 刷新表格
-          this.getTableDataCT();
-          // console.log(response);
-          // this.tableDataCT.splice(index, 1)
-          this.dialogVisible = false
-        })
-        .catch((error) => {
-          let error_code = error.response.status
-          this.$message.error('刪除失敗！ Error Code: ' + error_code);
-        });
+      dataDelCtTime(row.machine_ton).then((response) => {
+        this.$message.success('刪除成功！');
+        // 刪除成功之後 刷新表格
+        this.getTableDataCT();
+        // console.log(response);
+        // this.tableDataCT.splice(index, 1)
+        this.dialogVisible = false
+      })
+      .catch((error) => {
+        let error_code = error.response.status
+        this.$message.error('刪除失敗！ Error Code: ' + error_code);
+      });
     },
     saveRowCT(row, index) {
-      // console.log(row)
-      var vm = this
-      const url='http://10.124.131.87:8880/data/cttime/'
-      var bodyFormData = new FormData();
-      bodyFormData.append('machine_ton', row.machine_ton);
-      bodyFormData.append('mold_cttime', row.mold_cttime);
-      axios({
-        method: 'post',
-        url: url,
-        data: bodyFormData,
-        headers: {'Content-Type': 'multipart/form-data' }
-        })
-        .then(function (response) {
-          vm.$message.success('修改成功！');
-          // 修改成功之後 刷新表格
-          this.getTableDataCT();
-          // console.log(response);
-        })
-        .catch(function (error) {
-          console.log(error.response.status);
-          let error_code = error.response.status
-          vm.$message.error('修改失敗！ Error Code: ' + error_code);
-        });
-      // apiMachineColorMaintain(bodyFormData)
-      //   .then(function (response) {
-      //     vm.$message.success('修改成功！');
-      //     // console.log(response);
-      //   })
-      //   .catch(function (response) {
-      //     vm.$message.error(response);
-      //     // console.log(response);
-      //   });
+      dataEditCtTime(row,'user').then((response) => {
+        this.$message.success('修改成功！');
+        // 修改成功之後 刷新表格
+        this.getTableDataCT();
+        // console.log(response);
+      })
+      .catch((error) => {
+        console.log(error.response.status);
+        let error_code = error.response.status
+        this.$message.error('修改失敗！ Error Code: ' + error_code);
+      });
       row.editMode = false;
     },
     openDialog(row,index) {
@@ -468,8 +402,7 @@ export default {
       this.dialogMessageRow = index
     },
     getColorList() {
-      const url = 'http://10.124.131.87:8880/data/colorlist/'
-      this.$http.get(url).then((response)=>{
+      dataColorList().then((response)=>{
         let data = response.data.color
         for (let i=0;i<data.length;i++) {
           this.colorlist.push({
@@ -477,11 +410,10 @@ export default {
             label: data[i].toString()
           })
         }
-      }) 
+      })
     },
     getTonList() {
-      const url = 'http://10.124.131.87:8880/data/tonlist/'
-      this.$http.get(url).then((response)=>{
+      dataTonList().then((response)=>{
         let data = response.data.ton_list
         for (let i=0;i<data.length;i++) {
           this.tonList.push({
@@ -489,19 +421,10 @@ export default {
             label: data[i].toString()
           })
         }
-      }) 
+      })
     },
     submitForm(){
-      let formData = new FormData();
-      formData.append('file', this.file);
-      this.$http.post('http://10.124.131.87:8880/data/import/cttime/',
-          formData,
-          {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        }
-      ).then((response) => {
+      dataImportCtTime('import',this.file).then((response) => {
         console.log(response.data);
         if (response.status == 200) {
           console.log(response)
@@ -509,7 +432,7 @@ export default {
           this.getTableDataCT();
         }
         else {
-          this.$message.error(error.response)
+          this.$message.error(response.status)
         }
       })
       .catch((error) => {

@@ -52,7 +52,8 @@
 </template>
 
 <script>
-  import axios from 'axios'
+  // import axios from 'axios'
+  import { dataMoldSearch } from '../api.js'
   export default {
     data() {
       return {
@@ -83,9 +84,9 @@
           this.$message.error('請輸入要搜尋的模號！');
         }
         else {
-          const url='http://10.124.131.87:8880/data/mold/?moldno='
+          // const url='http://10.124.131.87:8880/data/mold/?moldno='
           this.loading = true
-          axios.get(url+mold).then((response)=>{
+          dataMoldSearch(mold).then((response)=>{
             this.loading = false
             this.tableData = response.data.data
           })

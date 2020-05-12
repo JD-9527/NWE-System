@@ -31,6 +31,19 @@
             :value="item"
           ></el-option>
         </el-select>
+        <el-select
+          v-model="new_row[column.prop]"
+          placeholder="請選擇"
+          v-if="column.prop == 'plastic_color'"
+          size='small'
+        >
+          <el-option
+            v-for="(item,index) in colorlist"
+            :key="index"
+            :label="item.label"
+            :value="item.value"
+          ></el-option>
+        </el-select>
         <el-input
           :placeholder="column.label"
           size='small'
@@ -48,18 +61,17 @@
 </template>
 
 <script>
-import { dataEditWeekPlan, dataEditDayPlan, dataWeekPlan, dataDayPlan } from '../api.js'
+import { dataEditWeekPlan, dataEditDayPlan, dataEditCtTime, dataEditPlasticColor,dataColorList } from '../api.js'
 
   /* eslint-disable */
 export default {
   data() {
     return {
       dialog: false,
-      // tableInfo: [],
       new_row: {},
       Edit: '',
-      GetData: '',
-      categorylist: ['急單', 'D11組裝', '成型組裝', 'NSD', '海外', '印刷', '重試' ]
+      categorylist: ['急單', 'D11組裝', '成型組裝', 'NSD', '海外', '印刷', '重試' ],
+      colorlist: []
     }
   },
   props: {
@@ -77,36 +89,49 @@ export default {
     initNewRow() {
       let row = ''
       for (row of this.tableInfo) this.new_row[row.prop] = ''
-      // console.log(this.new_row)
     },
     getEditFunct() {
       if (this.type == 'dayplan') {
-        this.GetData = dataDayPlan
         this.Edit = dataEditDayPlan
       }
       else if (this.type == 'weekplan') {
-        this.GetData = dataWeekPlan
         this.Edit = dataEditWeekPlan
+      }
+      else if (this.type == 'cttime') {
+        this.Edit = dataEditCtTime
+      }
+      else if (this.type == 'partno') {
+        this.Edit = dataEditPlasticColor
       }
     },
     comfirmEdit() {
       console.log(this.new_row)
       this.Edit(this.new_row,'user').then((response)=>{
         this.$message.success('新增成功！')
-        this.GetData()
+        this.$emit('update')
         this.dialog = false
         this.new_row = {}
-        // console.log('SUCCESS')
       })
       .catch((error)=>{
         this.$message.error('新增失敗！')
         console.log(error)
       })
+    },
+    getColorList() {
+      dataColorList().then((response)=>{
+        let data = response.data.color
+        for (let i=0;i<data.length;i++) {
+          this.colorlist.push({
+            value: data[i].toString(),
+            label: data[i].toString()
+          })
+        }
+      })
     }
   },
   mounted() {
     this.getEditFunct()
-    // this.initNewRow()
+    this.getColorList()
   }
 }
 </script>

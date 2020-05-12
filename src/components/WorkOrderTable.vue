@@ -107,9 +107,13 @@
           :show-input="row.editMode"
           slot-scope="{row}"
           v-model="row.mold_count"
+          v-if="editable"
         >
           <span slot="content">{{row.mold_count}}</span>
         </editable-cell>
+        <template v-else slot-scope="{row}">
+          <span>{{ row.mold_count }}</span>
+        </template>
       </el-table-column>
       <el-table-column
         prop="mold_pos"
@@ -131,13 +135,17 @@
         width="100"
         align="center"
       >
-      <editable-cell
-        :show-input="row.editMode"
-        slot-scope="{row}"
-        v-model="row.standard_cycle"
-      >
-        <span slot="content">{{row.standard_cycle}}</span>
-      </editable-cell>
+        <editable-cell
+          :show-input="row.editMode"
+          slot-scope="{row}"
+          v-model="row.standard_cycle"
+          v-if="editable"
+        >
+          <span slot="content">{{row.standard_cycle}}</span>
+        </editable-cell>
+        <template v-else slot-scope="{row}">
+          <span>{{ row.standard_cycle }}</span>
+        </template>
       </el-table-column>
       <el-table-column
         label="操作"
@@ -184,25 +192,16 @@ export default {
       EditableCell,
   },
   data: () => ({
-    sites: [
-      { value: 'D9 - 1F' },
-      { value: 'D10 - 1F' }
-    ],
     lines: [],
-    tons: [
-      { value: 'All' },
-      { value: '50' },
-      { value: '80' },
-      { value: '100' },
-      { value: '130' }
-    ],
-    site: 'D10 - 1F',
-    line: 'All',
     ton: 'All',
     tableData: []
   }),
   props: {
     name: String,
+    editable: {
+      type: Boolean,
+      default: false
+    }
   },
   watch: {
     site: function() {
@@ -212,25 +211,6 @@ export default {
   },
   methods: {
     /* eslint-disable */
-    loadLine(site) {
-      if (site == 'D9 - 1F') {
-        return [
-          {value: 'All'},
-          {value: 'E 線'},
-          {value: 'F 線'},
-          {value: 'G 線'},
-        ];
-      }
-      else {
-        return [
-          {value: 'All'},
-          {value: 'A 線'},
-          {value: 'B 線'},
-          {value: 'C 線'},
-          {value: 'D 線'}
-        ];
-      }
-    },
     loadTable() {
       let newTable = []
       for (let i=0;i<10;i++) {
@@ -291,7 +271,6 @@ export default {
     /* eslint-enable */
   },
   mounted() {
-    this.lines = this.loadLine()
     this.tableData = this.loadTable()
   }
 }
