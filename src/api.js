@@ -15,6 +15,7 @@ const NWEData = axios.create({
   baseURL: 'http://10.124.131.87:8880/data/'
 });
 
+// 生產狀態
 export const overviewMachineStateCount = (field) => NWEOverview.get('/machine/statecount/?field='+field)
 export const overviewMachineStartRate = (field) => NWEOverview.get('/machine/state/?field='+field)
 export const overviewMachineBoard = (field) => NWEOverview.get('/machine/board/?field='+field)
@@ -23,19 +24,20 @@ export const overviewMachineBoard = (field) => NWEOverview.get('/machine/board/?
 export const dataMoldSearch = (moldno) => NWEData.get('/mold/',{ params: { moldno: moldno } })
 
 // 機台維護
-export const dataMachineColorSearch = () => NWEData.get('/machinecolor/')
-export const dataImportMachine = (user,files) => {
+export const dataMachineColor = () => NWEData.get('/machinecolor/')
+export const dataImportMachine = (user,file) => {
   let formData = new FormData();
   formData.append('user', user)
-  formData.append('files', files)
+  formData.append('file', file)
   return NWEData.post('/import/machine/', formData, { headers: {
         'Content-Type': 'multipart/form-data'
       }});
 }
-export const dataEditMachineColor = (machine_NO, product_color, user) => {
+export const dataEditMachineColor = (row, user) => {
   let formData = new FormData();
-  formData.append('machine_NO', machine_NO)
-  formData.append('product_color', product_color)
+  formData.append('machine_NO', row.machine_NO)
+  formData.append('machine_ton', row.machine_ton)
+  formData.append('product_color', row.product_color)
   formData.append('user', user)
   return NWEData.post('/machinecolor/', formData, { headers: {
         'Content-Type': 'multipart/form-data'
@@ -44,18 +46,18 @@ export const dataEditMachineColor = (machine_NO, product_color, user) => {
 
 // 前置作業時間
 export const dataCtTime = () => NWEData.get('/cttime/')
-export const dataImportCtTime = (user,files) => {
+export const dataImportCtTime = (user,file) => {
   let formData = new FormData();
   formData.append('user', user)
-  formData.append('files', files)
+  formData.append('file', file)
   return NWEData.post('/import/cttime/', formData, { headers: {
         'Content-Type': 'multipart/form-data'
       }});
 }
-export const dataEditCtTime = (machine_NO, product_color, user) => {
+export const dataEditCtTime = (row, user) => {
   let formData = new FormData();
-  formData.append('machine_NO', machine_NO)
-  formData.append('product_color', product_color)
+  formData.append('machine_ton', row.machine_ton)
+  formData.append('mold_cttime', row.mold_cttime)
   formData.append('user', user)
   return NWEData.post('/cttime/', formData, { headers: {
         'Content-Type': 'multipart/form-data'
@@ -70,19 +72,22 @@ export const dataDelCtTime = (machine_ton) => {
 }
 
 // 料號維護
-export const dataPlasticColor = () => NWEData.get('/plasticcolor/')
-export const dataImportPlasticColor = (user,files) => {
+export const dataPlasticColor = (plastic_part_NO) => {
+  if (typeof(plastic_part_NO) == 'undefined') return NWEData.get('/plasticcolor/')
+  else return NWEData.get('/plasticcolor/?plastic_part_NO='+plastic_part_NO)
+}
+export const dataImportPlasticColor = (user,file) => {
   let formData = new FormData();
   formData.append('user', user)
-  formData.append('files', files)
+  formData.append('file', file)
   return NWEData.post('/import/plasticcolor/', formData, { headers: {
         'Content-Type': 'multipart/form-data'
       }});
 }
-export const dataEditPlasticColor = (machine_NO, product_color, user) => {
+export const dataEditPlasticColor = (row, user) => {
   let formData = new FormData();
-  formData.append('machine_NO', machine_NO)
-  formData.append('product_color', product_color)
+  formData.append('plastic_part_NO', row.plastic_part_NO)
+  formData.append('plastic_color', row.plastic_color)
   formData.append('user', user)
   return NWEData.post('/plasticcolor/', formData, { headers: {
         'Content-Type': 'multipart/form-data'
@@ -100,10 +105,10 @@ export const dataFileDownload = (filetype) => NWEData.get('/filedown/?filetype='
 
 // 生產排程：急單
 export const dataDayPlan = () => NWEData.get('/dayplan/')
-export const dataImportDayPlan = (user,files) => {
+export const dataImportDayPlan = (user,file) => {
   let formData = new FormData();
   formData.append('user', user)
-  formData.append('file', files)
+  formData.append('file', file)
   return NWEData.post('/import/dayplan/', formData, { headers: {
         'Content-Type': 'multipart/form-data'
       }});
@@ -131,10 +136,10 @@ export const dataDelDayPlan = (sec_Part_NO) => {
 
 // 生產排程：周料號
 export const dataWeekPlan = () => NWEData.get('/weekplan/')
-export const dataImportWeekPlan = (user,files) => {
+export const dataImportWeekPlan = (user,file) => {
   let formData = new FormData();
   formData.append('user', user)
-  formData.append('file', files)
+  formData.append('file', file)
   return NWEData.post('/import/weekplan/', formData, { headers: {
         'Content-Type': 'multipart/form-data'
       }});
