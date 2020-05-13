@@ -130,12 +130,10 @@
           <div>
             <el-pagination
               :hide-on-single-page='true'
-              @size-change="handleSizeChange"
               @current-change="handleCurrentChange"
-              :current-page="currentPage"
-              :page-sizes="[10,20,50]"
-              :page-size="pagesize"
-              layout="total, sizes,prev, pager, next"
+              :current-page="dayCurrentPage"
+              :page-size="pageSize"
+              layout="total, prev, pager, next"
               :total="tableData.length"
               prev-text="上一頁"
               next-text="下一頁">
@@ -149,11 +147,6 @@
           type="weekplan"
           @update="getTableData"
         />
-        <!-- <el-button
-          size="small"
-          style="margin-right: 10px; position: relative;"
-          @click="addRow"
-        >新增</el-button> -->
         <a>
           <el-button size="small" class="upload" plain>選擇檔案</el-button>
           <input type="file" id="file2" ref="file2" @change="onChangeFileUpload()" class="change"/>
@@ -170,7 +163,7 @@
         <DownloadButton file_type="weekplan" class="commit"/>
         <el-row>
           <el-table
-            :data="week_part_no"
+            :data="week_part_no.slice((currentPage-1)*pageSize,currentPage*pageSize)"
             style="width: 100%"
             :max-height="650"
             v-loading="loading"
@@ -232,13 +225,12 @@
           <div>
             <el-pagination
               :hide-on-single-page='true'
-              @size-change="handleSizeChange"
               @current-change="handleCurrentChange"
               :current-page="currentPage"
               :page-sizes="[10,20,50]"
-              :page-size="pagesize"
-              layout="total, sizes,prev, pager, next"
-              :total="tableData.length"
+              :page-size="pageSize"
+              layout="total, prev, pager, next"
+              :total="week_part_no.length"
               prev-text="上一頁"
               next-text="下一頁">
             </el-pagination>
@@ -296,7 +288,9 @@ export default {
       tableData: [],    //急單、其他資料
       input: '',
       currentPage: 1, //默认显示页面为1
-      pagesize: 10, //    每页的数据条数
+      dayCurrentPage: 1,
+      pageSize: 10, //    每页的数据条数
+
       activeName: '1',
       categorylist: [],
       loading: false,
@@ -325,11 +319,12 @@ export default {
       this.getTableData()
     },
     handleSizeChange: function(size) {
-      this.pagesize = size;
+      this.pageSize = size;
     },
     //点击第几页
     handleCurrentChange: function(currentPage) {
-      this.currentPage = currentPage;
+      if (this.activeName == '1') this.dayCurrentPage = currentPage
+      else this.currentPage = currentPage;
     },
     getCategoryList() {
       this.categorylist = ['急單', 'D11組裝', '成型組裝', 'NSD', '海外', '印刷', '重試' ]
