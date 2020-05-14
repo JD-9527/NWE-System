@@ -15,6 +15,7 @@ import GSTC from "vue-gantt-schedule-timeline-calendar";
 import Gantt from "gantt-schedule-timeline-calendar"
 import ItemMovement from "gantt-schedule-timeline-calendar/dist/ItemMovement.plugin.js"
 import Selection from "gantt-schedule-timeline-calendar/dist/Selection.plugin.js"
+import ItemHold from 'gantt-schedule-timeline-calendar/dist/ItemHold.plugin.js'
 let subs = [];
 /* eslint-disable */
 const Order_template = { //工單
@@ -164,6 +165,7 @@ export default {
             collisionDetection: true
           }),
           Selection(),
+          ItemHold()
         ],
         height: 700,
         list: {
