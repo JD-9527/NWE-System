@@ -3,7 +3,7 @@
     <div class="header-row">
       工單計畫
     </div>
-    <el-tabs v-model="activeName" @tab-click="handleClick">
+    <el-tabs v-model="activeName">
       <el-tab-pane label="工單報表" name="first">
         <el-tabs v-model="activeLine" type="card" @tab-click="handleClick">
           <div>
@@ -180,9 +180,6 @@
     },
     methods: {
       /* eslint-disable */
-      handleClick(tab, event) {
-        console.log(tab, event);
-      },
       handleSelect(item) {
         this.line = item
       },

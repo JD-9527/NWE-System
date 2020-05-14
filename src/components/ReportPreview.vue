@@ -1,7 +1,8 @@
 <template>
   <div>
+    <!-- .slice((currentPage-1)*pageSize,currentPage*pageSize) -->
     <el-table
-      :data="tableData.filter(data => searchLine == 'All' || data.machine_NO.includes(searchLine[0]))"
+      :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize).filter(data => searchLine == 'All' || data.machine_NO.includes(searchLine[0]))"
       style="width: 100%"
     >
       <el-table-column
@@ -35,14 +36,16 @@
       <el-table-column
         prop="plan_s_time"
         label="起始時間"
-        width="100"
+        width="120"
+        show-overflow-tooltip
         align="center"
       >
       </el-table-column>
       <el-table-column
         prop="plan_e_time"
         label="結束時間"
-        width="100"
+        width="120"
+        show-overflow-tooltip
         align="center"
       >
       </el-table-column>
@@ -158,6 +161,19 @@
         </el-button>
        </template>
       </el-table-column>
+      <div>
+        <el-pagination
+          :hide-on-single-page='true'
+          @current-change="handleCurrentChange"
+          :current-page="currentPage"
+          :page-sizes="[10,20,50]"
+          :page-size="pageSize"
+          layout="total, prev, pager, next"
+          :total="tableData.length"
+          prev-text="上一頁"
+          next-text="下一頁">
+        </el-pagination>
+      </div>
     </el-table>
   </div>
 </template>
@@ -173,7 +189,9 @@ export default {
   data: () => ({
     tableData: [],
     tableData_o: [], // 原始數據
-    searchLine: 'All'
+    searchLine: 'All',
+    pageSize: 10,
+    currentPage: 1,
   }),
   props: {
     field: String,
@@ -234,6 +252,9 @@ export default {
     },
     setEditMode(row, index) {
       row.editMode = true;
+    },
+    handleCurrentChange: function(currentPage) {
+      this.currentPage = currentPage
     },
     /* eslint-enable */
   },

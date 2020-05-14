@@ -174,6 +174,20 @@
        </template>
       </el-table-column>
     </el-table>
+    <div>
+      <el-pagination
+        :hide-on-single-page='true'
+        @current-change="handleCurrentChange"
+        :current-page="currentPage"
+        :page-size="pageSize"
+        layout="prev, pager, next"
+        :total="tableData.length"
+        prev-text="Prev"
+        next-text="Next"
+        class='dark-btn'
+      >
+      </el-pagination>
+    </div>
   </div>
 </template>
 
@@ -194,7 +208,9 @@ export default {
   data: () => ({
     lines: [],
     ton: 'All',
-    tableData: []
+    tableData: [],
+    currentPage: 1,
+    pageSize: 10,
   }),
   props: {
     name: String,
@@ -267,6 +283,10 @@ export default {
         return 'safe-row';
       }
       return '';
+    },
+    handleCurrentChange: function(currentPage) {
+      this.currentPage = currentPage;
+      /*console.log(this.currentPage) */
     },
     /* eslint-enable */
   },
