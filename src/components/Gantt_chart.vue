@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-button @click="dialogVisible = true">新增</el-button>
+    <el-button @click="dialogVisible = true" v-if="draggable">新增</el-button>
     <div v-show="holding">
       ID: {{selected_order.id}}, Label: {{selected_order.label}}, RowID: {{selected_order.rowId}}
     </div>
@@ -21,9 +21,9 @@
     >
       <span>id</span>
       <el-input v-model="new_row.id"></el-input>
-      <span>label</span>
+      <span>名稱</span>
       <el-input v-model="new_row.label"></el-input>
-      <span>rowId</span>
+      <span>行數</span>
       <el-input v-model="new_row.rowId"></el-input>
       <span>start</span>
       <el-input v-model="new_row.time.start"></el-input>
@@ -43,6 +43,7 @@ import Gantt from "gantt-schedule-timeline-calendar"
 import ItemMovement from "gantt-schedule-timeline-calendar/dist/ItemMovement.plugin.js"
 // import Selection from "gantt-schedule-timeline-calendar/dist/Selection.plugin.js"
 import ItemHold from 'gantt-schedule-timeline-calendar/dist/ItemHold.plugin.js'
+import $ from 'jquery';
 let subs = [];
 /* eslint-disable */
 const Order_template = { //工單
@@ -250,7 +251,7 @@ export default {
         ],
         height: 700,
         list: {
-          rows: this.rows,
+          rows: $.extend(true, {}, this.rows),
           columns: this.columns,
           toggle: {
             display: false
@@ -367,21 +368,26 @@ export default {
     },
     addRow(){
       // this.dialogVisible = true
-      this.chart_items[this.new_row.id] = {
+      this.$set(this.chart_items,this.new_row.id,{
         id: this.new_row.id,
         label: this.new_row.label,
         rowId: this.new_row.rowId,
         time: {
           start: new Date(this.new_row.time.start).getTime(),
           end: new Date(this.new_row.time.end).getTime() + 24 * 60 * 60 * 1000
-        }
-      }
-      // this.chart_items[this.new_row.id]['id'] = this.new_row.id
-      // this.chart_items[this.new_row.id]['label'] = this.new_row.label
-      // this.chart_items[this.new_row.id]['rowId'] = this.new_row.rowId
-      // this.chart_items[this.new_row.id]['time'] = { start: 0, end: 0 }
-      // this.chart_items[this.new_row.id]['time'].start = new Date(this.new_row.time.start).getTime()
-      // this.chart_items[this.new_row.id]['time'].end = new Date(this.new_row.time.end).getTime() + 24 * 60 * 60 * 1000
+        },
+        style: item_style
+      })
+      // this.chart_items[this.new_row.id] = {
+      //   id: this.new_row.id,
+      //   label: this.new_row.label,
+      //   rowId: this.new_row.rowId,
+      //   time: {
+      //     start: new Date(this.new_row.time.start).getTime(),
+      //     end: new Date(this.new_row.time.end).getTime() + 24 * 60 * 60 * 1000
+      //   }
+      // }
+      // this.$forceUpdate()
       this.dialogVisible = false
       console.log(this.chart_items)
     }
