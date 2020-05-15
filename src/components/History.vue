@@ -1,90 +1,93 @@
 <template>
-  <el-tabs v-model="activeName">
-    <el-tab-pane label="週料號" name="first">
-      <div class="sub-title select">年</div>
-      <el-select
-        size='mini'
-        v-model="year"
-        style="width: 120px;"
-        placeholder=""
-      >
-        <el-option
-          v-for="item in year_list"
-          :key="item"
-          :label="item"
-          :value="item"
-        ></el-option>
-      </el-select>
-      <div class="sub-title select">週次</div>
-      <el-select
-        size='mini'
-        v-model="week"
-        style="width: 120px;"
-        placeholder=""
-      >
-        <el-option
-          v-for="item in week_list"
-          :key="item"
-          :label="item"
-          :value="item"
-        ></el-option>
-      </el-select>
-      <div class="sub-title select">料號</div>
-      <el-input
-        size='mini'
-        v-model="part"
-        style="width: 200px;"
-      >
-      </el-input>
-      <el-button size='mini' style="margin-left: 10px;">查詢</el-button>
-      <el-table
-        :data="weekTableData"
-        style="width: 100%"
-        empty-text="No Data"
-      >
-        <el-table-column
-          v-for="column in weekTableInfo"
-          :key="column.label"
-          :prop="column.prop"
-          :label="column.label"
-          align="center"
-        ></el-table-column>
-      </el-table>
-    </el-tab-pane>
-    <el-tab-pane label="工單總結報表" name="second">
-      <FactorySelection tonlist/>
-      <div class="sub-title select">料號</div>
-      <el-input
-        size='mini'
-        v-model="part"
-        style="width: 200px;"
-      >
-      </el-input>
-      <div class="sub-title select">日期</div>
-      <el-date-picker
-        v-model="start_end"
-        type="daterange"
-        size="mini"
-        value-format="yyyy-MM-dd"
-        @change="date"
-        style="width: 250px;"
-      ></el-date-picker>
-      <el-button size='mini' style="margin-left: 10px;">查詢</el-button>
-      <el-table
-        :data="reportTableData"
-        style="width: 100%"
-        empty-text="No Data"
-      >
-        <el-table-column
-          v-for="column in reportTableInfo"
-          :key="column.label"
-          :prop="column.prop"
-          :label="column.label"
-          align="center"
-        ></el-table-column>
-      </el-table>
-    </el-tab-pane>
-  </el-tabs>
+  <div>
+    <div class="header-row">歷史資料查詢</div>
+    <el-tabs v-model="activeName">
+      <el-tab-pane label="週料號" name="first">
+        <div class="sub-title select">年</div>
+        <el-select
+          size='mini'
+          v-model="year"
+          style="width: 120px;"
+          placeholder=""
+        >
+          <el-option
+            v-for="item in year_list"
+            :key="item"
+            :label="item"
+            :value="item"
+          ></el-option>
+        </el-select>
+        <div class="sub-title select">週次</div>
+        <el-select
+          size='mini'
+          v-model="week"
+          style="width: 120px;"
+          placeholder=""
+        >
+          <el-option
+            v-for="item in week_list"
+            :key="item"
+            :label="item"
+            :value="item"
+          ></el-option>
+        </el-select>
+        <div class="sub-title select">料號</div>
+        <el-input
+          size='mini'
+          v-model="part"
+          style="width: 200px;"
+        >
+        </el-input>
+        <el-button size='mini' style="margin-left: 10px;">查詢</el-button>
+        <el-table
+          :data="weekTableData"
+          style="width: 100%"
+          empty-text="No Data"
+        >
+          <el-table-column
+            v-for="column in weekTableInfo"
+            :key="column.label"
+            :prop="column.prop"
+            :label="column.label"
+            align="center"
+          ></el-table-column>
+        </el-table>
+      </el-tab-pane>
+      <el-tab-pane label="工單總結報表" name="second">
+        <FactorySelection tonlist/>
+        <div class="sub-title select">料號</div>
+        <el-input
+          size='mini'
+          v-model="part"
+          style="width: 200px;"
+        >
+        </el-input>
+        <div class="sub-title select">日期</div>
+        <el-date-picker
+          v-model="start_end"
+          type="daterange"
+          size="mini"
+          value-format="yyyy-MM-dd"
+          @change="date"
+          style="width: 250px;"
+        ></el-date-picker>
+        <el-button size='mini' style="margin-left: 10px;">查詢</el-button>
+        <el-table
+          :data="reportTableData"
+          style="width: 100%"
+          empty-text="No Data"
+        >
+          <el-table-column
+            v-for="column in reportTableInfo"
+            :key="column.label"
+            :prop="column.prop"
+            :label="column.label"
+            align="center"
+          ></el-table-column>
+        </el-table>
+      </el-tab-pane>
+    </el-tabs>
+  </div>
 </template>
 
 <script>
