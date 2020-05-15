@@ -16,6 +16,7 @@ import ElectricSavingMachine from './components/ElectricSavingMachine'
 import PlanPreview from './components/PlanPreview'
 import WorkOrderPlan from './components/WorkOrderPlan'
 import DataKeyIn from './components/ProductDataKeyIn'
+import History from './components/History'
 
 Vue.use(VueRouter);
 
@@ -45,6 +46,7 @@ const routes = [
       { path: '/productSchedule/data_key_in' , component: DataKeyIn },
       { path: '/productSchedule/plan_preview' , component: PlanPreview },
       { path: '/productSchedule/work_order_plan' , component: WorkOrderPlan },
+      { path: '/productSchedule/history' , component: History },
       { path: '/productSchedule/*' , redirect: '/error/404' },
     ],
   },
