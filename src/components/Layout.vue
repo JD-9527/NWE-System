@@ -56,7 +56,7 @@
             <el-menu-item index="/productSchedule/data_key_in">資料輸入</el-menu-item>
             <el-menu-item index="/productSchedule/plan_preview">計畫預覽</el-menu-item>
             <el-menu-item index="/productSchedule/work_order_plan">工單計畫</el-menu-item>
-            <el-menu-item index="/productSchedule/3-4">其他查詢</el-menu-item>
+            <el-menu-item index="/productSchedule/history">歷史查詢</el-menu-item>
           </el-submenu>
           <el-submenu index="4">
             <template slot="title">
