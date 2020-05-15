@@ -5,8 +5,9 @@
     </div>
     <el-tabs v-model="activeName">
       <el-tab-pane label="工單報表" name="first">
-        <el-tabs v-model="activeLine" type="card" @tab-click="handleClick">
-          <div>
+        <el-tabs v-model="activeLine" type="card">
+          <div style="position: relative; top: 10px;">
+            <NewRowButton :tableInfo="tableInfo"/>
             <div style="width: 50%; display: inline-block;"></div>
             <div class="sub-title select">噸位</div>
             <el-select
@@ -109,12 +110,12 @@
         />
         <el-button size='mini' style="margin-left: 10px;">提交</el-button>
         <Gantt draggable v-show="line=='A 線' || (site == 'D10 - 1F') && line=='All'" line="A 線"/>
-        <Gantt draggable v-show="line=='B 線'" line="B 線"/>
+       <!--  <Gantt draggable v-show="line=='B 線'" line="B 線"/>
         <Gantt draggable v-show="line=='C 線'" line="C 線"/>
         <Gantt draggable v-show="line=='D 線'" line="D 線"/>
         <Gantt draggable v-show="line=='E 線' || (site == 'D9 - 1F') && line=='All'" line="E 線"/>
         <Gantt draggable v-show="line=='F 線'" line="F 線"/>
-        <Gantt draggable v-show="line=='G 線'" line="G 線"/>
+        <Gantt draggable v-show="line=='G 線'" line="G 線"/> -->
       </el-tab-pane>
       <el-tab-pane label="現場作業狀況" name="third">
         現場作業狀況
@@ -160,11 +161,13 @@
   import WOTable from './WorkOrderTable.vue'
   import FactorySelection from './FactorySelection.vue'
   import Gantt from './Gantt_chart.vue'
+  import NewRowButton from './NewRowButton.vue'
 
   export default {
     components:{
       WOTable,
       FactorySelection,
+      NewRowButton,
       Gantt
     },
     data() {
@@ -175,7 +178,26 @@
         tons: ['50','80','100','130'],
         ton: '130',
         line: 'All',
-        site: 'D10 - 1F'
+        site: 'D10 - 1F',
+        tableInfo: [
+          {prop: 'ton',label: '噸位'},
+          {prop: 'number',label: '機台號'},
+          {prop: 'color',label: '當前顏色'},
+          {prop: 'ch_time',label: '上下模時間'},
+          {prop: 'start_time',label: '起始時間'},
+          {prop: 'end_time',label: '結束時間'},
+          {prop: 'name',label: '品名'},
+          {prop: 'part_num',label: '料號'},
+          {prop: 'work_num',label: '工令號'},
+          {prop: 'plastic_num',label: '塑膠料號'},
+          {prop: 'count',label: '數量'},
+          {prop: 'mold_num',label: '模號'},
+          {prop: 'mold_seq',label: '模序'},
+          {prop: 'mold_count',label: '模穴術'},
+          {prop: 'mold_pos',label: '模具儲位'},
+          {prop: 'plan_time',label: '計畫工時'},
+          {prop: 'standard_cycle',label: '標準週期'},
+        ]
       };
     },
     methods: {

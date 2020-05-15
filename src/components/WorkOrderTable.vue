@@ -163,13 +163,21 @@
           type="success"
           icon="el-icon-check"
           size="mini"
+          v-show="row.editMode"
           @click="saveRow(row, index)">
         </el-button>
         <el-button
           type="info"
           icon="el-icon-close"
           size="mini"
+          v-show="row.editMode"
           @click="cancelEditMode(row, index)">
+        </el-button>
+        <el-button
+          type="danger"
+          icon="el-icon-delete"
+          size="mini"
+        >
         </el-button>
        </template>
       </el-table-column>
