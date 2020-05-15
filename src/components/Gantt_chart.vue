@@ -1,12 +1,39 @@
 <template>
   <div>
+    <el-button @click="dialogVisible = true">新增</el-button>
+    <div v-show="holding">
+      ID: {{selected_order.id}}, Label: {{selected_order.label}}, RowID: {{selected_order.rowId}}
+    </div>
+    <div v-show="!holding">
+      ID: {{selected_order_after.id}}, Label: {{selected_order_after.label}}, RowID: {{selected_order_after.rowId}}
+    </div>
     <div id="gantt_app">
       <GSTC
         :config="config"
-        @state="onState"
+
         id="gantt"
       />
     </div>
+    <el-dialog
+      title="新增"
+      :visible.sync="dialogVisible"
+      width="30%"
+    >
+      <span>id</span>
+      <el-input v-model="new_row.id"></el-input>
+      <span>label</span>
+      <el-input v-model="new_row.label"></el-input>
+      <span>rowId</span>
+      <el-input v-model="new_row.rowId"></el-input>
+      <span>start</span>
+      <el-input v-model="new_row.time.start"></el-input>
+      <span>end</span>
+      <el-input v-model="new_row.time.end"></el-input>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="addRow">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -14,7 +41,7 @@
 import GSTC from "vue-gantt-schedule-timeline-calendar";
 import Gantt from "gantt-schedule-timeline-calendar"
 import ItemMovement from "gantt-schedule-timeline-calendar/dist/ItemMovement.plugin.js"
-import Selection from "gantt-schedule-timeline-calendar/dist/Selection.plugin.js"
+// import Selection from "gantt-schedule-timeline-calendar/dist/Selection.plugin.js"
 import ItemHold from 'gantt-schedule-timeline-calendar/dist/ItemHold.plugin.js'
 let subs = [];
 /* eslint-disable */
@@ -56,7 +83,7 @@ const Order_template = { //工單
     }
   }
 }
-
+let item_style= { 'background': 'grey', 'text-align': 'center' }
 
 export default {
   name: "app",
@@ -70,7 +97,7 @@ export default {
           label: {
             id: "label",
             data: "label",
-            width: 200,
+            width: 100,
             header: {
               content: "Machine"
             },
@@ -80,53 +107,69 @@ export default {
       chart_items: {
         "1": {
           id: "1",
-          rowId: "1",
-          label: "Item 1",
+          rowId: '1',
+          label: "654323234",
           time: {
             start: new Date('2020-03-20').getTime(),
             end: new Date('2020-03-20').getTime() + 14 * 60 * 60 * 1000
           },
-          style: { background: 'grey'}
+          style: item_style
         },
         "2": {
           id: "2",
-          rowId: "2",
-          label: "Item 2",
+          rowId: '2',
+          label: "654323234",
           time: {
             start: new Date('2020-03-20').getTime() + 60 * 60 * 1000,
             end: new Date('2020-03-20').getTime() + 4 * 60 * 60 * 1000
-          }
+          },
+          style: item_style
         },
         "3": {
           id: "3",
-          rowId: "2",
-          label: "Item 3",
+          rowId: '3',
+          label: "654323234",
           time: {
             start: new Date('2020-03-20').getTime() + 12 * 60 * 60 * 1000,
             end: new Date('2020-03-20').getTime() + 24 * 60 * 60 * 1000
-          }
+          },
+          style: item_style
         },
         "4": {
           id: "4",
-          rowId: "3",
-          label: "Item 4",
+          rowId: '3',
+          label: "654323234",
           time: {
             start: new Date('2020-03-20').getTime() + 3 * 60 * 60 * 1000,
             end: new Date('2020-03-20').getTime() + 6 * 60 * 60 * 1000
-          }
+          },
+          style: item_style
         },
         "5": {
           id: "5",
-          rowId: "4",
-          label: "Item 5",
+          rowId: '4',
+          label: "654323234",
           time: {
             start: new Date('2020-03-20').getTime() + 12 * 60 * 60 * 1000,
             end: new Date('2020-03-20').getTime() + 18 * 60 * 60 * 1000
-          }
+          },
+          style: item_style
         }
       },
       selected_order: Order_template,
+      selected_order_after: Order_template,
       new_order: Order_template,
+      new_row: {
+        id: '',
+        label: '',
+        rowId: '',
+        time: {
+          start: '2020-03-20',
+          end: '2020-03-20'
+        }
+      },
+      dialogVisible: false,
+      holding: false
     };
   },
   props:{
@@ -140,6 +183,7 @@ export default {
   },
   computed: {
     config: function() {
+      // var that =this;
       return {
         plugins: [
           ItemMovement({
@@ -160,12 +204,49 @@ export default {
                 .valueOf();
             },
             moveable: this.draggable,
-            ghostNode: false,
+            ghostNode: this.draggable,
             resizable: false,
             collisionDetection: true
           }),
-          Selection(),
-          ItemHold()
+          ItemHold({
+            time: 10,
+            action: (element, item) => {
+              // document.onmousedown = () => {
+              //   console.log(item)
+              this.holding = true
+              this.selected_order.id = item.id ;
+              this.selected_order.label = item.label ;
+              this.selected_order.rowId = item.rowId ;
+              // }
+
+              document.onmouseup = () => {
+                // console.log(item)
+                this.holding = false
+                this.selected_order_after.id = item.id ;
+                this.selected_order_after.label = item.label ;
+                this.selected_order_after.rowId = item.rowId ;
+              }
+              // this.selected_order.id = item.id ;
+              // this.selected_order.part_no = item.label ;
+              // this.selected_order.product_name = item.product_name ;
+              // this.selected_order.plan_number = item.plan_number ;
+              // this.selected_order.plastic_color = item.plastic_color ;
+              // this.selected_order.machine = item.rowId ;
+
+              // let st = new Date(planning_date_datetype.getTime()+(item.time.start-temp_time));
+              // let et = new Date(planning_date_datetype.getTime()+(item.time.end-temp_time));
+
+              // this.selected_order.starttime.date = st.getFullYear()+'-'+(st.getMonth()+1).toString().padStart(2,'0')+'-'+ st.getDate().toString().padStart(2,'0');
+              // this.selected_order.starttime.time.HH = st.getHours().toString().padStart(2,'0');
+              // this.selected_order.starttime.time.mm = st.getMinutes().toString().padStart(2,'0');
+
+              // this.selected_order.endtime.date = et.getFullYear()+'-'+(et.getMonth()+1).toString().padStart(2,'0')+'-'+ et.getDate().toString().padStart(2,'0');
+              // this.selected_order.endtime.time.HH = et.getHours().toString().padStart(2,'0');
+              // this.selected_order.endtime.time.mm = et.getMinutes().toString().padStart(2,'0');
+
+              // this.Is_order_data_show =true;
+            }
+          })
         ],
         height: 700,
         list: {
@@ -255,19 +336,19 @@ export default {
       // console.log(state)
       subs.push(
         state.subscribe("config.chart.items.1", item => {
-          console.log("item 1 changed", item);
+          // console.log("item 1 changed", item);
         })
       );
       subs.push(
         state.subscribe("config.list.rows.1", row => {
-          console.log("row 1 changed", row);
+          // console.log("row 1 changed", row);
         })
       );
       subs.push(
-        state.subscribe("config.plugin.ItemMovement", item => {
-          if (!item || !item.item) return;
-          console.log("ItemMovement", item);
-        })
+        // state.subscribe("config.plugin.Selection", item => {
+        //   if (!item || !item.item) return;
+        //   console.log("ItemMovement", item);
+        // })
       );
       // state.subscribe("config.plugin.ItemMovement", item => {
       //   // console.log(state)
@@ -283,6 +364,26 @@ export default {
     },
     click() {
       // console.log(arguments)
+    },
+    addRow(){
+      // this.dialogVisible = true
+      this.chart_items[this.new_row.id] = {
+        id: this.new_row.id,
+        label: this.new_row.label,
+        rowId: this.new_row.rowId,
+        time: {
+          start: new Date(this.new_row.time.start).getTime(),
+          end: new Date(this.new_row.time.end).getTime() + 24 * 60 * 60 * 1000
+        }
+      }
+      // this.chart_items[this.new_row.id]['id'] = this.new_row.id
+      // this.chart_items[this.new_row.id]['label'] = this.new_row.label
+      // this.chart_items[this.new_row.id]['rowId'] = this.new_row.rowId
+      // this.chart_items[this.new_row.id]['time'] = { start: 0, end: 0 }
+      // this.chart_items[this.new_row.id]['time'].start = new Date(this.new_row.time.start).getTime()
+      // this.chart_items[this.new_row.id]['time'].end = new Date(this.new_row.time.end).getTime() + 24 * 60 * 60 * 1000
+      this.dialogVisible = false
+      console.log(this.chart_items)
     }
   },
   mounted() {
@@ -293,7 +394,7 @@ export default {
     // }, 2000);
   },
   beforeDestroy() {
-    subs.forEach(unsub => unsub());
+    // subs.forEach(unsub => unsub());
   }
 };
 </script>
