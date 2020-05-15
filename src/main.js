@@ -1,6 +1,7 @@
 import Vue from 'vue'
 // import Vuex from 'vuex'
 // import VueRouter from 'vue-router'
+import router from './router'
 import ElementUI from 'element-ui';
 import echarts from 'echarts'
 import ECharts from 'vue-echarts'
@@ -11,12 +12,11 @@ import App from './App.vue'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faDesktop, faSquare, faServer, faAlignCenter } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-// import axios from 'axios'
-import router from './router'
+import axios from 'axios'
 
 library.add(faDesktop,faSquare,faServer,faAlignCenter)
 
-// Vue.prototype.$http = axios;
+Vue.prototype.$http = axios;
 // const token = localStorage.getItem('token')
 // if (token) {
 //   Vue.prototype.$http.defaults.headers.common['Authorization'] = token
