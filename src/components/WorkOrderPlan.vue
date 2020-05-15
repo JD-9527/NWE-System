@@ -109,7 +109,8 @@
           @siteSelected="siteSelect"
         />
         <el-button size='mini' style="margin-left: 10px;">提交</el-button>
-        <Gantt draggable v-show="line=='A 線' || (site == 'D10 - 1F') && line=='All'" line="A 線"/>
+        <Gantt draggable :line="line=='All'? 'A 線': line"/>
+        <!-- <Gantt draggable v-show="line=='A 線' || (site == 'D10 - 1F') && line=='All'" line="A 線"/> -->
        <!--  <Gantt draggable v-show="line=='B 線'" line="B 線"/>
         <Gantt draggable v-show="line=='C 線'" line="C 線"/>
         <Gantt draggable v-show="line=='D 線'" line="D 線"/>
