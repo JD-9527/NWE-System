@@ -293,6 +293,17 @@ function changeBarColor(data) {
           }
         }
       break;
+      case '修模待機' :
+          tmp = {
+          name: data_keys[i],
+          value: data_values[i],
+          itemStyle: {
+            normal: {
+              color: '#3030FF',
+            }
+          }
+        }
+      break;
       case '換模' :
           tmp = {
           name: data_keys[i],
@@ -392,6 +403,8 @@ export default {
     },
     getMachineState(location) {
       overviewMachineStateCount(location).then((response) => {
+        // eslint-disable-next-line no-console
+        console.log(response.data);
         let data = changeBarColor(response.data)
         var keys = Object.keys(data);
         var values = Object.values(data);
