@@ -17,6 +17,7 @@ import PlanPreview from './components/PlanPreview'
 import WorkOrderPlan from './components/WorkOrderPlan'
 import DataKeyIn from './components/ProductDataKeyIn'
 import History from './components/History'
+import Security from './components/SecurityBoard'
 
 Vue.use(VueRouter);
 
@@ -32,6 +33,7 @@ const routes = [
       { path: '/overview/work_order', component: WorkOrderBoard },
       { path: '/overview/machine/:line', component: MachineBoard },
       { path: '/overview/plan', component: PlanBoard },
+      { path: '/overview/security/:line', component: Security },
       { path: '/overview/*' , redirect: '/error/404' },
     ],
   },

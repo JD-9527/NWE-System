@@ -38,6 +38,7 @@
               <el-menu-item index="/overview/machine/D10">機台看板</el-menu-item>
               <el-menu-item index="/overview/work_order">工單看板</el-menu-item>
               <el-menu-item index="/overview/plan">計畫看板</el-menu-item>
+              <el-menu-item index="/overview/security/D10">安全看板</el-menu-item>
           </el-submenu>
           <el-submenu index="2">
             <template slot="title">
