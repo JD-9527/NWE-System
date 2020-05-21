@@ -8,14 +8,31 @@
       <el-col :span="8">
         NWE {{ $route.params.line }}機台狀態看板
       </el-col>
-      <el-col :span="13" :push="2">
+      <el-col
+        :span="3"
+      >
+        <el-select
+          v-model="line"
+          :placeholder="$route.params.line == 'D10'? 'D10 - 1F': 'D9 - 1F'"
+          size="small"
+        >
+          <el-option
+            v-for="item in lines"
+            :key="item"
+            :label="item"
+            :value="item"
+          >
+          </el-option>
+        </el-select>
+      </el-col>
+      <el-col :span="13">
         <el-row
           type="flex"
           align="bottom"
           justify="end"
         >
           <el-col
-            :span="4"
+            :span="3"
             v-for="legend in legends"
             :key="legend.name"
           >
@@ -487,15 +504,39 @@ export default {
     machinesB: [],
     machinesC: [],
     machinesD: [],
+    line: '',
+    lines: ['D9 - 1F','D10 - 1F'],
     legends: legends,
     machine_show: machine_show,
     machine_message: machine_message,
     new_machine_message: new_machine_message,
     now_work_order: now_work_order,
     produce_message: produce_message
-    // progress_width: this.progressWidth(new_machine_message)
-    // activeMachines: this.showActiveMachine(this.machines,this.machine_show),
   }),
+  watch: {
+    line: function() {
+      if (this.line == 'D10 - 1F') {
+        // eslint-disable-next-line no-console
+        this.$router.push('/overview/machine/D10').catch(()=> console.log('Push Error!'))
+        // 初始化
+        this.machines = []
+        this.machinesB = []
+        this.machinesC = []
+        this.machinesD = []
+        this.getMachineState('D10');
+      }
+      else if (this.line == 'D9 - 1F') {
+        // eslint-disable-next-line no-console
+        this.$router.push('/overview/machine/D9').catch(()=> console.log('Push Error!'))
+        // 初始化
+        this.machines = []
+        this.machinesB = []
+        this.machinesC = []
+        this.machinesD = []
+        this.getMachineState('D9');
+      }
+    }
+  },
   methods: {
     onClick(params) {
       // eslint-disable-next-line no-console
@@ -617,7 +658,8 @@ export default {
     }
   },
   mounted() {
-    this.getMachineState(this.$route.params.line)
+    // this.getMachineState(this.$route.params.line)
+    this.line = this.$route.params.line == 'D10'? 'D10 - 1F': 'D9 - 1F';
   },
   computed: {
   }
