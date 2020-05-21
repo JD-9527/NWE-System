@@ -35,8 +35,8 @@
               <span>生產狀態</span>
             </template>
               <el-menu-item index="/overview/dashboard">生產總覽</el-menu-item>
-              <el-menu-item index="/overview/work_order">工單看板</el-menu-item>
               <el-menu-item index="/overview/machine/D10">機台看板</el-menu-item>
+              <el-menu-item index="/overview/work_order">工單看板</el-menu-item>
               <el-menu-item index="/overview/plan">計畫看板</el-menu-item>
           </el-submenu>
           <el-submenu index="2">
