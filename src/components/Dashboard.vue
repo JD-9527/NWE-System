@@ -6,6 +6,7 @@
         <el-card
           class="chart-box"
           :style="isSelect == 'D9'? selectStyle: ''"
+          shadow="never"
           :body-style="{ padding: '10px 30px 20px 10px' }"
         >
           <el-row>
@@ -41,6 +42,7 @@
         <el-card
           class="chart-box"
           :style="isSelect == 'D10'? selectStyle: ''"
+          shadow="never"
           :body-style="{ padding: '10px 30px 20px 10px'}"
         >
           <el-row>
@@ -73,74 +75,78 @@
         </el-card>
       </el-col>
     </el-row>
-    <el-row :gutter="15">
-      <el-col :span="8">
-        <el-card>
-          <el-row>
-            <el-col :span="20" style="text-align: left;">
-              <div class="chart-title">{{ isSelect }} 產品不良率總覽</div>
-            </el-col>
-            <el-col :span="4" style="display: inline;text-align: right;">
-              <el-button
-                type="text"
-                size="medium"
-                @click="$router.push('/overview/dashboard/defectrate')"
-              >
-                詳情
-              </el-button>
-            </el-col>
-          </el-row>
-          <div>
-            <v-chart
-              :options="barLine"
-              class="bar-chart"
-              autoresize
-            ></v-chart>
-          </div>
-        </el-card>
-      </el-col>
-      <el-col :span="8">
-        <el-card>
-          <el-row>
-            <el-col :span="20" style="text-align: left;">
-              <div class="chart-title">{{ isSelect }} 機台狀態總覽</div>
-            </el-col>
-            <el-col :span="4" style="display: inline;text-align: right;">
-              <el-button
-                type="text"
-                size="medium"
-                @click="$router.push('/overview/machine/'+isSelect)"
-              >
-                詳情
-              </el-button>
-            </el-col>
-          </el-row>
-          <div>
-            <v-chart
-              :options="bar"
-              class="bar-chart"
-              autoresize
-            ></v-chart>
-          </div>
-        </el-card>
-      </el-col>
-      <el-col :span="8">
-        <el-card>
-          <el-row>
-            <el-col :span="20" style="text-align: left;">
-              <div class="chart-title">{{ isSelect }} 機台停機累計時間</div>
-            </el-col>
-          </el-row>
-          <div>
-            <v-chart
-              :options="bar2"
-              class="bar-chart"
-              autoresize
-            ></v-chart>
-          </div>
-        </el-card>
-      </el-col>
-    </el-row>
+    <el-card shadow="never">
+      <el-row :gutter="15">
+        <el-col :span="8">
+          <!-- <el-card> -->
+            <el-row>
+              <el-col :span="24" style="text-align: center;">
+                <div class="chart-title">{{ isSelect }} 產品不良率總覽</div>
+              </el-col>
+              <el-col :span="0" style="display: inline;">
+                <el-button
+                  type="text"
+                  size="medium"
+                  style="position: absolute; right: 40px; bottom: 3px;"
+                  @click="$router.push('/overview/dashboard/defectrate')"
+                >
+                  詳情
+                </el-button>
+              </el-col>
+            </el-row>
+            <div>
+              <v-chart
+                :options="barLine"
+                class="bar-chart"
+                autoresize
+              ></v-chart>
+            </div>
+          <!-- </el-card> -->
+        </el-col>
+        <el-col :span="8">
+          <!-- <el-card> -->
+            <el-row>
+              <el-col :span="24" style="text-align: center;">
+                <div class="chart-title">{{ isSelect }} 機台狀態總覽</div>
+              </el-col>
+              <el-col :span="0" style="display: inline;">
+                <el-button
+                  type="text"
+                  size="medium"
+                  style="position: absolute; right: 50px; bottom: 3px;"
+                  @click="$router.push('/overview/machine/'+isSelect)"
+                >
+                  詳情
+                </el-button>
+              </el-col>
+            </el-row>
+            <div>
+              <v-chart
+                :options="bar"
+                class="bar-chart"
+                autoresize
+              ></v-chart>
+            </div>
+          <!-- </el-card> -->
+        </el-col>
+        <el-col :span="8">
+          <!-- <el-card> -->
+            <el-row>
+              <el-col :span="24" style="text-align: center;">
+                <div class="chart-title">{{ isSelect }} 機台停機累計時間</div>
+              </el-col>
+            </el-row>
+            <div>
+              <v-chart
+                :options="bar2"
+                class="bar-chart"
+                autoresize
+              ></v-chart>
+            </div>
+          <!-- </el-card> -->
+        </el-col>
+      </el-row>
+    </el-card>
   </div>
 </template>
 
@@ -158,6 +164,9 @@
   width: 95%;
   height: 300px;
   margin: 0 auto;
+}
+.center {
+  text-align: center
 }
 </style>
 
@@ -359,6 +368,7 @@ export default {
     onClick(event) {
       // eslint-disable-next-line no-console
       console.log(event);
+      alert('test')
     },
     getRadarData(location) {
       overviewMachineStartRate(location).then((response) => {
