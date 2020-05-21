@@ -36,16 +36,14 @@
       <el-table-column
         prop="plan_s_time"
         label="起始時間"
-        width="120"
-        show-overflow-tooltip
+        width="100"
         align="center"
       >
       </el-table-column>
       <el-table-column
         prop="plan_e_time"
         label="結束時間"
-        width="120"
-        show-overflow-tooltip
+        width="100"
         align="center"
       >
       </el-table-column>
