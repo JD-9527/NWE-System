@@ -17,6 +17,8 @@ const NWEData = axios.create({
 
 // 生產狀態
 export const overviewMachineStateCount = (field) => NWEOverview.get('/machine/statecount/?field='+field)
+export const overviewMachineAbnormal = (field) => NWEOverview.get('/machine/abnormalacc/?field='+field)
+export const overviewMachineFailureRate = (field) => NWEOverview.get('/machine/failurerate/?field='+field)
 export const overviewMachineStartRate = (field) => NWEOverview.get('/machine/state/?field='+field)
 export const overviewMachineBoard = (field) => NWEOverview.get('/machine/board/?field='+field)
 export const overviewSecurityInfo = (machine_NO) => NWEOverview.get('/security/info/?machine_NO='+machine_NO)
@@ -168,7 +170,9 @@ export const planTonList = (line) => {
   if (typeof(line) == 'undefined') return NWEPlan.get('/tonlist/')
   else return NWEPlan.get('/tonlist/?line='+line)
 }
-export const planPreview = (field) => NWEPlan.get('/preview/?field='+field)
+export const planPreview = (field,line) => {
+  return NWEPlan.get('/preview/',{params: { field: field, line: line}})
+}
 export const planEditPreview = (row) => {
   let formData = new FormData();
   formData.append('Part_NO', row.Part_NO)

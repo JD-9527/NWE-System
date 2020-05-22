@@ -175,7 +175,7 @@
 import radar from './radar'
 import barLine from './bar_line'
 import bar from './bar'
-import { overviewMachineStartRate, overviewMachineStateCount } from '../api.js'
+import { overviewMachineStartRate, overviewMachineStateCount, overviewMachineAbnormal, overviewMachineFailureRate } from '../api.js'
 
 let datasetA={
   'E線' : 0,
@@ -334,31 +334,20 @@ function changeBarColor(data) {
 // 改變機台停機累計時間的bar顏色
 function changeBarColor2(data) {
   let new_data=[]
-  for (let i = 0; i < data.length; i++) {
+  let data_keys = Object.keys(data);
+  let data_values = Object.values(data);
+  for (let i = 0; i < data_keys.length; i++) {
     let tmp;
-    if (data[i].status == '維修') {
-      tmp = {
-        name: data[i].name,
-        value: data[i].value,
-        itemStyle: {
-          normal: {
-            color: '#F50000',
-          }
+    tmp = {
+      name: data_keys[i],
+      value: data_values[i],
+      itemStyle: {
+        normal: {
+          color: '#F50000',
         }
       }
     }
-    else if (data[i].status == '修模待機') {
-      tmp = {
-        name: data[i].name,
-        value: data[i].value,
-        itemStyle: {
-          normal: {
-            color: '#3030FF',
-          }
-        }
-      }
-    }
-    new_data[data[i].name] = tmp
+    new_data[data_keys[i]] = tmp
   }
   return new_data
 }
@@ -413,15 +402,51 @@ export default {
         this.bar.series[0].data = values
       });
     },
+    getFailureRate(location) {
+      overviewMachineFailureRate(location).then((response) => {
+        // eslint-disable-next-line no-console
+        console.log(response.data);
+        let data = changeBarColor(response.data)
+        var keys = Object.keys(data);
+        var values = Object.values(data);
+        let valuepercent = [];    // 儲存資料累計百分比
+        let sum = 0;   // 計算資料總和
+        let percent_sum = 0    // 計算百分比總和
+        for (let i=0;i < values.length; i++) {
+          sum += values[i]
+        }
+        for (let i=0;i < values.length; i++) {
+          percent_sum += values[i]/sum
+          valuepercent.push(percent_sum*100)
+        }
+        this.barLine.xAxis.data = keys
+        this.barLine.series[0].data = values
+        this.barLine.series[1].data = valuepercent
+      })
+    },
+    getAbnormal(location) {
+      overviewMachineAbnormal(location).then((response) => {
+        let data = changeBarColor2(response.data)
+        // eslint-disable-next-line no-console
+        // console.log(data);
+        var keys = Object.keys(data);
+        var values = Object.values(data);
+        this.bar2.xAxis.data = keys
+        this.bar2.series[0].data = values
+
+      })
+    },
     callData(location) {
       this.isSelect = location
       this.getMachineState(location)
-    }
+    },
   },
   mounted() {
     this.getRadarData('D9');
     this.getRadarData('D10');
-    this.getMachineState('D10')
+    this.getMachineState('D10');
+    this.getAbnormal('D10');
+    this.getFailureRate('D10')
   }
 };
 </script>
