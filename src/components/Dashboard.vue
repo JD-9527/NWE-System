@@ -393,7 +393,7 @@ export default {
     getMachineState(location) {
       overviewMachineStateCount(location).then((response) => {
         // eslint-disable-next-line no-console
-        console.log(response.data);
+        // console.log(response.data);
         let data = changeBarColor(response.data)
         var keys = Object.keys(data);
         var values = Object.values(data);
@@ -405,7 +405,7 @@ export default {
     getFailureRate(location) {
       overviewMachineFailureRate(location).then((response) => {
         // eslint-disable-next-line no-console
-        console.log(response.data);
+        // console.log(response.data);
         let data = changeBarColor(response.data)
         var keys = Object.keys(data);
         var values = Object.values(data);
@@ -438,7 +438,9 @@ export default {
     },
     callData(location) {
       this.isSelect = location
-      this.getMachineState(location)
+      this.getMachineState(location);
+      this.getAbnormal(location);
+      this.getFailureRate(location);
     },
   },
   mounted() {
@@ -446,7 +448,7 @@ export default {
     this.getRadarData('D10');
     this.getMachineState('D10');
     this.getAbnormal('D10');
-    this.getFailureRate('D10')
+    this.getFailureRate('D10');
   }
 };
 </script>
