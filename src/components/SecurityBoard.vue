@@ -182,7 +182,7 @@
           <div class="message"  v-show="current != ''">
             <div class="alarm_box">
               <div :style="securityColor(machine_state.safe_door_total)"></div>
-              <div class="alarm_title">急停</div>
+              <div class="alarm_title">安全門</div>
             </div>
             <div class="alarm_box">
               <div :style="securityColor(machine_state.safe_door_font)"></div>
@@ -353,7 +353,7 @@ export default {
     current: '',
     line: '',
     lines: ['D9 - 1F','D10 - 1F'],
-    machine_state: { safe_door_total: 0, safe_door_font: 0, safe_door_back: 0 },
+    machine_state: { safe_door_total: 1, safe_door_font: 1, safe_door_back: 1 },
     tableData: [],
   }),
   watch: {
@@ -532,6 +532,8 @@ export default {
     },
     async getSecurityState(field) {
       /* eslint-disable */
+      this.machine_state = { safe_door_total: 0, safe_door_font: 0, safe_door_back: 0 }
+      this.tableData = []
       let info = await overviewSecurityInfo(field)
       let test = await overviewSecurityTest(field)
       // console.log(field)
