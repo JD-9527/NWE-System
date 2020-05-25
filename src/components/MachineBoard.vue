@@ -449,12 +449,12 @@
 import { overviewMachineBoard } from '../api.js'
 const legends = [
   { name:'正常', status: 0 },
-  { name:'待機', status: 1 },
-  { name:'調機', status: 2 },
-  { name:'維修', status: 3 },
-  { name:'修模待機', status: 4 },
-  { name:'換模', status: 5 },
-  { name:'斷線', status: 6 },
+  { name:'換模', status: 1 },
+  { name:'待機', status: 2 },
+  { name:'斷線', status: 3 },
+  { name:'調機', status: 4 },
+  { name:'維修', status: 5 },
+  { name:'修模待機', status: 6 },
 ];
 
 let machine_show = [true,true,true,true,true,true,true]
@@ -550,29 +550,29 @@ export default {
     statusToColor(data) {
       let tmp
       switch (data.status) {
-        case 0:
+        case 0:  //正常
           tmp = "color: #17ba6a;";
           break;
-        case 1:
-          tmp = "color: #f7e31d;";
-          break;
-        case 2:
-          tmp = "color: #f7921d;";
-          break;
-        case 3:
-          tmp = "color: #F50000;";
-          break;
-        case 4:
-          tmp = "color: #3030FF;";
-          break;
-        case 5:
+        case 1: // 換模
           tmp = "color: #990DFF;";
           break;
-        case 6:
+        case 2:  // 待機
+          tmp = "color: #f7e31d;";
+          break;
+        case 3:  // 斷線
           tmp = "color: #909399;";
           break;
+        case 4: // 調機
+          tmp = "color: #f7921d;";
+          break;
+        case 5: // 維修
+          tmp = "color: #F50000;";
+          break;
+        case 6: // 修模待機
+          tmp = "color: #3030FF;";
+          break;
         default:
-          tmp = "color: #17ba6a;";
+          tmp = "color: #909399;";
           break;
       }
       return tmp;
