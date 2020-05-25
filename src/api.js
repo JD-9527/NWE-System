@@ -182,3 +182,10 @@ export const planEditPreview = (row) => {
         'Content-Type': 'multipart/form-data'
       }});
 }
+
+export const planWorklist = (line) => {
+  return NWEPlan.get('/worklist/',{params: { line: line }})
+}
+export const planWorkTonlist = (line) => {
+  return NWEPlan.get('/worktonlist/',{params: { line: line }})
+}
