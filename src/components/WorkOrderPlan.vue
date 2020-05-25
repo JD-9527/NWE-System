@@ -163,6 +163,7 @@
   import FactorySelection from './FactorySelection.vue'
   import Gantt from './Gantt_chart.vue'
   import NewRowButton from './NewRowButton.vue'
+  import { planWorkTonlist } from '../api.js'
 
   export default {
     components:{
@@ -201,6 +202,17 @@
         ]
       };
     },
+    watch: {
+      activeLine: function(){
+        if (this.activeLine == '1') this.getTonList('A')
+        else if  (this.activeLine == '2') this.getTonList('B')
+        else if  (this.activeLine == '3') this.getTonList('C')
+        else if  (this.activeLine == '4') this.getTonList('D')
+        else if  (this.activeLine == '5') this.getTonList('E')
+        else if  (this.activeLine == '6') this.getTonList('F')
+        else if  (this.activeLine == '7') this.getTonList('G')
+      }
+    },
     methods: {
       /* eslint-disable */
       handleSelect(item) {
@@ -208,6 +220,12 @@
       },
       siteSelect(item) {
         this.site = item
+      },
+      getTonList(line) {
+        planWorkTonlist(line).then((response)=>{
+          let data = response.data.data
+          this.tons = data
+        })
       }
       /* eslint-enable */
     }

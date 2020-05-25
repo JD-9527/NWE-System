@@ -208,6 +208,7 @@
 
 <script>
 import EditableCell from "./EditableCell.vue";
+import { planWorklist } from '../api.js'
 
 export default {
   components: {
@@ -219,12 +220,26 @@ export default {
     tableData: [],
     currentPage: 1,
     pageSize: 10,
+    // line: '',
   }),
   props: {
     name: String,
     editable: {
       type: Boolean,
       default: false
+    },
+    // line: String,
+  },
+  computed: {
+    line: function(){
+      if (this.name == 'A線') return 'A'
+      else if (this.name == 'B線') return 'B'
+      else if (this.name == 'C線') return 'C'
+      else if (this.name == 'D線') return 'D'
+      else if (this.name == 'E線') return 'E'
+      else if (this.name == 'F線') return 'F'
+      else if (this.name == 'G線') return 'G'
+      else return 'A'
     }
   },
   watch: {
@@ -237,27 +252,31 @@ export default {
     /* eslint-disable */
     loadTable() {
       let newTable = []
-      for (let i=0;i<10;i++) {
-        newTable.push({
-          ton: '130',
-          number: 'A01',
-          color: '黑',
-          ch_time: '00:00',
-          start_time: '02:00',
-          end_time: '14:00',
-          name: '支架',
-          part_num: '700-30985-01WA',
-          work_num: '6110394',
-          plastic_num: '8M460-002E',
-          count: '513',
-          mold_num: 'NP10713',
-          mold_seq: 'M1',
-          mold_count: '2',
-          mold_pos: 'D10-C2-02',
-          plan_time: '24',
-          standard_cycle: '24',
-        })
-      }
+      planWorklist(this.line).then((response)=>{
+        // console.log(this.line, response.data)
+        let data = response.data
+      })
+      // for (let i=0;i<10;i++) {
+      //   newTable.push({
+      //     ton: '130',
+      //     number: 'A01',
+      //     color: '黑',
+      //     ch_time: '00:00',
+      //     start_time: '02:00',
+      //     end_time: '14:00',
+      //     name: '支架',
+      //     part_num: '700-30985-01WA',
+      //     work_num: '6110394',
+      //     plastic_num: '8M460-002E',
+      //     count: '513',
+      //     mold_num: 'NP10713',
+      //     mold_seq: 'M1',
+      //     mold_count: '2',
+      //     mold_pos: 'D10-C2-02',
+      //     plan_time: '24',
+      //     standard_cycle: '24',
+      //   })
+      // }
       newTable = newTable.map(row => {
         return {
           ...row,
@@ -299,7 +318,8 @@ export default {
     /* eslint-enable */
   },
   mounted() {
-    this.tableData = this.loadTable()
+    // this.tableData = this.loadTable()
+    this.loadTable()
   }
 }
 </script>
