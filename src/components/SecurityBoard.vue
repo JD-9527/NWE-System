@@ -6,7 +6,7 @@
       align="middle"
     >
       <el-col :span="8">
-        NWE {{ $route.params.line }}機台安全看板
+        NWE {{ $route.params.line }}機台監控訊息
       </el-col>
       <el-col
         :span="3"
@@ -180,17 +180,25 @@
             <span class="message-row">{{ current }} 機台安全訊息</span>
           </div>
           <div class="message"  v-show="current != ''">
-            <div class="alarm_box">
-              <div :style="securityColor(machine_state.safe_door_total)"></div>
-              <div class="alarm_title">安全門</div>
+            <div class="alarm_box" v-show="machine_state.emergency1_signal != ''">
+              <div :style="securityColor(machine_state.emergency1_signal)"></div>
+              <div class="alarm_title">急停1 {{ signalStatus(machine_state.emergency1_signal) }}</div>
             </div>
-            <div class="alarm_box">
-              <div :style="securityColor(machine_state.safe_door_font)"></div>
-              <div class="alarm_title">前安全門</div>
+            <div class="alarm_box" v-show="machine_state.emergency2_signal != ''">
+              <div :style="securityColor(machine_state.emergency2_signal)"></div>
+              <div class="alarm_title">急停2 {{ signalStatus(machine_state.emergency2_signal) }}</div>
             </div>
-            <div class="alarm_box">
-              <div :style="securityColor(machine_state.safe_door_back)"></div>
-              <div class="alarm_title">後安全門</div>
+            <div class="alarm_box" v-show="machine_state.safe_door_total_signal != ''">
+              <div :style="securityColor(machine_state.safe_door_total_signal)"></div>
+              <div class="alarm_title">安全門 {{ signalStatus(machine_state.safe_door_total_signal) }}</div>
+            </div>
+            <div class="alarm_box" v-show="machine_state.safe_door_front_signal != ''">
+              <div :style="securityColor(machine_state.safe_door_front_signal)"></div>
+              <div class="alarm_title">前安全門 {{ signalStatus(machine_state.safe_door_front_signal) }}</div>
+            </div>
+            <div class="alarm_box" v-show="machine_state.safe_door_back_signal != ''">
+              <div :style="securityColor(machine_state.safe_door_back_signal)"></div>
+              <div class="alarm_title">後安全門 {{ signalStatus(machine_state.safe_door_back_signal) }}</div>
             </div>
             <img src="../assets/Vsp.png" style="width: 100%;" />
           </div>
@@ -224,21 +232,38 @@
               <template slot-scope="scoped">
                 <div
                   class="door_block"
-                  :style="'color:'+ (scoped.row.safe_door_total_OK == 0? '#F50000;': '#111;')"
+                  :style="'color:'+ (scoped.row.emergency1_OK == '0'? '#F50000;': '#111;')"
+                  v-show="scoped.row.emergency1_OK != ''"
                 >
-                  {{ doorState(scoped.row.safe_door_total_OK) }}
+                  急停1 {{ doorState(scoped.row.emergency1_OK) }}
                 </div>
                 <div
                   class="door_block"
-                  :style="'color:'+ (scoped.row.safe_door_font_OK == 0? '#F50000;': '#111;')"
+                  :style="'color:'+ (scoped.row.emergency2_OK == '0'? '#F50000;': '#111;')"
+                  v-show="scoped.row.emergency2_OK != ''"
                 >
-                  前{{ doorState(scoped.row.safe_door_font_OK) }}
+                  急停2 {{ doorState(scoped.row.emergency2_OK) }}
                 </div>
                 <div
                   class="door_block"
-                  :style="'color:'+ (scoped.row.safe_door_back_OK == 0? '#F50000;': '#111;')"
+                  :style="'color:'+ (scoped.row.safe_door_total_OK == '0'? '#F50000;': '#111;')"
+                  v-show="scoped.row.safe_door_total_OK != ''"
                 >
-                  後{{ doorState(scoped.row.safe_door_back_OK) }}
+                  安全門 {{ doorState(scoped.row.safe_door_total_OK) }}
+                </div>
+                <div
+                  class="door_block"
+                  :style="'color:'+ (scoped.row.safe_door_font_OK == '0'? '#F50000;': '#111;')"
+                  v-show="scoped.row.safe_door_front_OK != ''"
+                >
+                  前安全門 {{ doorState(scoped.row.safe_door_front_OK) }}
+                </div>
+                <div
+                  class="door_block"
+                  :style="'color:'+ (scoped.row.safe_door_back_OK == '0'? '#F50000;': '#111;')"
+                  v-show="scoped.row.safe_door_back_OK != ''"
+                >
+                  後安全門 {{ doorState(scoped.row.safe_door_back_OK) }}
                 </div>
               </template>
             </el-table-column>
@@ -313,9 +338,9 @@
 .alarm_title {
   display: inline-block;
   min-height: 20px;
-  width: 100px;
+  width: 110px;
   text-align: left;
-  margin-left: 10px;
+  margin-left: 5px;
 }
 .alarm_box {
   padding: 2px;
@@ -353,8 +378,15 @@ export default {
     current: '',
     line: '',
     lines: ['D9 - 1F','D10 - 1F'],
-    machine_state: { safe_door_total: 1, safe_door_font: 1, safe_door_back: 1 },
+    machine_state: {
+      emergency1_signal: '0',
+      emergency2_signal: '0',
+      safe_door_total_signal: '0',
+      safe_door_front_signal: '0',
+      safe_door_back_signal: '0'
+    },
     tableData: [],
+    status_message: ''
   }),
   watch: {
     line: function() {
@@ -465,7 +497,7 @@ export default {
       }
     },
     securityColor(status) {
-      if (status == 0) {
+      if (status == '0') {
         return "background: #F50000;\
                 color: #F50000;\
                 height: 20px;\
@@ -475,7 +507,7 @@ export default {
                 display: inline-block;\
                 vertical-align: middle;"
       }
-      else {
+      else if (status == '1') {
         return "background: #17ba6a;\
                 color: #17ba6a;\
                 height: 20px;\
@@ -485,10 +517,26 @@ export default {
                 display: inline-block;\
                 vertical-align: middle;"
       }
+      else {
+        return "background: #ff7f3c;\
+                color: #ff7f3c;\
+                height: 20px;\
+                width: 20px;\
+                border: 1px #ff7f3c solid;\
+                border-radius: 50%;\
+                display: inline-block;\
+                vertical-align: middle;"
+      }
+    },
+    signalStatus(status) {
+      if (status == '0') return '失效'
+      else if (status == '1') return ''
+      else return '開啟'
     },
     doorState(status) {
-      if (status == 0) return '安全門NG'
-      else return '安全門OK'
+      if (status == '0') return 'NG'
+      else if (status == '1') return 'OK'
+      else return 'NG'
     },
     getMachineState(line) {
       overviewMachineBoard(line).then((response)=>{
@@ -532,14 +580,25 @@ export default {
     },
     async getSecurityState(field) {
       /* eslint-disable */
-      this.machine_state = { safe_door_total: 0, safe_door_font: 0, safe_door_back: 0 }
+      this.machine_state = {
+        emergency1_signal: '0',
+        emergency2_signal: '0',
+        safe_door_total_signal: '0',
+        safe_door_front_signal: '0',
+        safe_door_back_signal: '0'
+      }
       this.tableData = []
-      let info = await overviewSecurityInfo(field)
-      let test = await overviewSecurityTest(field)
-      // console.log(field)
-      this.machine_state = info.data
-      // console.log(test.data)
-      this.tableData = test.data.data
+      try {
+        let info = await overviewSecurityInfo(field)
+        let test = await overviewSecurityTest(field)
+        // console.log(info.data)
+        this.machine_state = info.data
+        console.log(test.data.data)
+        this.tableData = test.data.data
+      }
+      catch (error) {
+        console.log(error.response.data)
+      }
     },
     timer() {
       if (this.current != '') {
