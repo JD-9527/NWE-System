@@ -60,7 +60,7 @@
         :key="machine.name"
         :span="1"
       >
-        <el-badge value="!" :hidden="!machine.show">
+        <el-badge>
           <el-button
             type="text"
             @click="onClick(machine)"
@@ -255,7 +255,7 @@
                 </div>
                 <div
                   class="door_block"
-                  :style="'color:'+ (scoped.row.safe_door_font_OK == '0'? '#F50000;': '#111;')"
+                  :style="'color:'+ (scoped.row.safe_door_front_OK == '0'? '#F50000;': '#111;')"
                   v-show="scoped.row.safe_door_front_OK != ''"
                 >
                   前安全門 {{ doorState(scoped.row.safe_door_front_OK) }}
@@ -356,15 +356,11 @@
 </style>
 
 <script>
-import { overviewMachineBoard, overviewSecurityInfo, overviewSecurityTest } from '../api.js'
+import { overviewSecurityState, overviewSecurityInfo, overviewSecurityTest } from '../api.js'
 const legends = [
-  { name:'正常', status: 0 },
-  { name:'換模', status: 1 },
-  { name:'待機', status: 2 },
-  { name:'斷線', status: 3 },
-  { name:'調機', status: 4 },
-  { name:'維修', status: 5 },
-  { name:'修模待機', status: 6 },
+  { name:'正常', status: 1 },
+  { name:'異常', status: 0 },
+  { name:'斷線', status: 2 },
 ];
 
 export default {
@@ -433,44 +429,20 @@ export default {
     statusToColor(data) {
       let tmp
       switch (data.status) {
-        case 0:  //正常
-          tmp = "color: #17ba6a;";
-          break;
-        case 1: // 換模
-          tmp = "color: #990DFF;";
-          break;
-        case 2:  // 待機
-          tmp = "color: #f7e31d;";
-          break;
-        case 3:  // 斷線
-          tmp = "color: #909399;";
-          break;
-        case 4: // 調機
-          tmp = "color: #f7921d;";
-          break;
-        case 5: // 維修
+        case 0: //異常
           tmp = "color: #F50000;";
           break;
-        case 6: // 修模待機
-          tmp = "color: #3030FF;";
+        case 1:  //正常
+          tmp = "color: #17ba6a;";
+          break;
+        case 2: // 斷線
+          tmp = "color: #909399;";
           break;
         default:
           tmp = "color: #909399;";
           break;
       }
       return tmp;
-    },
-    showActiveMachine (machine,machine_show) {
-      for (let i=0;i<machine.length;i++) {
-        machine[i].show = machine_show[machine[i].status]
-      }
-      let new_machine_list = []
-      machine.forEach((data) => {
-        if (data.show === true) {
-          new_machine_list.push(data)
-        }
-      })
-      return new_machine_list
     },
     convertProgess() {
       let sum = 0
@@ -541,9 +513,11 @@ export default {
       else if (status == '1') return 'OK'
       else return 'NG'
     },
-    getMachineState(line) {
-      overviewMachineBoard(line).then((response)=>{
+    getMachineState(field) {
+      /* eslint-disable */
+      overviewSecurityState(field).then((response)=>{
         let data=response.data.data
+        console.log(data)
         for (let i=0;i<data.length;i++) {
           let line_cate=data[i].name.slice(0,1)
           if (line_cate == 'A' || line_cate == 'E') {
@@ -551,23 +525,20 @@ export default {
             this.machines.push({
               name: data[i].name,
               status: data[i].status,
-              show: data[i].show
             })
           }
-          if (line_cate == 'B' || line_cate == 'F') {
+          else if (line_cate == 'B' || line_cate == 'F') {
             // this.machinesB = []
             this.machinesB.push({
               name: data[i].name,
               status: data[i].status,
-              show: data[i].show
             })
           }
-          if (line_cate == 'C' || line_cate == 'G') {
+          else if (line_cate == 'C' || line_cate == 'G') {
             // this.machinesC = []
             this.machinesC.push({
               name: data[i].name,
               status: data[i].status,
-              show: data[i].show
             })
           }
           if (line_cate == 'D') {
@@ -575,21 +546,12 @@ export default {
             this.machinesD.push({
               name: data[i].name,
               status: data[i].status,
-              show: data[i].show
             })
           }
         }
       })
     },
     async getSecurityState(field) {
-      /* eslint-disable */
-      // this.machine_state = {
-      //   emergency1_signal: '0',
-      //   emergency2_signal: '0',
-      //   safe_door_total_signal: '0',
-      //   safe_door_front_signal: '0',
-      //   safe_door_back_signal: '0'
-      // }
       try {
         this.loading = true
         this.tableData = []

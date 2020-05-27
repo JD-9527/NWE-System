@@ -23,6 +23,7 @@ export const overviewMachineStartRate = (field) => NWEOverview.get('/machine/sta
 export const overviewMachineBoard = (field) => NWEOverview.get('/machine/board/?field='+field)
 export const overviewSecurityInfo = (machine_NO) => NWEOverview.get('/security/info/?machine_NO='+machine_NO)
 export const overviewSecurityTest = (machine_NO) => NWEOverview.get('/security/test/?machine_NO='+machine_NO)
+export const overviewSecurityState = (field) => NWEOverview.get('/security/state/?field='+field)
 
 // 模具維護
 export const dataMoldSearch = (moldno) => NWEData.get('/mold/',{ params: { moldno: moldno } })
