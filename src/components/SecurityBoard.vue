@@ -212,7 +212,9 @@
           <div class="message" v-show="current != '' ">
             <el-table
               :data="tableData"
-              style="width: 100%">
+              style="width: 100%"
+              v-loading="loading"
+            >
             <el-table-column
               prop="timestamp"
               label="測試時間"
@@ -222,7 +224,7 @@
             <el-table-column
               prop="tester"
               label="測試員"
-              width="100"
+              width="80"
               align="center">
             </el-table-column>
             <el-table-column
@@ -386,7 +388,8 @@ export default {
       safe_door_back_signal: '0'
     },
     tableData: [],
-    status_message: ''
+    status_message: '',
+    loading: false
   }),
   watch: {
     line: function() {
@@ -580,25 +583,27 @@ export default {
     },
     async getSecurityState(field) {
       /* eslint-disable */
-      this.machine_state = {
-        emergency1_signal: '0',
-        emergency2_signal: '0',
-        safe_door_total_signal: '0',
-        safe_door_front_signal: '0',
-        safe_door_back_signal: '0'
-      }
-      this.tableData = []
+      // this.machine_state = {
+      //   emergency1_signal: '0',
+      //   emergency2_signal: '0',
+      //   safe_door_total_signal: '0',
+      //   safe_door_front_signal: '0',
+      //   safe_door_back_signal: '0'
+      // }
       try {
+        this.loading = true
+        this.tableData = []
         let info = await overviewSecurityInfo(field)
         let test = await overviewSecurityTest(field)
         // console.log(info.data)
         this.machine_state = info.data
-        console.log(test.data.data)
+        // console.log(test.data.data)
         this.tableData = test.data.data
       }
       catch (error) {
         console.log(error.response.data)
       }
+      this.loading = false
     },
     timer() {
       if (this.current != '') {
