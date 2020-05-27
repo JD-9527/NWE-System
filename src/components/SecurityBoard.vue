@@ -393,10 +393,6 @@ export default {
         // eslint-disable-next-line no-console
         this.$router.push('/overview/security/D10').catch(()=> console.log('Push Error!'))
         // 初始化
-        this.machines = []
-        this.machinesB = []
-        this.machinesC = []
-        this.machinesD = []
         this.current = ''
         this.getMachineState('D10');
       }
@@ -404,10 +400,6 @@ export default {
         // eslint-disable-next-line no-console
         this.$router.push('/overview/security/D9').catch(()=> console.log('Push Error!'))
         // 初始化
-        this.machines = []
-        this.machinesB = []
-        this.machinesC = []
-        this.machinesD = []
         this.current = ''
         this.getMachineState('D9');
       }
@@ -516,8 +508,13 @@ export default {
     getMachineState(field) {
       /* eslint-disable */
       overviewSecurityState(field).then((response)=>{
+        this.machines = []
+        this.machinesB = []
+        this.machinesC = []
+        this.machinesD = []
+        // console.log(field)
         let data=response.data.data
-        console.log(data)
+        // console.log(data)
         for (let i=0;i<data.length;i++) {
           let line_cate=data[i].name.slice(0,1)
           if (line_cate == 'A' || line_cate == 'E') {
@@ -571,6 +568,7 @@ export default {
       if (this.current != '') {
         this.getSecurityState(this.current);
       }
+      this.getMachineState(this.$route.params.line)
       setTimeout(()=>{
         this.timer()
       },1000 * 10);
