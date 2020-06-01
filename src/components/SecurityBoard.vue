@@ -593,14 +593,15 @@ export default {
       },1000 * 10);
     },
     toDate(time) {
-      let year = new Date(time).getFullYear()
-      let month = new Date(time).getMonth()+1
-      let date = new Date(time).getDate()
-      let hour = new Date(time).getHours()
+      let regTime = time.replace(' ', 'T')
+      let year = new Date(regTime).getFullYear()
+      let month = new Date(regTime).getMonth()+1
+      let date = new Date(regTime).getDate()
+      let hour = new Date(regTime).getHours()
       hour = hour < 10? '0'+hour: hour
-      let minute = new Date(time).getMinutes()
+      let minute = new Date(regTime).getMinutes()
       minute = minute < 10? '0'+minute: minute
-      let second = new Date(time).getSeconds()
+      let second = new Date(regTime).getSeconds()
       second = second < 10? '0'+second: second
       return year+'-'+month+'-'+date+' '+hour+':'+minute+':'+second
     },
