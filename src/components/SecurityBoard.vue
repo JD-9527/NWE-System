@@ -211,65 +211,82 @@
           </div>
           <div class="message" v-show="current != '' ">
             <el-table
-              :data="tableData"
+              :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
               style="width: 100%"
               v-loading="loading"
             >
-            <el-table-column
-              prop="timestamp"
-              label="測試時間"
-              width="180"
-              align="center">
-            </el-table-column>
-            <el-table-column
-              prop="tester"
-              label="測試員"
-              width="80"
-              align="center">
-            </el-table-column>
-            <el-table-column
-              label="測試結果"
-              align="center"
-            >
-              <template slot-scope="scoped">
-                <div
-                  class="door_block"
-                  :style="'color:'+ (scoped.row.emergency1_OK == '0'? '#F50000;': '#111;')"
-                  v-show="scoped.row.emergency1_OK != ''"
-                >
-                  急停1 {{ doorState(scoped.row.emergency1_OK) }}
-                </div>
-                <div
-                  class="door_block"
-                  :style="'color:'+ (scoped.row.emergency2_OK == '0'? '#F50000;': '#111;')"
-                  v-show="scoped.row.emergency2_OK != ''"
-                >
-                  急停2 {{ doorState(scoped.row.emergency2_OK) }}
-                </div>
-                <div
-                  class="door_block"
-                  :style="'color:'+ (scoped.row.safe_door_total_OK == '0'? '#F50000;': '#111;')"
-                  v-show="scoped.row.safe_door_total_OK != ''"
-                >
-                  安全門 {{ doorState(scoped.row.safe_door_total_OK) }}
-                </div>
-                <div
-                  class="door_block"
-                  :style="'color:'+ (scoped.row.safe_door_front_OK == '0'? '#F50000;': '#111;')"
-                  v-show="scoped.row.safe_door_front_OK != ''"
-                >
-                  前安全門 {{ doorState(scoped.row.safe_door_front_OK) }}
-                </div>
-                <div
-                  class="door_block"
-                  :style="'color:'+ (scoped.row.safe_door_back_OK == '0'? '#F50000;': '#111;')"
-                  v-show="scoped.row.safe_door_back_OK != ''"
-                >
-                  後安全門 {{ doorState(scoped.row.safe_door_back_OK) }}
-                </div>
-              </template>
-            </el-table-column>
+              <el-table-column
+                prop="timestamp"
+                label="測試時間"
+                width="180"
+                align="center"
+              >
+                <template slot-scope="scoped">
+                  <span>{{ toDate(scoped.row.timestamp) }}</span>
+                </template>
+              </el-table-column>
+              <el-table-column
+                prop="tester"
+                label="測試員"
+                width="80"
+                align="center">
+              </el-table-column>
+              <el-table-column
+                label="測試結果"
+                align="center"
+              >
+                <template slot-scope="scoped">
+                  <div
+                    class="door_block"
+                    :style="'color:'+ (scoped.row.emergency1_OK == '0'? '#F50000;': '#111;')"
+                    v-show="scoped.row.emergency1_OK != ''"
+                  >
+                    急停1 {{ doorState(scoped.row.emergency1_OK) }}
+                  </div>
+                  <div
+                    class="door_block"
+                    :style="'color:'+ (scoped.row.emergency2_OK == '0'? '#F50000;': '#111;')"
+                    v-show="scoped.row.emergency2_OK != ''"
+                  >
+                    急停2 {{ doorState(scoped.row.emergency2_OK) }}
+                  </div>
+                  <div
+                    class="door_block"
+                    :style="'color:'+ (scoped.row.safe_door_total_OK == '0'? '#F50000;': '#111;')"
+                    v-show="scoped.row.safe_door_total_OK != ''"
+                  >
+                    安全門 {{ doorState(scoped.row.safe_door_total_OK) }}
+                  </div>
+                  <div
+                    class="door_block"
+                    :style="'color:'+ (scoped.row.safe_door_front_OK == '0'? '#F50000;': '#111;')"
+                    v-show="scoped.row.safe_door_front_OK != ''"
+                  >
+                    前安全門 {{ doorState(scoped.row.safe_door_front_OK) }}
+                  </div>
+                  <div
+                    class="door_block"
+                    :style="'color:'+ (scoped.row.safe_door_back_OK == '0'? '#F50000;': '#111;')"
+                    v-show="scoped.row.safe_door_back_OK != ''"
+                  >
+                    後安全門 {{ doorState(scoped.row.safe_door_back_OK) }}
+                  </div>
+                </template>
+              </el-table-column>
             </el-table>
+            <div style="text-align: center;">
+              <el-pagination
+                :hide-on-single-page='true'
+                @current-change="handleCurrentChange"
+                :current-page="currentPage"
+                :page-size="pageSize"
+                layout="prev, pager, next"
+                :total="tableData.length"
+                prev-text="上一頁"
+                next-text="下一頁"
+              >
+              </el-pagination>
+            </div>
           </div>
         </el-card>
       </el-col>
@@ -385,7 +402,9 @@ export default {
     },
     tableData: [],
     status_message: '',
-    loading: false
+    loading: false,
+    currentPage: 1,
+    pageSize: 10,
   }),
   watch: {
     line: function() {
@@ -551,7 +570,7 @@ export default {
     async getSecurityState(field) {
       try {
         this.loading = true
-        this.tableData = []
+        // this.tableData = []
         let info = await overviewSecurityInfo(field)
         let test = await overviewSecurityTest(field)
         // console.log(info.data)
@@ -572,7 +591,22 @@ export default {
       setTimeout(()=>{
         this.timer()
       },1000 * 10);
-    }
+    },
+    toDate(time) {
+      let year = new Date(time).getFullYear()
+      let month = new Date(time).getMonth()+1
+      let date = new Date(time).getDate()
+      let hour = new Date(time).getHours()
+      hour = hour < 10? '0'+hour: hour
+      let minute = new Date(time).getMinutes()
+      minute = minute < 10? '0'+minute: minute
+      let second = new Date(time).getSeconds()
+      second = second < 10? '0'+second: second
+      return year+'-'+month+'-'+date+' '+hour+':'+minute+':'+second
+    },
+    handleCurrentChange: function(currentPage) {
+      this.currentPage = currentPage;
+    },
   },
   mounted() {
     // this.getMachineState(this.$route.params.line);
