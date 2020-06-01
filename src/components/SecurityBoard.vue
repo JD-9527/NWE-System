@@ -221,9 +221,9 @@
                 width="180"
                 align="center"
               >
-                <template slot-scope="scoped">
+                <!-- <template slot-scope="scoped">
                   <span>{{ toDate(scoped.row.timestamp) }}</span>
-                </template>
+                </template> -->
               </el-table-column>
               <el-table-column
                 prop="tester"
@@ -594,6 +594,9 @@ export default {
     },
     toDate(time) {
       let regTime = time.replace(' ', 'T')
+      if(window.navigator.userAgent.match(/^((?!chrome|android).)*safari/i)) {
+        regTime =  new Date(regTime).getTime() - 8 * 60 * 60 * 1000
+      }
       let year = new Date(regTime).getFullYear()
       let month = new Date(regTime).getMonth()+1
       let date = new Date(regTime).getDate()
