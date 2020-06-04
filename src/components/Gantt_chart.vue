@@ -22,10 +22,34 @@
       size='small'
     >+</el-button>
     <div v-show="holding">
-      ID: {{selected_order.id}}, 工單號: {{selected_order.label}}, 機台號: {{selected_order.rowId}}
+      <span>機台號: {{ selected_order.rowId }},</span>
+      <span>噸位: {{ selected_order.machine_ton }}, </span>
+      <span>工單號: {{ selected_order.label }}, </span>
+      <span>模號: {{ selected_order.mold_NO }}, </span>
+      <span>UPH: {{ selected_order.UPH }}, </span>
+      <span>模具儲位: {{ selected_order.mold_position }}, </span>
+      <span>品名: {{ selected_order.product_name }}, </span>
+      <span>計畫數量: {{ selected_order.plan_number }}, </span>
+      <span>塑膠料號: {{ selected_order.plastic_Part_NO }}, </span>
+      <span>顏色: {{ selected_order.plastic_color }}, </span>
+      <span>計畫工時: {{ selected_order.plan_work_time }}, </span><br/>
+      <span>開始時間: {{ toDate(selected_order.plan_s_time) }}, </span>
+      <span>結束時間: {{ toDate(selected_order.plan_e_time) }}</span>
     </div>
     <div v-show="!holding">
-      ID: {{selected_order_after.id}}, 工單號: {{selected_order_after.label}}, 機台號: {{selected_order_after.rowId}}
+      <span>機台號: {{ selected_order_after.rowId }},</span>
+      <span>噸位: {{ selected_order_after.machine_ton }}, </span>
+      <span>工單號: {{ selected_order_after.label }}, </span>
+      <span>模號: {{ selected_order_after.mold_NO }}, </span>
+      <span>UPH: {{ selected_order_after.UPH }}, </span>
+      <span>模具儲位: {{ selected_order_after.mold_position }}, </span>
+      <span>品名: {{ selected_order_after.product_name }}, </span>
+      <span>計畫數量: {{ selected_order_after.plan_number }}, </span>
+      <span>塑膠料號: {{ selected_order_after.plastic_Part_NO }}, </span>
+      <span>顏色: {{ selected_order_after.plastic_color }}, </span>
+      <span>計畫工時: {{ selected_order_after.plan_work_time }}, </span><br/>
+      <span>開始時間: {{ toDate(selected_order_after.plan_s_time) }}, </span>
+      <span>結束時間: {{ toDate(selected_order_after.plan_e_time) }}</span>
     </div>
     <div id="gantt_app">
       <GSTC
@@ -246,6 +270,18 @@ export default {
               this.selected_order.id = item.id ;
               this.selected_order.label = item.label ;
               this.selected_order.rowId = item.rowId ;
+              this.selected_order.product_name = item.product_name ;
+              this.selected_order.plan_number = item.plan_number ;
+              this.selected_order.plastic_color = item.plastic_color ;
+              this.selected_order.machine_ton = item.machine_ton;
+              this.selected_order.machine_NO = item.machine_NO;
+              this.selected_order.mold_NO = item.mold_NO;
+              this.selected_order.mold_Serial = item.mold_Serial;
+              this.selected_order.UPH = item.UPH;
+              this.selected_order.mold_position = item.mold_position;
+              this.selected_order.plan_work_time = item.plan_work_time
+              this.selected_order.plan_s_time = item.time.start
+              this.selected_order.plan_e_time = item.time.end
               // }
 
               document.onmouseup = () => {
@@ -254,6 +290,18 @@ export default {
                 this.selected_order_after.id = item.id ;
                 this.selected_order_after.label = item.label ;
                 this.selected_order_after.rowId = item.rowId ;
+                this.selected_order_after.product_name = item.product_name ;
+                this.selected_order_after.plan_number = item.plan_number ;
+                this.selected_order_after.plastic_color = item.plastic_color ;
+                this.selected_order_after.machine_ton = item.machine_ton;
+                this.selected_order_after.machine_NO = item.machine_NO;
+                this.selected_order_after.mold_NO = item.mold_NO;
+                this.selected_order_after.mold_Serial = item.mold_Serial;
+                this.selected_order_after.UPH = item.UPH;
+                this.selected_order_after.mold_position = item.mold_position;
+                this.selected_order_after.plan_work_time = item.plan_work_time
+                this.selected_order_after.plan_s_time = item.time.start
+                this.selected_order_after.plan_e_time = item.time.end
               }
               // this.selected_order.id = item.id ;
               // this.selected_order.part_no = item.label ;
@@ -447,7 +495,7 @@ export default {
       planPreview(undefined,this.line[0]).then((response)=>{
         let data = response.data.data
         for (let i=0;i<data.length;i++) {
-          console.log(data[i])
+          // console.log(data[i])
           this.$set(this.chart_items,i,{
             id: i,
             label: data[i].Part_NO,
