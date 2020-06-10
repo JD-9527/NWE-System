@@ -31,7 +31,7 @@
                 <div>
                   <el-button
                     style="background-color: #123456; color: #eee;"
-                    @click="login"
+                    @click="login(userName,password)"
                   >Login</el-button>
                   <el-button plain>Sign up</el-button>
                 </div>
@@ -61,8 +61,8 @@ export default {
     }
   },
   methods: {
-    login(){
-      // write login authencation logic here!323
+    /* eslint-disable */
+    login() {
       if( this.userName == 'nwe' && this.password == 'foxconn88' ){
         localStorage.setItem('token', 'ImLogin')
         this.$message({
@@ -71,14 +71,59 @@ export default {
           center: true,
           duration: 2000
         });
-        this.$router.push('/overview/dashboard');
-      } else{
+        this.$store.dispatch('user/login',['visitor'])
+        // console.log(this.$store.getters)
+        this.$router.push('/overview/dashboard').catch((err) => { console.log('Error:',err) });
+      }
+      else if ( this.userName == 'admin' && this.password == 'foxconn88' ){
+        localStorage.setItem('token', 'ImLogin')
+        this.$message({
+          message: '登入成功！',
+          type: 'success',
+          center: true,
+          duration: 2000
+        });
+        this.$store.dispatch('user/login', ['website_maintainer'])
+        this.$router.push('/overview/dashboard').catch((err) => { console.log('Error:',err) });
+      }
+      else{
         this.$message.error({
           message: '帳號或密碼錯誤！',
           center: true,
           duration: 2000
         });
       }
+      console.log(this.$store.getters.roles)
+    }
+    // login(){
+    //   // write login authencation logic here!323
+    //   if( this.userName == 'nwe' && this.password == 'foxconn88' ){
+    //     localStorage.setItem('token', 'ImLogin')
+    //     this.$message({
+    //       message: '登入成功！',
+    //       type: 'success',
+    //       center: true,
+    //       duration: 2000
+    //     });
+    //     this.$router.push('/overview/dashboard');
+    //   } else{
+    //     this.$message.error({
+    //       message: '帳號或密碼錯誤！',
+    //       center: true,
+    //       duration: 2000
+    //     });
+    //   }
+    // login() {
+    //   // const { username, password } = userInfo
+    //   if ( this.userName == 'nwe' && this.password == 'foxconn88' ){
+    //     // commit('SET_TOKEN', data.token)
+    //     this.$store.commit('SET_ROLES', 'visitor')
+    //   }
+    //   else if ( this.userName == 'admin' && this.password == 'foxconn88' ){
+    //     // commit('SET_TOKEN', data.token)
+    //     this.$store.commit('SET_ROLES', 'website_maintainer')
+    //   }
+    // },
       // let username=this.userName
       // let password=this.password
       // this.$store.dispatch('login', { username, password })
@@ -92,7 +137,6 @@ export default {
       //     duration: 2000
       //   });
       //   })
-    }
   }
 };
 </script>

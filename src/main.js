@@ -1,5 +1,5 @@
 import Vue from 'vue'
-// import Vuex from 'vuex'
+import Vuex from 'vuex'
 // import VueRouter from 'vue-router'
 import router from './router'
 import ElementUI from 'element-ui';
@@ -8,11 +8,12 @@ import ECharts from 'vue-echarts'
 import 'element-ui/lib/theme-chalk/index.css';
 import '@/assets/css/global.scss'
 import App from './App.vue'
-// import store from './store.js'
+import store from './store'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faDesktop, faSquare, faServer, faAlignCenter } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import axios from 'axios'
+// import './permission'
 
 library.add(faDesktop,faSquare,faServer,faAlignCenter)
 
@@ -23,7 +24,7 @@ Vue.prototype.$http = axios;
 // }
 
 Vue.config.productionTip = false;
-// Vue.use(Vuex)
+Vue.use(Vuex)
 
 Vue.use(ElementUI);
 Vue.use(echarts);
@@ -31,22 +32,37 @@ Vue.use(echarts);
 Vue.component('v-chart', ECharts)
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
-// router.beforeEach((to, from, next) => {
-//   if(to.matched.some(record => record.meta.requiresAuth)) {
-//     if (store.getters.isLoggedIn) {
-//         next()
-//         return
-//       }
-//       next('/login')
-//     }
-//     else {
-//       next()
-//   }
-// });
+router.beforeEach((to, from, next) => {
+  // 抓要前往的路由權限
+  const permissionRoles = to.meta.role
+  // 抓當前權限
+  const current_role = store.getters.roles
+  const hasPermission = current_role.some(role => {
+      return permissionRoles.includes(role)
+    })
+  /* eslint-disable */
+  console.log('to:',to.path)
+  console.log('from:',from.path)
+
+  if (to.path != '/login') {
+    if(hasPermission) {
+      next()
+    }
+    else {
+      ElementUI.Message.error({
+        message: '權限不符！',
+        center: true,
+        duration: 2000
+      });
+      next('/login')
+    }
+  }
+  else next()
+});
 
 new Vue({
   el: '#app',
   router,
-  // store,
+  store,
   render: h => h(App),
 }).$mount('#app')
