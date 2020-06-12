@@ -96,23 +96,23 @@ export const constantRoutes = [
 export const asyncRoutes = [
   {
     path: '/',
-    redirect: '/login',
-    meta: {
-      role: [
-        'website_maintainer', 'site_manager', 'product_manager', 'machine_maintainer',
-        'mold_repairer', 'dispatcher', 'quality_assurance', 'process_engineer', 'visitor'
-      ]
-    },
+    redirect: '/overview/dashboard',
+    // meta: {
+    //   role: [
+    //     'website_maintainer', 'site_manager', 'product_manager', 'machine_maintainer',
+    //     'mold_repairer', 'dispatcher', 'quality_assurance', 'process_engineer', 'visitor'
+    //   ]
+    // },
   },
   {
     path: '/login',
     component: Login,
-    meta: {
-      role: [
-        'website_maintainer', 'site_manager', 'product_manager', 'machine_maintainer',
-        'mold_repairer', 'dispatcher', 'quality_assurance', 'process_engineer', 'visitor'
-      ]
-    },
+    // meta: {
+    //   role: [
+    //     'website_maintainer', 'site_manager', 'product_manager', 'machine_maintainer',
+    //     'mold_repairer', 'dispatcher', 'quality_assurance', 'process_engineer', 'visitor'
+    //   ]
+    // },
   },
   {
     path: '/overview', component: Layout,

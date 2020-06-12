@@ -93,7 +93,7 @@ export default {
           duration: 2000
         });
       }
-      console.log(this.$store.getters.roles)
+      // console.log(this.$store.getters.roles)
     }
     // login(){
     //   // write login authencation logic here!323

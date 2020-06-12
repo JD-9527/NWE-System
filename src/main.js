@@ -33,6 +33,8 @@ Vue.component('v-chart', ECharts)
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 router.beforeEach((to, from, next) => {
+
+  let getFlag = localStorage.getItem("token");
   // 抓要前往的路由權限
   const permissionRoles = to.meta.role
   // 抓當前權限
@@ -43,21 +45,27 @@ router.beforeEach((to, from, next) => {
   /* eslint-disable */
   console.log('to:',to.path)
   console.log('from:',from.path)
-
-  if (to.path != '/login') {
-    if(hasPermission) {
+  if (getFlag == 'ImLogin') {
+    if (to.path == '/error/404') {
       next()
     }
     else {
-      ElementUI.Message.error({
-        message: '權限不符！',
-        center: true,
-        duration: 2000
-      });
-      next('/login')
+      if(hasPermission) {
+        next()
+      }
+      else {
+        ElementUI.Message.error({
+          message: '權限不符！',
+          center: true,
+          duration: 2000
+        });
+        next('/error/404')
+      }
     }
   }
-  else next()
+  else {
+    next('/login')
+  }
 });
 
 new Vue({
