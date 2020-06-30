@@ -1,21 +1,49 @@
 <template>
   <div>
-    <!-- .slice((currentPage-1)*pageSize,currentPage*pageSize) -->
+
+    <div>
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="currentPage"
+        :page-sizes="[10,20,50]"
+        :page-size="pageSize"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="tableData.length"
+        prev-text="上一頁"
+        next-text="下一頁">
+      </el-pagination>
+    </div>
     <el-table
-      :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize).filter(data => searchLine == 'All' || data.machine_NO.includes(searchLine[0]))"
+      :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
       style="width: 100%"
     >
+       <el-table-column
+        prop="Part_NO"
+        label="料號"
+        width="200"
+        align="center"
+        fixed="left"
+      >
+        <editable-cell
+          :show-input="row.editMode"
+          slot-scope="{row}"
+          v-model="row.Part_NO"
+        >
+          <span slot="content">{{row.Part_NO}}</span>
+        </editable-cell>
+      </el-table-column>
       <el-table-column
         prop="machine_ton"
         label="噸位"
-        width="100"
+        width="80"
         align="center"
       >
       </el-table-column>
       <el-table-column
         prop="machine_NO"
         label="機台號"
-        width="100"
+        width="80"
         align="center"
       >
       </el-table-column>
@@ -50,23 +78,9 @@
       <el-table-column
         prop="product_name"
         label="品名"
-        width="100"
+        width="120"
         align="center"
       >
-      </el-table-column>
-      <el-table-column
-        prop="Part_NO"
-        label="料號"
-        width="200"
-        align="center"
-      >
-        <editable-cell
-          :show-input="row.editMode"
-          slot-scope="{row}"
-          v-model="row.Part_NO"
-        >
-          <span slot="content">{{row.Part_NO}}</span>
-        </editable-cell>
       </el-table-column>
       <el-table-column
         prop="plastic_Part_NO"
@@ -81,13 +95,13 @@
         width="100"
         align="center"
       >
-        <editable-cell
+        <!-- <editable-cell
           :show-input="row.editMode"
           slot-scope="{row}"
           v-model="row.plan_number"
         >
           <span slot="content">{{row.plan_number}}</span>
-        </editable-cell>
+        </editable-cell> -->
       </el-table-column>
       <el-table-column
         prop="mold_NO"
@@ -131,7 +145,28 @@
         align="center"
       >
       </el-table-column>
-      <el-table-column
+       <el-table-column
+        prop="emergency"
+        label="緊急程度"
+        width="100"
+        align="center"
+      >
+      </el-table-column>
+       <el-table-column
+        prop="need"
+        label="量產"
+        width="100"
+        align="center"
+      >
+      </el-table-column>
+       <el-table-column
+        prop="note"
+        label="備註"
+        width="100"
+        align="center"
+      >
+      </el-table-column>
+      <!-- <el-table-column
         label="操作"
         align="center"
         fixed="right"
@@ -158,82 +193,84 @@
           @click="cancelEditMode(row, index)">
         </el-button>
        </template>
-      </el-table-column>
-      <div>
-        <el-pagination
-          :hide-on-single-page='true'
-          @current-change="handleCurrentChange"
-          :current-page="currentPage"
-          :page-sizes="[10,20,50]"
-          :page-size="pageSize"
-          layout="total, prev, pager, next"
-          :total="tableData.length"
-          prev-text="上一頁"
-          next-text="下一頁">
-        </el-pagination>
-      </div>
+      </el-table-column> -->
+     
     </el-table>
+   
   </div>
 </template>
 
 <script>
 import EditableCell from "./EditableCell.vue";
-import { planPreview, planEditPreview } from '../api.js'
+import { PlanOrder, planEditPreview } from '../api.js'
 
 export default {
   components: {
       EditableCell,
   },
-  data: () => ({
-    tableData: [],
-    tableData_o: [], // 原始數據
-    searchLine: 'All',
-    pageSize: 10,
-    currentPage: 1,
-  }),
+  data(){
+    return{
+      tableData: [],
+      tableData_o: [], // 原始數據
+      searchLine: 'All',
+      searchTon: 'All',
+      pageSize: 10,
+      currentPage: 1,
+    }
+  },
   props: {
     field: String,
     line: {
       type: String,
       default: 'All'
+    },
+    ton: {
+      type: String,
+      default: 'All'
     }
   },
-  // computed: {
-  //   tableData: function() {
-  //     return this.loadTable()
-  //   }
-  // },
   watch: {
     field: function() {
-      this.loadTable()
       this.searchLine = 'All'
+      this.searchTon = 'All'
+      this.loadTable()
     },
     line: function() {
       this.searchLine = this.line
-    }
+      this.searchTon = 'All'
+      this.loadTable()
+    },
+    ton: function() {
+      this.searchTon = this.ton
+      this.loadTable()
+    },
   },
   methods: {
     /* eslint-disable */
+    linefilter(line){ //A 線-> A
+      if(line!='All')
+        return line.charAt(0)
+      else
+        return line
+    },
     loadTable() {
-      planPreview(this.field).then((response)=>{
-        this.tableData = response.data.data
-        this.tableData = this.tableData.map(row => {
-          return {
-            ...row,
-            editMode: false
-          }
-        })
-        this.tableData_o = this.tableData
+      // console.log(this.searchTon)
+      PlanOrder(this.field,this.linefilter(this.searchLine),this.searchTon).then((response)=>{
+        // console.log(response.data.details)
+        if(Object.keys(response.data.data).length>0){
+          this.tableData = response.data.data
+          this.tableData = this.tableData.map(row => {
+            return {
+              ...row,
+              editMode: false
+            }
+          })
+          this.tableData_o = this.tableData
+        }
+        else
+          this.tableData = []
       })
     },
-    // searchLine() {
-    //   if (this.line == 'All') this.tableData = this.tableData_o
-    //   else {
-    //     // console.log(this.line[0])
-    //     let line_tmp = this.line[0];
-    //     this.tableData = this.tableData.filter(data => data.machine_NO.includes(this.line_tmp))
-    //   }
-    // },
     saveRow(row, index) {
       row.editMode = false;
       planEditPreview(row).then((response)=>{
@@ -249,10 +286,15 @@ export default {
       this.loadTable();
     },
     setEditMode(row, index) {
-      row.editMode = true;
+      // row.editMode = true;
+      row.editMode = false;
     },
     handleCurrentChange: function(currentPage) {
       this.currentPage = currentPage
+    },
+    
+    handleSizeChange: function(size) {
+      this.pageSize = size;
     },
     /* eslint-enable */
   },

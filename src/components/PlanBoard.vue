@@ -15,7 +15,6 @@
     <Gantt v-show="activeName=='D 線'" line="D 線"/>
     <Gantt v-show="activeName=='E 線'" line="E 線"/>
     <Gantt v-show="activeName=='F 線'" line="F 線"/>
-    <!-- <Gantt v-show="activeName=='G 線'" line="G 線"/> -->
     <Gantt v-show="activeName=='G 線'" line="G 線"/>
   </div>
 </template>
