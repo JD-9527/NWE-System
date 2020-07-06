@@ -1084,50 +1084,50 @@ export default {
             action: (element, item) => {
               // console.log('click')
               this.holding = true
-<<<<<<< HEAD
-              this.selected_order.id = item.id ;
-              this.selected_order.label = item.label ;
-              this.selected_order.rowId = item.rowId ;
-              this.selected_order.product_name = item.product_name ;
-              this.selected_order.plan_number = item.plan_number ;
-              this.selected_order.plastic_color = item.plastic_color ;
-              this.selected_order.machine_ton = item.machine_ton;
-              this.selected_order.machine_NO = item.machine_NO;
-              this.selected_order.mold_NO = item.mold_NO;
-              this.selected_order.mold_Serial = item.mold_Serial;
-              this.selected_order.UPH = item.UPH;
-              this.selected_order.mold_position = item.mold_position;
-              this.selected_order.plan_work_time = item.plan_work_time
-              this.selected_order.plan_s_time = item.time.start
-              this.selected_order.plan_e_time = item.time.end
-              // }
+// <<<<<<< HEAD
+//               this.selected_order.id = item.id ;
+//               this.selected_order.label = item.label ;
+//               this.selected_order.rowId = item.rowId ;
+//               this.selected_order.product_name = item.product_name ;
+//               this.selected_order.plan_number = item.plan_number ;
+//               this.selected_order.plastic_color = item.plastic_color ;
+//               this.selected_order.machine_ton = item.machine_ton;
+//               this.selected_order.machine_NO = item.machine_NO;
+//               this.selected_order.mold_NO = item.mold_NO;
+//               this.selected_order.mold_Serial = item.mold_Serial;
+//               this.selected_order.UPH = item.UPH;
+//               this.selected_order.mold_position = item.mold_position;
+//               this.selected_order.plan_work_time = item.plan_work_time
+//               this.selected_order.plan_s_time = item.time.start
+//               this.selected_order.plan_e_time = item.time.end
+//               // }
 
-              document.onmouseup = () => {
-                // console.log(item)
-                this.holding = false
-                this.selected_order_after.id = item.id ;
-                this.selected_order_after.label = item.label ;
-                this.selected_order_after.rowId = item.rowId ;
-                this.selected_order_after.product_name = item.product_name ;
-                this.selected_order_after.plan_number = item.plan_number ;
-                this.selected_order_after.plastic_color = item.plastic_color ;
-                this.selected_order_after.machine_ton = item.machine_ton;
-                this.selected_order_after.machine_NO = item.machine_NO;
-                this.selected_order_after.mold_NO = item.mold_NO;
-                this.selected_order_after.mold_Serial = item.mold_Serial;
-                this.selected_order_after.UPH = item.UPH;
-                this.selected_order_after.mold_position = item.mold_position;
-                this.selected_order_after.plan_work_time = item.plan_work_time
-                this.selected_order_after.plan_s_time = item.time.start
-                this.selected_order_after.plan_e_time = item.time.end
-              }
-              // this.selected_order.id = item.id ;
-              // this.selected_order.part_no = item.label ;
-              // this.selected_order.product_name = item.product_name ;
-              // this.selected_order.plan_number = item.plan_number ;
-              // this.selected_order.plastic_color = item.plastic_color ;
-              // this.selected_order.machine = item.rowId ;
-=======
+//               document.onmouseup = () => {
+//                 // console.log(item)
+//                 this.holding = false
+//                 this.selected_order_after.id = item.id ;
+//                 this.selected_order_after.label = item.label ;
+//                 this.selected_order_after.rowId = item.rowId ;
+//                 this.selected_order_after.product_name = item.product_name ;
+//                 this.selected_order_after.plan_number = item.plan_number ;
+//                 this.selected_order_after.plastic_color = item.plastic_color ;
+//                 this.selected_order_after.machine_ton = item.machine_ton;
+//                 this.selected_order_after.machine_NO = item.machine_NO;
+//                 this.selected_order_after.mold_NO = item.mold_NO;
+//                 this.selected_order_after.mold_Serial = item.mold_Serial;
+//                 this.selected_order_after.UPH = item.UPH;
+//                 this.selected_order_after.mold_position = item.mold_position;
+//                 this.selected_order_after.plan_work_time = item.plan_work_time
+//                 this.selected_order_after.plan_s_time = item.time.start
+//                 this.selected_order_after.plan_e_time = item.time.end
+//               }
+//               // this.selected_order.id = item.id ;
+//               // this.selected_order.part_no = item.label ;
+//               // this.selected_order.product_name = item.product_name ;
+//               // this.selected_order.plan_number = item.plan_number ;
+//               // this.selected_order.plastic_color = item.plastic_color ;
+//               // this.selected_order.machine = item.rowId ;
+// =======
               this.table_show = true
               this.selected_order.Part_NO = item.label
               this.selected_order.machine_NO = item.rowId
@@ -1144,7 +1144,7 @@ export default {
               this.NewDateToObject(new Date(item.time.end),this.selected_order.endtime)
               let mins = Math.round(((item.time.end - item.time.start)/1000)/60)
               this.setProductionTime(mins,this.selected_order.productiontime)
->>>>>>> master
+// >>>>>>> master
 
               //TableData
               let selectedData = item
@@ -1221,7 +1221,7 @@ export default {
       //     // console.log("ItemMovement", item.movement);
       //   })
     },
-<<<<<<< HEAD
+// <<<<<<< HEAD
     click() {
       // console.log(arguments)
     },
@@ -1255,51 +1255,51 @@ export default {
       delete this.chart_items[this.selected_order.id]
       this.$set(this.chart_items,this.selected_order.id,{})
     },
-    dataToGantt() {
-      // console.log(this.line[0])
-      // id:'',
-      // machine_ton:'',          // 噸位
-      // machine_NO:'',           // 機台號
-      // mold_NO:'',              // 模號
-      // mold_Serial:'',          // 模序
-      // mold_hole:'',            // 模穴
-      // UPH:'',                  // UPH
-      // mold_position:'',        // 模具儲位
-      // product_name:'',         // 品名
-      // plan_number:0,           // 數量
-      // plastic_Part_NO:'',      // 塑膠料號
-      // plastic_color:'',        // 顏色
-      // machine_state:'',
-      // machine_repair_time:'',
-      // plan_work_time: '',       // 計畫工時
-      // plan_s_time: '',
-      // plan_e_time: '',
-      // mold_down_t: '',
-      planPreview(undefined,this.line[0]).then((response)=>{
-        let data = response.data.data
-        for (let i=0;i<data.length;i++) {
-          // console.log(data[i])
-          this.$set(this.chart_items,i,{
-            id: i,
-            label: data[i].Part_NO,
-            rowId: data[i].machine_NO,
-            machine_ton: data[i].machine_ton,
-            mold_NO: data[i].mold_NO,
-            mold_Serial: data[i].mold_Serial,
-            UPH: data[i].UPH,
-            mold_position: data[i].mold_position,
-            product_name: data[i].product_name,
-            plan_number: data[i].plan_number,
-            plastic_Part_NO: data[i].plastic_Part_NO,
-            plastic_color: data[i].plastic_color,
-            plan_work_time: data[i].plan_work_time,
-            mold_down_t: data[i].mold_down_t,
-            time: {
-              start: new Date(data[i].plan_s_time).getTime(),
-              end: new Date(data[i].plan_e_time).getTime()
-            },
-            style: item_style
-=======
+//     dataToGantt() {
+//       // console.log(this.line[0])
+//       // id:'',
+//       // machine_ton:'',          // 噸位
+//       // machine_NO:'',           // 機台號
+//       // mold_NO:'',              // 模號
+//       // mold_Serial:'',          // 模序
+//       // mold_hole:'',            // 模穴
+//       // UPH:'',                  // UPH
+//       // mold_position:'',        // 模具儲位
+//       // product_name:'',         // 品名
+//       // plan_number:0,           // 數量
+//       // plastic_Part_NO:'',      // 塑膠料號
+//       // plastic_color:'',        // 顏色
+//       // machine_state:'',
+//       // machine_repair_time:'',
+//       // plan_work_time: '',       // 計畫工時
+//       // plan_s_time: '',
+//       // plan_e_time: '',
+//       // mold_down_t: '',
+//       planPreview(undefined,this.line[0]).then((response)=>{
+//         let data = response.data.data
+//         for (let i=0;i<data.length;i++) {
+//           // console.log(data[i])
+//           this.$set(this.chart_items,i,{
+//             id: i,
+//             label: data[i].Part_NO,
+//             rowId: data[i].machine_NO,
+//             machine_ton: data[i].machine_ton,
+//             mold_NO: data[i].mold_NO,
+//             mold_Serial: data[i].mold_Serial,
+//             UPH: data[i].UPH,
+//             mold_position: data[i].mold_position,
+//             product_name: data[i].product_name,
+//             plan_number: data[i].plan_number,
+//             plastic_Part_NO: data[i].plastic_Part_NO,
+//             plastic_color: data[i].plastic_color,
+//             plan_work_time: data[i].plan_work_time,
+//             mold_down_t: data[i].mold_down_t,
+//             time: {
+//               start: new Date(data[i].plan_s_time).getTime(),
+//               end: new Date(data[i].plan_e_time).getTime()
+//             },
+//             style: item_style
+// =======
     dataToGantt(type){ //arrangement_result data
       if(type=='workorder'){
         WorkOrder('All','All','All').then((response)=>{
@@ -1380,7 +1380,6 @@ export default {
             machine_CT:week_plan[i]['machine_CT'],
             product_color:week_plan[i]['product_color'],
             machine_ton:week_plan[i]['machine_ton'],
->>>>>>> master
           })
         }
       })

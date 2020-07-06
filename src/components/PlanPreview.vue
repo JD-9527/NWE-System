@@ -49,11 +49,8 @@
         ton: 'All',
         line: 'All',
         site: 'D10 - 1F',
-<<<<<<< HEAD
-        datas: []
-=======
+        datas: [],
         dataType:'planorder',
->>>>>>> master
       };
     },
     computed:{
@@ -64,19 +61,15 @@
     },
     methods: {
       /* eslint-disable */
-<<<<<<< HEAD
-=======
       handleClick(tab, event) {
         // console.log(tab, event);
       },
->>>>>>> master
       handleSelect(item) {
         this.line = item
       },
       siteSelect(item) {
         this.site = item
       },
-<<<<<<< HEAD
       getData() {
         planPreview('D10',undefined).then((response)=>{
           console.log(response.data.data)
@@ -85,10 +78,9 @@
         .catch((error)=>{
           console.log(error)
         })
-=======
+      },
       tonSelect(item) {
         this.ton = item
->>>>>>> master
       }
       /* eslint-enable */
     },
