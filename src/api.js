@@ -15,6 +15,19 @@ const NWEData = axios.create({
   baseURL: 'http://10.124.131.87:8880/data/'
 });
 
+const Token = axios.create({
+  baseURL: 'http://10.124.131.87:8880/token/'
+})
+
+export const login = (username,passwd) => {
+  let formData = new FormData();
+  formData.append('username', username)
+  formData.append('password', passwd)
+  return Token.post('/', formData, { headers: {
+        'Content-Type': 'multipart/form-data'
+      }});
+}
+
 // 生產狀態
 export const overviewMachineStateCount = (field) => NWEOverview.get('/machine/statecount/?field='+field)
 export const overviewMachineAbnormal = (field) => NWEOverview.get('/machine/abnormalacc/?field='+field)

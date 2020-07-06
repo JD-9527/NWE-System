@@ -33,19 +33,28 @@ Vue.component('v-chart', ECharts)
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 router.beforeEach((to, from, next) => {
-
-  let getFlag = localStorage.getItem("token");
+  /* eslint-disable */
+  // 檢查cookie是否有登入的角色資訊
+  let hasToken = store.getters.token? store.getters.token: false;
+  console.log(hasToken)
   // 抓要前往的路由權限
   const permissionRoles = to.meta.role
-  // 抓當前權限
-  const current_role = store.getters.roles
-  const hasPermission = current_role.some(role => {
+  // 抓當前權限(先從 cookie 抓取登入的角色權限，)
+  let current_role = store.getters.roles;
+  let hasPermission = current_role.some(role => {
       return permissionRoles.includes(role)
     })
-  /* eslint-disable */
-  console.log('to:',to.path)
-  console.log('from:',from.path)
-  if (getFlag == 'ImLogin') {
+  // 檢查之前是否有登入過，沒有則轉到login頁面
+  if (hasToken) {
+    // if (current_role.length == 0) {
+    //   // vuex 存入角色資訊
+    //   store.dispatch('user/setRoles', [hasToken])
+    //   current_role = store.getters.roles
+    //   // 重新抓取權限
+    //   hasPermission = current_role.some(role => {
+    //     return permissionRoles.includes(role)
+    //   })
+    // }
     if (to.path == '/error/404') {
       next()
     }
@@ -63,9 +72,10 @@ router.beforeEach((to, from, next) => {
       }
     }
   }
-  else {
-    next('/login')
+  else if (to.path == '/login') {
+    next()
   }
+  else next('/login')
 });
 
 new Vue({

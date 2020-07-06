@@ -1,9 +1,11 @@
 // import { login, logout, getInfo } from '@/api/user'
-import { getToken, setToken, removeToken } from '@/utils/auth'
-import router, { resetRouter } from '@/router.js'
+// import { getToken, setToken, removeToken } from '@/utils/auth'
+// import router, { resetRouter } from '@/router.js'
+// import { login } from '@/api.js'
 
 const state = {
-  token: getToken(),
+  // token: getToken(),
+  token: '',
   name: '',
   avatar: '',
   introduction: '',
@@ -29,25 +31,27 @@ const mutations = {
 }
 
 const actions = {
-  // user login
-  // login({ commit }, userInfo) {
+  // user login and get token
+  login({ commit }, userInfo) {
   //   const { username, password } = userInfo
   //   return new Promise((resolve, reject) => {
-  //     login({ username: username.trim(), password: password }).then(response => {
+  //     login(username, password).then(response => {
   //       const { data } = response
   //       commit('SET_TOKEN', data.token)
-  //       setToken(data.token)
-  //       resolve()
+  //       // setToken(data.token)
+  //       commit('SET_ROLES', [data.groups])
+  //       commit('SET_NAME', data.username)
+  //       resolve(data)
   //     }).catch(error => {
   //       reject(error)
   //     })
   //   })
-  // },
-  login({ commit }, role) {
-    // const { username, password } = userInfo
-    commit('SET_ROLES', role)
-  },
+    const { token, groups, username } = userInfo
+    commit('SET_TOKEN', token)
+    commit('SET_ROLES', [groups])
+    commit('SET_NAME', username)
 
+  },
   // get user info
   // getInfo({ commit, state }) {
   //   return new Promise((resolve, reject) => {
@@ -97,41 +101,48 @@ const actions = {
   // },
 
   // remove token
+  // resetToken({ commit }) {
+  //   return new Promise(resolve => {
+  //     commit('SET_TOKEN', '')
+  //     commit('SET_ROLES', [])
+  //     removeToken()
+  //     resolve()
+  //   })
+  // },
   resetToken({ commit }) {
-    return new Promise(resolve => {
-      commit('SET_TOKEN', '')
-      commit('SET_ROLES', [])
-      removeToken()
-      resolve()
-    })
-  },
-  resetToken1({ commit }) {
     commit('SET_ROLES', [])
+    commit('SET_TOKEN', '')
+    commit('SET_NAME', '')
+    // removeToken()
+  },
+  setRoles({ commit },role) {
+    commit('SET_ROLES', role)
+    // removeToken()
   },
   // dynamically modify permissions
-  changeRoles({ commit, dispatch }, role) {
-    return new Promise(async resolve => {
-      const token = role + '-token'
+  // changeRoles({ commit, dispatch }, role) {
+  //   return new Promise(async resolve => {
+  //     const token = role + '-token'
 
-      commit('SET_TOKEN', token)
-      setToken(token)
+  //     commit('SET_TOKEN', token)
+  //     setToken(token)
 
-      const { roles } = await dispatch('getInfo')
+  //     const { roles } = await dispatch('getInfo')
 
-      resetRouter()
+  //     resetRouter()
 
-      // generate accessible routes map based on roles
-      const accessRoutes = await dispatch('permission/generateRoutes', roles, { root: true })
+  //     // generate accessible routes map based on roles
+  //     const accessRoutes = await dispatch('permission/generateRoutes', roles, { root: true })
 
-      // dynamically add accessible routes
-      router.addRoutes(accessRoutes)
+  //     // dynamically add accessible routes
+  //     router.addRoutes(accessRoutes)
 
-      // reset visited views and cached views
-      dispatch('tagsView/delAllViews', null, { root: true })
+  //     // reset visited views and cached views
+  //     dispatch('tagsView/delAllViews', null, { root: true })
 
-      resolve()
-    })
-  }
+  //     resolve()
+  //   })
+  // }
 }
 
 export default {
