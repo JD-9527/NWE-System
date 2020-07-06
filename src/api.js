@@ -15,6 +15,17 @@ const NWEData = axios.create({
   baseURL: 'http://10.124.131.87:8880/data/'
 });
 
+// 計畫預覽、工單計畫
+const NWEOrder = axios.create({
+  baseURL: 'http://10.132.41.95:8002/api/'
+});
+
+//10.132.41.95:8002 NWE arrangment
+const NWELocal = axios.create({
+  baseURL: 'http://127.0.0.1:8002/api/'
+});
+
+
 // 生產狀態
 export const overviewMachineStateCount = (field) => NWEOverview.get('/machine/statecount/?field='+field)
 export const overviewMachineAbnormal = (field) => NWEOverview.get('/machine/abnormalacc/?field='+field)
@@ -166,23 +177,61 @@ export const dataDelWeekPlan = (Part_NO) => {
       }});
 }
 
-// 計畫預覽
 export const planTonList = (line) => {
   if (typeof(line) == 'undefined') return NWEPlan.get('/tonlist/')
   else return NWEPlan.get('/tonlist/?line='+line)
 }
-export const planPreview = (field,line) => {
-  return NWEPlan.get('/preview/',{params: { field: field, line: line}})
+
+// export const planPreview = (field,line) => {
+//   return NWEPlan.get('/preview/',{params: { field: field, line: line}})
+// }
+
+// 計畫工單
+export const PlanOrder = (field,line,ton) => {
+  return NWEOrder.get('/nwe_plan_order',{params: { field: field, line: line, ton: ton}})
 }
+
+// 計畫工單
+export const WorkOrder = (field,line,ton) => {
+  return NWEOrder.get('/nwe_work_order',{params: { field: field, line: line, ton: ton}})
+}
+
+//機台資料
+export const MachineData = () => {
+  return NWEOrder.get('/nwe_machine_data',{})
+}
+
+//周計畫料號
+export const WeeksPlan = () => {
+  return NWEOrder.get('/nwe_week_plan',{})
+}
+
+//料號資訊
+export const PartNoInfo = (part_no) => {
+  return NWEOrder.get('/nwe_partno_information/',{params: { part_no : part_no}})
+}
+
+
 export const planEditPreview = (row) => {
   let formData = new FormData();
   formData.append('Part_NO', row.Part_NO)
   formData.append('plan_number', row.plan_number)
   formData.append('Seq', row.Seq)
-  return NWEPlan.post('/preview/', formData, { headers: {
+  return NWELocal.post('/planEditPreview/', formData, { headers: {
         'Content-Type': 'multipart/form-data'
       }});
 }
+
+// export const planEditPreview = (row) => {
+//   let formData = new FormData();
+//   formData.append('Part_NO', row.Part_NO)
+//   formData.append('plan_number', row.plan_number)
+//   formData.append('Seq', row.Seq)
+//   return NWEPlan.post('/preview/', formData, { headers: {
+//         'Content-Type': 'multipart/form-data'
+//       }});
+// }
+
 
 export const planWorklist = (line) => {
   return NWEPlan.get('/worklist/',{params: { line: line }})

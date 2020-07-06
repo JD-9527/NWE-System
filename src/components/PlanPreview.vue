@@ -7,20 +7,24 @@
       <FactorySelection tonlist
         @lineSelected="handleSelect"
         @siteSelected="siteSelect"
+        @tonSelected="tonSelect"
       />
       <el-button size='mini' style="margin-left: 10px;">提交</el-button>
 
       <el-tab-pane label="推薦報表" name="first">
-        <Report :field='field' :line="line"/>
+        <Report :field='field' :line='line' :ton='ton'/>
       </el-tab-pane>
       <el-tab-pane label="推薦甘特圖" name="second">
-        <Gantt v-show="line=='A 線' || (site == 'D10 - 1F') && line=='All'" line="A 線"/>
+        
+        <Gantt draggable :line="line" :site="site" :ton="ton" :dataType="dataType" />
+        <!-- <Gantt v-show="line=='A 線' || (site == 'D10 - 1F') && line=='All'" line="A 線"/>
         <Gantt v-show="line=='B 線'" line="B 線"/>
         <Gantt v-show="line=='C 線'" line="C 線"/>
         <Gantt v-show="line=='D 線'" line="D 線"/>
         <Gantt v-show="line=='E 線' || (site == 'D9 - 1F') && line=='All'" line="E 線"/>
         <Gantt v-show="line=='F 線'" line="F 線"/>
-        <Gantt v-show="line=='G 線'" line="G 線"/>
+        <Gantt v-show="line=='G 線'" line="G 線"/> -->
+
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -40,8 +44,13 @@
     data() {
       return {
         activeName: 'first',
+        activeLine: '1',
+        // lines: ['A線', 'B線', 'C線', 'D線', 'E線', 'F線', 'G線'],
+        // tons: ['50','80','100','130'],
+        ton: 'All',
         line: 'All',
-        site: 'D10 - 1F'
+        site: 'D10 - 1F',
+        dataType:'planorder',
       };
     },
     computed:{
@@ -53,13 +62,16 @@
     methods: {
       /* eslint-disable */
       handleClick(tab, event) {
-        console.log(tab, event);
+        // console.log(tab, event);
       },
       handleSelect(item) {
         this.line = item
       },
       siteSelect(item) {
         this.site = item
+      },
+      tonSelect(item) {
+        this.ton = item
       }
       /* eslint-enable */
     },

@@ -49,6 +49,7 @@
       size='mini'
       v-model="ton"
       v-if="tonlist"
+      @change="tonSelected"
     >
       <el-option
         v-for="item in tons"
@@ -134,10 +135,15 @@ export default {
     site: function() {
       this.lines = this.loadLine(this.site)
       this.line = 'All'
+      this.machs = this.loadMach(this.line)
+      this.mach = 'All'
+      this.ton = 'All'
+      this.tons = this.loadTons(this.line)
     },
     line: function() {
       this.machs = this.loadMach(this.line)
       this.mach = 'All'
+      this.ton = 'All'
       this.tons = this.loadTons(this.line)
     },
   },
@@ -271,7 +277,11 @@ export default {
     },
     siteSelected(item) {
       this.$emit('siteSelected',item)
-    }
+    },
+    tonSelected(item) {
+      this.$emit('tonSelected',item)
+    },
+    
   },
   mounted() {
     this.lines = this.loadLine()

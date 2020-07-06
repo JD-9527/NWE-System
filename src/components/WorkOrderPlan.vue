@@ -109,14 +109,11 @@
           @siteSelected="siteSelect"
         />
         <el-button size='mini' style="margin-left: 10px;">提交</el-button>
-        <Gantt draggable :line="line=='All'? 'A 線': line"/>
-        <!-- <Gantt draggable v-show="line=='A 線' || (site == 'D10 - 1F') && line=='All'" line="A 線"/> -->
-       <!--  <Gantt draggable v-show="line=='B 線'" line="B 線"/>
-        <Gantt draggable v-show="line=='C 線'" line="C 線"/>
-        <Gantt draggable v-show="line=='D 線'" line="D 線"/>
-        <Gantt draggable v-show="line=='E 線' || (site == 'D9 - 1F') && line=='All'" line="E 線"/>
-        <Gantt draggable v-show="line=='F 線'" line="F 線"/>
-        <Gantt draggable v-show="line=='G 線'" line="G 線"/> -->
+
+        <Gantt draggable :line="line" :site="site" :ton="ton" :dataType="dataType" />
+        <!-- <Gantt draggable :line="line=='All'? 'A 線': line"/> -->
+
+
       </el-tab-pane>
       <el-tab-pane label="現場作業狀況" name="third">
         現場作業狀況
@@ -181,6 +178,7 @@
         ton: '130',
         line: 'All',
         site: 'D10 - 1F',
+        dataType:'workorder',
         tableInfo: [
           {prop: 'ton',label: '噸位'},
           {prop: 'number',label: '機台號'},
