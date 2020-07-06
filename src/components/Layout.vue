@@ -216,8 +216,8 @@ export default {
     checkPermission,
     logout(){
       localStorage.removeItem('token');
-      this.$router.push('/login');
       this.$store.dispatch('user/resetToken')
+      this.$router.push('/login');
       // this.$store.dispatch('logout')
       // .then(() => {
       //   this.$router.push('/login')

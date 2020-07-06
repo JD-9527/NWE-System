@@ -52,7 +52,7 @@
 </template>
 
 <script>
-import { login } from '@/api.js'
+// import { login } from '@/api.js'
 export default {
   data () {
     return {
@@ -62,39 +62,39 @@ export default {
   },
   methods: {
     /* eslint-disable */
-    // login() {
-    //   if( this.userName == 'nwe' && this.password == 'foxconn88' ){
-    //     localStorage.setItem('token', 'ImLogin')
-    //     this.$message({
-    //       message: '登入成功！',
-    //       type: 'success',
-    //       center: true,
-    //       duration: 2000
-    //     });
-    //     this.$store.dispatch('user/login',['visitor'])
-    //     // console.log(this.$store.getters)
-    //     this.$router.push('/overview/dashboard').catch((err) => { console.log('Error:',err) });
-    //   }
-    //   else if ( this.userName == 'admin' && this.password == 'foxconn88' ){
-    //     localStorage.setItem('token', 'ImLogin')
-    //     this.$message({
-    //       message: '登入成功！',
-    //       type: 'success',
-    //       center: true,
-    //       duration: 2000
-    //     });
-    //     this.$store.dispatch('user/login', ['website_maintainer'])
-    //     this.$router.push('/overview/dashboard').catch((err) => { console.log('Error:',err) });
-    //   }
-    //   else{
-    //     this.$message.error({
-    //       message: '帳號或密碼錯誤！',
-    //       center: true,
-    //       duration: 2000
-    //     });
-    //   }
-    //   // console.log(this.$store.getters.roles)
-    // }
+    login() {
+      if( this.userName == 'nwe' && this.password == 'foxconn88' ){
+        localStorage.setItem('token', 'ImLogin')
+        this.$message({
+          message: '登入成功！',
+          type: 'success',
+          center: true,
+          duration: 2000
+        });
+        this.$store.dispatch('user/login',['visitor'])
+        // console.log(this.$store.getters)
+        this.$router.push('/overview/dashboard').catch((err) => { console.log('Error:',err) });
+      }
+      else if ( this.userName == 'admin' && this.password == 'foxconn88' ){
+        localStorage.setItem('token', 'ImLogin')
+        this.$message({
+          message: '登入成功！',
+          type: 'success',
+          center: true,
+          duration: 2000
+        });
+        this.$store.dispatch('user/login', ['website_maintainer'])
+        this.$router.push('/overview/dashboard').catch((err) => { console.log('Error:',err) });
+      }
+      else{
+        this.$message.error({
+          message: '帳號或密碼錯誤！',
+          center: true,
+          duration: 2000
+        });
+      }
+      // console.log(this.$store.getters.roles)
+    }
     // login(){
     //   // write login authencation logic here!323
     //   if( this.userName == 'nwe' && this.password == 'foxconn88' ){
@@ -113,35 +113,35 @@ export default {
     //       duration: 2000
     //     });
     //   }
-    login() {
-      let username=this.userName
-      let password=this.password
-      login(username,password).then(response =>{
-        console.log(response)
-        const { access, groups, username } = response.data
-        if (typeof(access) != 'undefined') {
-          // 登入成功
-          this.$store.dispatch('user/login', { access, groups, username })
-          this.$router.push('/overview/dashboard')
-        }
-        else {
-          // 登入失敗
-          this.$message.error({
-            message: response.data.detail,
-            center: true,
-            duration: 5000
-          });
-        }
+    // login() {
+    //   let username=this.userName
+    //   let password=this.password
+    //   login(username,password).then(response =>{
+    //     console.log(response)
+    //     const { access, groups, username } = response.data
+    //     if (typeof(access) != 'undefined') {
+    //       // 登入成功
+    //       this.$store.dispatch('user/login', { access, groups, username })
+    //       this.$router.push('/overview/dashboard')
+    //     }
+    //     else {
+    //       // 登入失敗
+    //       this.$message.error({
+    //         message: response.data.detail,
+    //         center: true,
+    //         duration: 5000
+    //       });
+    //     }
 
-      })
-      .catch((error) => {
-        this.$message.error({
-          message: error.response.data,
-          center: true,
-          duration: 5000
-        });
-      })
-    }
+    //   })
+    //   .catch((error) => {
+    //     this.$message.error({
+    //       message: error.response.data,
+    //       center: true,
+    //       duration: 5000
+    //     });
+    //   })
+    // }
   }
 };
 </script>

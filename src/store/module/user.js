@@ -32,25 +32,31 @@ const mutations = {
 
 const actions = {
   // user login and get token
-  login({ commit }, userInfo) {
-  //   const { username, password } = userInfo
-  //   return new Promise((resolve, reject) => {
-  //     login(username, password).then(response => {
-  //       const { data } = response
-  //       commit('SET_TOKEN', data.token)
-  //       // setToken(data.token)
-  //       commit('SET_ROLES', [data.groups])
-  //       commit('SET_NAME', data.username)
-  //       resolve(data)
-  //     }).catch(error => {
-  //       reject(error)
-  //     })
-  //   })
-    const { token, groups, username } = userInfo
-    commit('SET_TOKEN', token)
-    commit('SET_ROLES', [groups])
-    commit('SET_NAME', username)
+  // login({ commit }, userInfo) {
+  // //   const { username, password } = userInfo
+  // //   return new Promise((resolve, reject) => {
+  // //     login(username, password).then(response => {
+  // //       const { data } = response
+  // //       commit('SET_TOKEN', data.token)
+  // //       // setToken(data.token)
+  // //       commit('SET_ROLES', [data.groups])
+  // //       commit('SET_NAME', data.username)
+  // //       resolve(data)
+  // //     }).catch(error => {
+  // //       reject(error)
+  // //     })
+  // //   })
+  //   const { token, groups, username } = userInfo
+  //   commit('SET_TOKEN', token)
+  //   commit('SET_ROLES', [groups])
+  //   commit('SET_NAME', username)
 
+  // },
+  login({ commit }, role) {
+    // const { token, groups, username } = userInfo
+    // commit('SET_TOKEN', token)
+    commit('SET_ROLES', role)
+    // commit('SET_NAME', username)
   },
   // get user info
   // getInfo({ commit, state }) {
