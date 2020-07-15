@@ -46,8 +46,8 @@ const actions = {
   //       reject(error)
   //     })
   //   })
-    const { token, groups, username } = userInfo
-    commit('SET_TOKEN', token)
+    const { access, groups, username } = userInfo
+    commit('SET_TOKEN', access)
     commit('SET_ROLES', [groups])
     commit('SET_NAME', username)
 

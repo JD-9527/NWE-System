@@ -117,12 +117,18 @@ export default {
       let username=this.userName
       let password=this.password
       login(username,password).then(response =>{
-        console.log(response)
+        // console.log(response)
         const { access, groups, username } = response.data
         if (typeof(access) != 'undefined') {
           // 登入成功
+          this.$message({
+            message: '登入成功！',
+            type: 'success',
+            center: true,
+            duration: 2000
+          });
           this.$store.dispatch('user/login', { access, groups, username })
-          this.$router.push('/overview/dashboard')
+          this.$router.push('/overview/dashboard').catch(e => {})
         }
         else {
           // 登入失敗

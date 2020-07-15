@@ -1,4 +1,5 @@
 import axios from 'axios';
+import store from '@/store';
 
 // 總覽
 const NWEOverview = axios.create({
@@ -27,6 +28,20 @@ export const login = (username,passwd) => {
         'Content-Type': 'multipart/form-data'
       }});
 }
+
+// 攔截器
+axios.interceptors.request.use(config => {
+  // Do something before request is sent
+  if (store.getters.token) {
+    config.headers['Authorization'] = 'Bearer '+ store.getters.token
+  }
+  return config
+}, error => {
+  // Do something with request error
+  // console.log(error) // for debug
+  Promise.reject(error)
+})
+
 
 // 生產狀態
 export const overviewMachineStateCount = (field) => NWEOverview.get('/machine/statecount/?field='+field)
