@@ -3,7 +3,7 @@
     <div class="header-row">
       計畫預覽
     </div>
-    <el-tabs v-model="activeName" @tab-click="handleClick">
+    <el-tabs v-model="activeName">
       <FactorySelection tonlist
         @lineSelected="handleSelect"
         @siteSelected="siteSelect"
@@ -15,7 +15,7 @@
         <Report :field='field' :line='line' :ton='ton'/>
       </el-tab-pane>
       <el-tab-pane label="推薦甘特圖" name="second">
-        
+
         <Gantt draggable :line="line" :site="site" :ton="ton" :dataType="dataType" />
         <!-- <Gantt v-show="line=='A 線' || (site == 'D10 - 1F') && line=='All'" line="A 線"/>
         <Gantt v-show="line=='B 線'" line="B 線"/>
@@ -24,7 +24,6 @@
         <Gantt v-show="line=='E 線' || (site == 'D9 - 1F') && line=='All'" line="E 線"/>
         <Gantt v-show="line=='F 線'" line="F 線"/>
         <Gantt v-show="line=='G 線'" line="G 線"/> -->
-
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -34,6 +33,7 @@
   import Report from './ReportPreview.vue'
   import Gantt from './Gantt_chart.vue'
   import FactorySelection from './FactorySelection.vue'
+  import { planPreview } from '../api.js'
 
   export default {
     components:{
@@ -51,6 +51,7 @@
         line: 'All',
         site: 'D10 - 1F',
         dataType:'planorder',
+        datas: []
       };
     },
     computed:{
@@ -72,9 +73,21 @@
       },
       tonSelect(item) {
         this.ton = item
+      },
+      getData() {
+        planPreview('D10',undefined).then((response)=>{
+          console.log(response.data.data)
+          this.datas = response.data.data
+        })
+        .catch((error)=>{
+          console.log(error)
+        })
       }
       /* eslint-enable */
     },
+    mounted() {
+      // this.getData();
+    }
   };
 </script>
 

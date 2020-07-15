@@ -23,12 +23,12 @@
       @click="timeAdd"
       size='small'
     >+</el-button>
-    <el-button 
+    <el-button
       @click="updatePlan"
       size='small'
       v-show="IsPlanorder"
     >儲存更動</el-button>
-    <el-button 
+    <el-button
       @click="exportdialogVisble = true"
       size='small'
     >匯出資料</el-button>
@@ -38,16 +38,16 @@
       size='small'
     >test</el-button>
 
-    <el-table 
-      :data="tableData" 
+    <el-table
+      :data="tableData"
       v-show="holding & table_show"
       style="width: 100%"
     >
-      <el-table-column 
-        label="縮小" 
-        width="70" 
+      <el-table-column
+        label="縮小"
+        width="70"
         align="center">
-        <el-button 
+        <el-button
          @click="close_table"
          size='small'
         >▲</el-button>
@@ -115,7 +115,7 @@
         align="center"
         v-if="IsPlanorder">
         {{selected_order.productiontime.label}}
-      </el-table-column>  
+      </el-table-column>
       <el-table-column
         prop="plastic_color"
         label="塑料顏色"
@@ -179,7 +179,7 @@
           <span slot="content">{{row.note}}</span>
         </editable-cell>
       </el-table-column>
-      <el-table-column 
+      <el-table-column
         abel="操作"
         align="center"
         fixed="right"
@@ -210,11 +210,11 @@
     </el-table>
 
     <el-table :data="tableData_after" style="width: 100%" v-show="!holding & table_show">
-      <el-table-column 
-        label="縮小" 
-        width="70" 
+      <el-table-column
+        label="縮小"
+        width="70"
         align="center">
-        <el-button 
+        <el-button
           @click="close_table"
           size='small'
         >▲</el-button>
@@ -282,7 +282,7 @@
         align="center"
         v-if="IsPlanorder">
         {{selected_order.productiontime.label}}
-      </el-table-column>  
+      </el-table-column>
       <el-table-column
         prop="plastic_color"
         label="塑料顏色"
@@ -347,7 +347,7 @@
           <span slot="content">{{row.note}}</span>
         </editable-cell>
       </el-table-column>
-      <el-table-column 
+      <el-table-column
         abel="操作"
         align="center"
         fixed="right"
@@ -377,6 +377,38 @@
       </el-table-column>
     </el-table>
 
+<!-- ======= -->
+    <!-- <div v-show="holding">
+      <span>機台號: {{ selected_order.rowId }},</span>
+      <span>噸位: {{ selected_order.machine_ton }}, </span>
+      <span>工單號: {{ selected_order.label }}, </span>
+      <span>模號: {{ selected_order.mold_NO }}, </span>
+      <span>UPH: {{ selected_order.UPH }}, </span>
+      <span>模具儲位: {{ selected_order.mold_position }}, </span>
+      <span>品名: {{ selected_order.product_name }}, </span>
+      <span>計畫數量: {{ selected_order.plan_number }}, </span>
+      <span>塑膠料號: {{ selected_order.plastic_Part_NO }}, </span>
+      <span>顏色: {{ selected_order.plastic_color }}, </span>
+      <span>計畫工時: {{ selected_order.plan_work_time }}, </span><br/>
+      <span>開始時間: {{ toDate(selected_order.plan_s_time) }}, </span>
+      <span>結束時間: {{ toDate(selected_order.plan_e_time) }}</span>
+    </div>
+    <div v-show="!holding">
+      <span>機台號: {{ selected_order_after.rowId }},</span>
+      <span>噸位: {{ selected_order_after.machine_ton }}, </span>
+      <span>工單號: {{ selected_order_after.label }}, </span>
+      <span>模號: {{ selected_order_after.mold_NO }}, </span>
+      <span>UPH: {{ selected_order_after.UPH }}, </span>
+      <span>模具儲位: {{ selected_order_after.mold_position }}, </span>
+      <span>品名: {{ selected_order_after.product_name }}, </span>
+      <span>計畫數量: {{ selected_order_after.plan_number }}, </span>
+      <span>塑膠料號: {{ selected_order_after.plastic_Part_NO }}, </span>
+      <span>顏色: {{ selected_order_after.plastic_color }}, </span>
+      <span>計畫工時: {{ selected_order_after.plan_work_time }}, </span><br/>
+      <span>開始時間: {{ toDate(selected_order_after.plan_s_time) }}, </span>
+      <span>結束時間: {{ toDate(selected_order_after.plan_e_time) }}</span>
+    </div> -->
+<!-- >>>>>>> permission -->
     <div id="gantt_app">
       <GSTC
         :config="config"
@@ -406,7 +438,7 @@
             <tr>
               <td>料號</td>
               <td>
-                <el-select 
+                <el-select
                   v-model="new_order.Part_NO"
                   @input="pickPartNo"
                   filterable
@@ -474,7 +506,7 @@
                   filterable
                   clearable
                   placeholder="先選擇料號"
-                  style="width:250px"> 
+                  style="width:250px">
                   <el-option
                     v-for="item in new_order.machine_options"
                     :key="item.id"
@@ -482,7 +514,7 @@
                     :value="item">
                   </el-option>
                 </el-select>
-              </td>              
+              </td>
               <td>模具</td>
               <td>
                 <el-select
@@ -499,7 +531,7 @@
                     :value="item">
                   </el-option>
                 </el-select>
-              </td>      
+              </td>
               <td>模序</td>
               <td style="padding:5px 15px">
                 <el-input
@@ -646,7 +678,7 @@
               <td>結束時間</td>
               <td>
                 <el-date-picker
-                  v-model="new_order.endtime.date" 
+                  v-model="new_order.endtime.date"
                   type="date"
                   style="width:250px"
                   placeholder="選擇結束日期">
@@ -825,7 +857,7 @@ const Order_template = { //工單
   // machine_state:'',        // 機台狀態
   // machine_repair_time:'',  // 機台修復時間
   mold_options:[],          // 模具選項
-  machine_options:[],       // 機台選項  
+  machine_options:[],       // 機台選項
   machine_selected_data:''
 }
 const New_Order_template = { //工單
@@ -875,7 +907,7 @@ const New_Order_template = { //工單
   // machine_state:'',        // 機台狀態
   // machine_repair_time:'',  // 機台修復時間
   mold_options:[],          // 模具選項
-  machine_options:[],       // 機台選項  
+  machine_options:[],       // 機台選項
   machine_selected_data:''
 }
 
@@ -910,7 +942,7 @@ export default {
           },
           style: item_style
         }
-      }, 
+      },
       lineInfo:{}, //機台線體
       selected_order: Order_template,
       new_order: New_Order_template,
@@ -919,10 +951,10 @@ export default {
       end_time: new Date().getTime() + 24 * 60 * 60 * 1000,
       dialogVisible: false,
       exportdialogVisble:false,
-      holding: false, 
+      holding: false,
       table_show : false,
       week_plans:[],           //週計畫料號資訊
-      machine_data:[],         //機台資訊 
+      machine_data:[],         //機台資訊
       searchTon: 'All',
       searchLine : 'All',
       export_starttime: {      // 匯出工單起始時間
@@ -965,7 +997,7 @@ export default {
   computed: {
     rows: function() {
       let allLine = ['A','B','C','D','E','F','G']
-      if (this.searchLine =='All'){          
+      if (this.searchLine =='All'){
         let new_row={}
         let restline = []
         if(this.site == 'D9 - 1F')
@@ -978,20 +1010,20 @@ export default {
               let tempLineInfo = this.lineInfo[allLine[i]][j]
               if(restline.includes(allLine[i])){ //該樓 所有線體
                 if(this.searchTon=='All'){ // Ton = All
-                  new_row[tempLineInfo.machine_NO] = { 
+                  new_row[tempLineInfo.machine_NO] = {
                     id:tempLineInfo.machine_NO,
                     label:tempLineInfo.machine_NO + '  '+ tempLineInfo.machine_ton + 'T  '+ tempLineInfo.product_color,
                     parentId:undefined
                   }
                 }else{
                   if (parseInt(this.searchTon)==tempLineInfo.machine_ton){
-                    new_row[tempLineInfo.machine_NO] = { 
+                    new_row[tempLineInfo.machine_NO] = {
                       id:tempLineInfo.machine_NO,
                       label:tempLineInfo.machine_NO + '  '+ tempLineInfo.machine_ton + 'T  '+ tempLineInfo.product_color,
                       parentId:undefined
                     }
                   }else{
-                    new_row[tempLineInfo.machine_NO] = { 
+                    new_row[tempLineInfo.machine_NO] = {
                       id:tempLineInfo.machine_NO,
                       label:tempLineInfo.machine_NO + '  '+ tempLineInfo.machine_ton + 'T  '+ tempLineInfo.product_color,
                       parentId:0
@@ -999,7 +1031,7 @@ export default {
                   }
                 }
               }else{
-                new_row[tempLineInfo.machine_NO] = { 
+                new_row[tempLineInfo.machine_NO] = {
                   id:tempLineInfo.machine_NO,
                   label:tempLineInfo.machine_NO + '  '+ tempLineInfo.machine_ton + 'T  '+ tempLineInfo.product_color,
                   parentId:0
@@ -1013,26 +1045,26 @@ export default {
       }
       else{
         let new_row = {}
-        if(Object.keys(this.lineInfo).length>0){          
+        if(Object.keys(this.lineInfo).length>0){
           for(let i=0;i<Object.keys(allLine).length;i++){
             for(let j=0;j<this.lineInfo[allLine[i]].length;j++){
               let tempLineInfo = this.lineInfo[allLine[i]][j]
               if(allLine[i]==this.searchLine.charAt(0)){ //選擇的線
                 if(this.searchTon=='All'){ // Ton = All
-                  new_row[tempLineInfo.machine_NO] = { 
+                  new_row[tempLineInfo.machine_NO] = {
                     id:tempLineInfo.machine_NO,
                     label:tempLineInfo.machine_NO + '  '+ tempLineInfo.machine_ton + 'T  '+ tempLineInfo.product_color,
                     parentId:undefined
                   }
                 }else{ //Ton != All
                   if (parseInt(this.searchTon)==tempLineInfo.machine_ton){
-                    new_row[tempLineInfo.machine_NO] = { 
+                    new_row[tempLineInfo.machine_NO] = {
                       id:tempLineInfo.machine_NO,
                       label:tempLineInfo.machine_NO + '  '+ tempLineInfo.machine_ton + 'T  '+ tempLineInfo.product_color,
                       parentId:undefined
                     }
                   }else{
-                    new_row[tempLineInfo.machine_NO] = { 
+                    new_row[tempLineInfo.machine_NO] = {
                       id:tempLineInfo.machine_NO,
                       label:tempLineInfo.machine_NO + '  '+ tempLineInfo.machine_ton + 'T  '+ tempLineInfo.product_color,
                       parentId:0
@@ -1040,7 +1072,7 @@ export default {
                   }
                 }
               }else{ //其他的線 隱藏
-                new_row[tempLineInfo.machine_NO] = { 
+                new_row[tempLineInfo.machine_NO] = {
                   id:tempLineInfo.machine_NO,
                   label:tempLineInfo.machine_NO + '  '+ tempLineInfo.machine_ton + 'T  '+ tempLineInfo.product_color,
                   parentId:0
@@ -1050,7 +1082,7 @@ export default {
           }
         }else
           new_row['A01'] = {id:'A01',label:'請稍後'}
-          
+
         return new_row
       }
     },// row function
@@ -1101,9 +1133,53 @@ export default {
               this.NewDateToObject(new Date(item.time.end),this.selected_order.endtime)
               let mins = Math.round(((item.time.end - item.time.start)/1000)/60)
               this.setProductionTime(mins,this.selected_order.productiontime)
+// =======
+//               this.selected_order.id = item.id ;
+//               this.selected_order.label = item.label ;
+//               this.selected_order.rowId = item.rowId ;
+//               this.selected_order.product_name = item.product_name ;
+//               this.selected_order.plan_number = item.plan_number ;
+//               this.selected_order.plastic_color = item.plastic_color ;
+//               this.selected_order.machine_ton = item.machine_ton;
+//               this.selected_order.machine_NO = item.machine_NO;
+//               this.selected_order.mold_NO = item.mold_NO;
+//               this.selected_order.mold_Serial = item.mold_Serial;
+//               this.selected_order.UPH = item.UPH;
+//               this.selected_order.mold_position = item.mold_position;
+//               this.selected_order.plan_work_time = item.plan_work_time
+//               this.selected_order.plan_s_time = item.time.start
+//               this.selected_order.plan_e_time = item.time.end
+//               // }
+
+//               document.onmouseup = () => {
+//                 // console.log(item)
+//                 this.holding = false
+//                 this.selected_order_after.id = item.id ;
+//                 this.selected_order_after.label = item.label ;
+//                 this.selected_order_after.rowId = item.rowId ;
+//                 this.selected_order_after.product_name = item.product_name ;
+//                 this.selected_order_after.plan_number = item.plan_number ;
+//                 this.selected_order_after.plastic_color = item.plastic_color ;
+//                 this.selected_order_after.machine_ton = item.machine_ton;
+//                 this.selected_order_after.machine_NO = item.machine_NO;
+//                 this.selected_order_after.mold_NO = item.mold_NO;
+//                 this.selected_order_after.mold_Serial = item.mold_Serial;
+//                 this.selected_order_after.UPH = item.UPH;
+//                 this.selected_order_after.mold_position = item.mold_position;
+//                 this.selected_order_after.plan_work_time = item.plan_work_time
+//                 this.selected_order_after.plan_s_time = item.time.start
+//                 this.selected_order_after.plan_e_time = item.time.end
+//               }
+//               // this.selected_order.id = item.id ;
+//               // this.selected_order.part_no = item.label ;
+//               // this.selected_order.product_name = item.product_name ;
+//               // this.selected_order.plan_number = item.plan_number ;
+//               // this.selected_order.plastic_color = item.plastic_color ;
+//               // this.selected_order.machine = item.rowId ;
+// >>>>>>> permission
 
               //TableData
-              let selectedData = item 
+              let selectedData = item
               selectedData['editMode']= false
               this.tableData = [selectedData]
 
@@ -1115,7 +1191,7 @@ export default {
 
                   if(this.tableData[0].id==item.id)
                     item = this.tableData[0]
-                  
+
                   let selectedData = item
                   selectedData['editMode']= this.tableData[0].editMode
                   this.tableData_after = [selectedData]
@@ -1144,8 +1220,8 @@ export default {
       }
     }, //config function
   },
-  methods: {    
-    
+  methods: {
+
     onState(state) {
       this.state = state
       // console.log(state)
@@ -1205,10 +1281,10 @@ export default {
               realend: new Date(data.real_e_time).getTime()
             }
             new_dict['style'] = item_style
-            new_dict['progress'] = 50          
+            new_dict['progress'] = 50
             new_dict['changed'] = 0
             this.$set(this.chart_items,order_no,new_dict)
-          }      
+          }
           that.lastId = order_no
         })
       }
@@ -1237,10 +1313,10 @@ export default {
               mold_down: new Date(data.mold_down_t).getTime()
             }
             new_dict['style'] = item_style
-            new_dict['progress'] = 50          
+            new_dict['progress'] = 50
             new_dict['changed'] = 0
             this.$set(this.chart_items,order_no,new_dict)
-          }      
+          }
           that.lastId = order_no
         })
       }
@@ -1257,6 +1333,85 @@ export default {
             machine_CT:week_plan[i]['machine_CT'],
             product_color:week_plan[i]['product_color'],
             machine_ton:week_plan[i]['machine_ton'],
+// =======
+//     click() {
+//       // console.log(arguments)
+//     },
+//     addRow(){
+//       // this.dialogVisible = true
+//       this.$set(this.chart_items,this.new_row.id,{
+//         id: this.new_row.id,
+//         label: this.new_row.label,
+//         rowId: this.new_row.rowId,
+//         time: {
+//           start: new Date(this.new_row.time.start).getTime(),
+//           end: new Date(this.new_row.time.end).getTime() + 24 * 60 * 60 * 1000
+//         },
+//         style: item_style
+//       })
+//       // this.chart_items[this.new_row.id] = {
+//       //   id: this.new_row.id,
+//       //   label: this.new_row.label,
+//       //   rowId: this.new_row.rowId,
+//       //   time: {
+//       //     start: new Date(this.new_row.time.start).getTime(),
+//       //     end: new Date(this.new_row.time.end).getTime() + 24 * 60 * 60 * 1000
+//       //   }
+//       // }
+//       // this.$forceUpdate()
+//       this.dialogVisible = false
+//       console.log(this.chart_items)
+//     },
+//     deleteRow() {
+//       console.log(this.chart_items[this.selected_order.id])
+//       delete this.chart_items[this.selected_order.id]
+//       this.$set(this.chart_items,this.selected_order.id,{})
+//     },
+//     dataToGantt() {
+//       // console.log(this.line[0])
+//       // id:'',
+//       // machine_ton:'',          // 噸位
+//       // machine_NO:'',           // 機台號
+//       // mold_NO:'',              // 模號
+//       // mold_Serial:'',          // 模序
+//       // mold_hole:'',            // 模穴
+//       // UPH:'',                  // UPH
+//       // mold_position:'',        // 模具儲位
+//       // product_name:'',         // 品名
+//       // plan_number:0,           // 數量
+//       // plastic_Part_NO:'',      // 塑膠料號
+//       // plastic_color:'',        // 顏色
+//       // machine_state:'',
+//       // machine_repair_time:'',
+//       // plan_work_time: '',       // 計畫工時
+//       // plan_s_time: '',
+//       // plan_e_time: '',
+//       // mold_down_t: '',
+//       planPreview(undefined,this.line[0]).then((response)=>{
+//         let data = response.data.data
+//         for (let i=0;i<data.length;i++) {
+//           // console.log(data[i])
+//           this.$set(this.chart_items,i,{
+//             id: i,
+//             label: data[i].Part_NO,
+//             rowId: data[i].machine_NO,
+//             machine_ton: data[i].machine_ton,
+//             mold_NO: data[i].mold_NO,
+//             mold_Serial: data[i].mold_Serial,
+//             UPH: data[i].UPH,
+//             mold_position: data[i].mold_position,
+//             product_name: data[i].product_name,
+//             plan_number: data[i].plan_number,
+//             plastic_Part_NO: data[i].plastic_Part_NO,
+//             plastic_color: data[i].plastic_color,
+//             plan_work_time: data[i].plan_work_time,
+//             mold_down_t: data[i].mold_down_t,
+//             time: {
+//               start: new Date(data[i].plan_s_time).getTime(),
+//               end: new Date(data[i].plan_e_time).getTime()
+//             },
+//             style: item_style
+// >>>>>>> permission
           })
         }
       })
@@ -1264,7 +1419,7 @@ export default {
     GetMachineData(){ //machine_data
       let that = this
       MachineData().then((response)=>{
-        let temp_line = ['A','B','C','D','E','F','G']        
+        let temp_line = ['A','B','C','D','E','F','G']
         let counter = 0
         for(let i=0;i<temp_line.length;i++){
           let temp_machine = response.data[temp_line[i]]
@@ -1298,7 +1453,7 @@ export default {
 
       this.new_order.productiontime={label :'0 d 0 h 0 m', min : 0, hour : 0, day : 0 }
       this.clearValue(this.new_order,clearList_empty,clearList_zero,clearList_emptyarray)  //clear last selected data
-      if(!(e=='')){ 
+      if(!(e=='')){
         this.new_order.remaining_number = Number(e.plan_number)
         this.valueAssign(['machine_ton','Part_NO'],this.new_order,e)
 
@@ -1310,7 +1465,7 @@ export default {
           that.valueAssign(['product_name','plastic_Part_NO','plastic_color'],that.new_order,partno_info)
 
           let mold_info = partno_info.mold_info
-          for(let i=0;i< mold_info.length;i++){ 
+          for(let i=0;i< mold_info.length;i++){
             temp_mold_options.push({
               mid:String(i+1),
               mold_NO : mold_info[i].mold_no,
@@ -1325,7 +1480,7 @@ export default {
           that.new_order.mold_options = temp_mold_options
         }).catch(function (error) {
             alert('請檢查網路 ' + error)
-        })        
+        })
         //新增 Machine_options
         for(let i=0;i<Object.keys(this.machine_data).length;i++){
           if(this.machine_data[i].machine_ton == e.machine_ton){
@@ -1349,11 +1504,11 @@ export default {
     pickMoldNo(e){   //模具下拉式選單
       let clearList = ['mold_Serial','mold_hole','UPH','mold_position','mold_state','cycle_time']
       this.clearValue(this.new_order,clearList,['mold_max_hole'],[])  //clear last selected data
-      if(!(e=='')){ 
+      if(!(e=='')){
         let assignList = ['mold_NO','mold_Serial','mold_hole','UPH','mold_position','mold_state','cycle_time']
         this.valueAssign(assignList,this.new_order,e)
         this.new_order.mold_max_hole = e.mold_hole
-      }      
+      }
       $("#mold_input").attr({ //
         "max" : parseInt(this.new_order.mold_max_hole)
       })
@@ -1385,7 +1540,7 @@ export default {
             mold_down: st.getTime()
           }
           new_dict['style'] = item_style
-          new_dict['progress'] = 50          
+          new_dict['progress'] = 50
           new_dict['changed'] = 1
           this.$set(this.chart_items,this.lastId,new_dict)
           this.dialogVisible = false
@@ -1405,30 +1560,30 @@ export default {
           changed : 2,
           Seq:this.selected_order.Seq
         })
-        this.table_show =false        
+        this.table_show =false
       }
-    },    
+    },
     check_form(){  //檢查所有單位是否正確
       let pass_key = true
       if(this.new_order.Part_NO.length==0){
         alert('請選擇料號')
-        pass_key = false 
+        pass_key = false
       }else if(this.new_order.machine_NO.length==0){
         alert('請選擇機台')
         pass_key = false
       }else if(this.new_order.mold_NO.length==0){
         alert('請選擇模具')
-        pass_key = false 
+        pass_key = false
       }else if ( this.new_order.plan_number==0){
         alert('請輸入生產數量')
-        pass_key = false 
+        pass_key = false
       }else if (this.new_order.plan_number > Number(this.new_order.remaining_number)){
         let alert_mas = "剩餘數量 : " + this.new_order.remaining_number
         alert(alert_mas)
-        pass_key = false 
+        pass_key = false
       }else if ( isNull(this.new_order.starttime.date) ||  isNull(this.new_order.endtime.date) ){
         alert('請輸入開始時間與結束時間')
-        pass_key = false 
+        pass_key = false
       }
       return pass_key
     },
@@ -1469,11 +1624,11 @@ export default {
       newdate.setHours(0)
       newdate.setMinutes(0)
       newdate.setSeconds(0)
-      
+
       //hh:mm:ss
       let temptime = parseInt(target.time.substring(0,2))*60*60 + parseInt(target.time.substring(3,5))*60 + parseInt(target.time.substring(6,8))
 
-      return new Date(newdate.getTime() + temptime*1000) 
+      return new Date(newdate.getTime() + temptime*1000)
     },
     NewDateToObject:function(time,target){
       target.date = time.getFullYear()+'-'+(time.getMonth()+1).toString().padStart(2,'0')+'-'+ time.getDate().toString().padStart(2,'0')
@@ -1484,9 +1639,9 @@ export default {
         let mins = Math.round((this.new_order.plan_number/this.new_order.UPH)*60)
         if((this.new_order.plan_number>0)&&(mins==0))
           mins = 1
-        this.setProductionTime(mins,this.new_order.productiontime)        
+        this.setProductionTime(mins,this.new_order.productiontime)
       }
-      else 
+      else
         this.new_order.productiontime= {label :'0 d 0 h 0 m', min:0, hour:0, day:0}
     },
     getEndtime:function(){ //推算結束時間
@@ -1529,16 +1684,16 @@ export default {
           // starttime - end_time
           let timediff = (et.getTime()-st.getTime())/1000/60/60
           let production_no = Math.round(this.new_order.UPH * timediff)
-          //check remaining number 
+          //check remaining number
           if(this.new_order.remaining_number < production_no){
             let alert_mas = "剩餘數量為" + this.new_order.remaining_number
             alert(alert_mas)
             this.new_order.plan_number = this.new_order.remaining_number
           }else{
             this.new_order.plan_number = production_no
-            let mins = timediff *60            
+            let mins = timediff *60
             this.setProductionTime(mins,this.new_order.productiontime)
-          }   
+          }
         }
       }
     },
@@ -1550,7 +1705,7 @@ export default {
       let dict = {}
       for(let i=0;i<vlist.length;i++)
         dict[vlist[i]] = a[vlist[i]]
-      return dict      
+      return dict
     },
     clearValue(target,alist,blist,clist){
       for(let i=0;i<alist.length;i++) //alist set value = ''
@@ -1560,14 +1715,14 @@ export default {
       for(let i=0;i<clist.length;i++) //clist set value = ''
         target[clist[i]] = []
     },
-    clearTable(){      
+    clearTable(){
       let clearList_empty = ['Part_NO','mold_NO','machine','mold_Serial','mold_hole',
                         'UPH','cycle_time','product_name','mold_position','machine_ton',
                         'plastic_Part_NO','plastic_color','mold_state','machine_repair_time','mold_edit',
                         'package_size','same_mold_part_NO','mold_changeover_time','note','machine_CT','mass_pro','need']
       let clearList_zero= ['plan_number','remaining_number','emergency','value','total_value' ]
       let clearList_emptyarray= ['mold_options','machine_options']
-      this.clearValue(this.new_order,clearList_empty,clearList_zero,clearList_emptyarray)      
+      this.clearValue(this.new_order,clearList_empty,clearList_zero,clearList_emptyarray)
       this.new_order.productiontime={label :'0 d 0 h 0 m', min : 0, hour : 0, day : 0 }
       this.new_order.starttime={
         date : new Date(),
@@ -1592,9 +1747,9 @@ export default {
                         'package_size','mold_edit','plan_number','plan_work_time','plastic_Part_NO',
                         'plastic_color','product_name','same_mold_part_NO','total_value','value',
                         'emergency','Seq']
-        let new_dict ={}           
+        let new_dict ={}
         if(this.chart_items[item.id].changed!=2){
-          
+
           new_dict = this.dictMapping(varList,item)
           new_dict['id'] = item.id
           new_dict['label'] = item.label
@@ -1621,7 +1776,7 @@ export default {
       // console.log(Object.keys(this.config.chart.items).length)
 
       let changedData ={}
-      let counter = 0 
+      let counter = 0
       for(let i=1;i<=Object.keys(this.config.chart.items).length;i++){
         if(this.config.chart.items[i].changed!=0){
           changedData[counter]=this.config.chart.items[i]
@@ -1643,14 +1798,14 @@ export default {
         body: json
         })
         .then(response => {
-            console.log(response.text()); 
+            console.log(response.text());
         });
       }
       update();
       alert('更新完成');
 
     },
-    export_plan:function(val){   // 匯出報表      
+    export_plan:function(val){   // 匯出報表
       let start_date = 'all'
       let end_date = 'all'
       let filename = '計畫預覽.xlsx'
@@ -1658,17 +1813,17 @@ export default {
         filename = '工單計畫.xlsx'
       let time_check = true
 
-      if(val != 'all'){        
+      if(val != 'all'){
         let st = this.ObjectToNewDate(this.export_starttime)
         let et = this.ObjectToNewDate(this.export_endtime)
         if(st >= et){
           alert('請重新輸入時間')
           time_check = false
         }
-        
+
         start_date = this.ObjectToString(this.export_starttime)
         end_date = this.ObjectToString(this.export_endtime)
-          
+
         if(this.dataType=='workorder')
           filename = '工單計畫('+ start_date + '~'+ end_date + ').xlsx'
         else
@@ -1676,7 +1831,7 @@ export default {
 
       }
       let urlparams = 'start_date=' + start_date  + '&end_date=' + end_date  + '&data_type=' + this.dataType
-      
+
       // console.log(urlparams)
       let send_data = function(){
         fetch('http://10.132.41.95:8002/api/export_nwe_planning/?' + urlparams, {
@@ -1741,9 +1896,9 @@ mounted(){
   this.new_order.endtime.date = new Date()
   this.export_starttime.date = new Date()
   this.export_endtime.date = new Date()
-  
+
   this.line='all' //強迫computed的row動
-  
+
 },
 beforeDestroy() {
   // subs.forEach(unsub => unsub());

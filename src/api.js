@@ -1,4 +1,5 @@
 import axios from 'axios';
+import store from '@/store';
 
 // 總覽
 const NWEOverview = axios.create({
@@ -24,6 +25,31 @@ const NWEOrder = axios.create({
 const NWELocal = axios.create({
   baseURL: 'http://127.0.0.1:8002/api/'
 });
+const Token = axios.create({
+  baseURL: 'http://10.124.131.87:8880/token/'
+})
+
+export const login = (username,passwd) => {
+  let formData = new FormData();
+  formData.append('username', username)
+  formData.append('password', passwd)
+  return Token.post('/', formData, { headers: {
+        'Content-Type': 'multipart/form-data'
+      }});
+}
+
+// 攔截器
+axios.interceptors.request.use(config => {
+  // Do something before request is sent
+  if (store.getters.token) {
+    config.headers['Authorization'] = 'Bearer '+ store.getters.token
+  }
+  return config
+}, error => {
+  // Do something with request error
+  // console.log(error) // for debug
+  Promise.reject(error)
+})
 
 
 // 生產狀態
