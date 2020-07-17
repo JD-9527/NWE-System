@@ -33,7 +33,7 @@ Vue.component('v-chart', ECharts)
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 // 不用權限的白名單
-let whitelist = ['/login','/error/404']
+let whitelist = ['/login']
 router.beforeEach((to, from, next) => {
   /* eslint-disable */
   // 檢查cookie是否有登入的角色資訊
@@ -75,6 +75,7 @@ router.beforeEach((to, from, next) => {
         }
       }
     }
+    else next('/login')
   }
   else next()
 });
