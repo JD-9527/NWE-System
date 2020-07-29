@@ -1328,10 +1328,10 @@ export default {
         for(let i=0;i< week_plan.length;i++){
           that.week_plans.push({
             id:String(i+1),
-            Part_NO:week_plan[i]['part_no'],
+            Part_NO:week_plan[i]['Part_NO'],
             plan_number:week_plan[i]['plan_number'],
             machine_CT:week_plan[i]['machine_CT'],
-            product_color:week_plan[i]['product_color'],
+            // product_color:week_plan[i]['product_color'],
             machine_ton:week_plan[i]['machine_ton'],
 // =======
 //     click() {
@@ -1461,7 +1461,7 @@ export default {
         PartNoInfo(e.Part_NO).then((response)=>{
           let that = this
           let temp_mold_options =[]
-          let partno_info = response.data[0]
+          let partno_info = response.data
           that.valueAssign(['product_name','plastic_Part_NO','plastic_color'],that.new_order,partno_info)
 
           let mold_info = partno_info.mold_info
@@ -1788,8 +1788,8 @@ export default {
       // console.log(json)
 
       var update = function(){
-        fetch('http://10.132.41.95:8002/api/update_nwe_db/', {
-        // fetch('http://127.0.0.1:8002/api/update_nwe_db/', {
+        fetch('http://10.124.131.87:8880/plan/updateplanorder/', {
+        // fetch('http://127.0.0.1:8000/plan/updateplanorder/', {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
@@ -1805,52 +1805,72 @@ export default {
       alert('更新完成');
 
     },
-    export_plan:function(val){   // 匯出報表
+    export_plan:function(val){   // 匯出報表      
       let start_date = 'all'
       let end_date = 'all'
-      let filename = '計畫預覽.xlsx'
+      let filename = '計畫預覽'
       if(this.dataType=='workorder')
-        filename = '工單計畫.xlsx'
+        filename = '工單計畫'
       let time_check = true
 
-      if(val != 'all'){
+      if(val != 'all'){        
         let st = this.ObjectToNewDate(this.export_starttime)
         let et = this.ObjectToNewDate(this.export_endtime)
         if(st >= et){
           alert('請重新輸入時間')
           time_check = false
         }
-
         start_date = this.ObjectToString(this.export_starttime)
         end_date = this.ObjectToString(this.export_endtime)
-
+          
         if(this.dataType=='workorder')
-          filename = '工單計畫('+ start_date + '~'+ end_date + ').xlsx'
+          filename = '工單計畫('+ start_date + '~'+ end_date + ')'
         else
-          filename = '計畫預覽('+ start_date + '~'+ end_date + ').xlsx'
-
+          filename = '計畫預覽('+ start_date + '~'+ end_date + ')'
       }
-      let urlparams = 'start_date=' + start_date  + '&end_date=' + end_date  + '&data_type=' + this.dataType
 
-      // console.log(urlparams)
-      let send_data = function(){
-        fetch('http://10.132.41.95:8002/api/export_nwe_planning/?' + urlparams, {
-        // fetch('http://127.0.0.1:8002/api/export_nwe_planning/?' + urlparams, {
-        method: 'POST'
-        })
-        .then(response => response.blob())
-        .then(blob => {
-          let url = window.URL.createObjectURL(blob)
-          let a = document.createElement('a')
-          a.href = url
-          a.download = filename
-          document.body.appendChild(a)// we need to append the element to the dom -> otherwise it will not work in firefox
-          a.click()
-          a.remove()// afterwards we remove the element again
+      if(time_check){
+        Export_NWE_Planning(start_date,end_date,this.dataType).then((response)=>{
+          
+          let JSONData = response.data
+          var arrData = typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData;
+          console.log(arrData)
+          var CSV = '';
+
+          //1st loop is to extract each row
+          for (var i = 0; i < arrData.length; i++) {
+            var row = "";
+            for (var index in arrData[i]) {
+              row += '"' + arrData[i][index] + '",';
+            }
+            row.slice(0, row.length - 1);
+            CSV += row + '\r\n';
+          }
+
+          if (CSV == '') {
+            alert("Invalid data");
+            return;
+          }
+
+          //Initialize file format you want csv or xls
+          var uri = 'data:text/csv;charset=utf-8,\uFEFF' + encodeURI(CSV);
+
+          //this trick will generate a temp <a /> tag
+          var link = document.createElement("a");
+          link.href = uri;
+
+          //set the visibility hidden so it will not effect on your web-layout
+          link.style = "visibility:hidden";
+          link.download = filename + ".csv";
+
+          //this part will append the anchor tag and remove it after automatic click
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+
         })
       }
-      if(time_check)
-        send_data()
+
     },
     resetUPH:function(){
       if((this.new_order.mold_hole>0)&&(this.new_order.cycle_time>0)){

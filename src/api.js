@@ -230,29 +230,28 @@ export const planPreview = (field,line) => {
 
 // 計畫工單
 export const PlanOrder = (field,line,ton) => {
-  return NWEOrder.get('/nwe_plan_order',{params: { field: field, line: line, ton: ton}})
+  return NWEOrder.get('/planorder/?',{params: { field: field, line: line, ton: ton}})
 }
 
 // 計畫工單
 export const WorkOrder = (field,line,ton) => {
-  return NWEOrder.get('/nwe_work_order',{params: { field: field, line: line, ton: ton}})
+  return NWEOrder.get('/workorder/?',{params: { field: field, line: line, ton: ton}})
 }
 
 //機台資料
 export const MachineData = () => {
-  return NWEOrder.get('/nwe_machine_data',{})
+  return NWEPlan.get('/machinedata/')
 }
 
 //周計畫料號
 export const WeeksPlan = () => {
-  return NWEOrder.get('/nwe_week_plan',{})
+  return NWEPlan.get('/weekplan/')
 }
 
 //料號資訊
 export const PartNoInfo = (part_no) => {
-  return NWEOrder.get('/nwe_partno_information/',{params: { part_no : part_no}})
+  return NWEPlan.get('/partNoInfo/?',{params: { part_no : part_no}})
 }
-
 
 // export const planEditPreview = (row) => {
 //   let formData = new FormData();
@@ -274,6 +273,10 @@ export const planEditPreview = (row) => {
       }});
 }
 
+//料號資訊
+export const Export_NWE_Planning = (start_date,end_date,data_type) => {
+  return NWEPlan.get('/export/?',{params: { start_date : start_date,end_date:end_date,data_type:data_type}})
+}
 
 export const planWorklist = (line) => {
   return NWEPlan.get('/worklist/',{params: { line: line }})
