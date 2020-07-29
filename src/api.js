@@ -1,6 +1,9 @@
 import axios from 'axios';
 import store from '@/store';
 
+// http://192.168.0.160:8880
+// http://10.124.131.87:8880
+
 // 總覽
 const NWEOverview = axios.create({
   baseURL: 'http://10.124.131.87:8880/overview/'
@@ -10,10 +13,16 @@ const NWEOverview = axios.create({
 const NWEPlan = axios.create({
   baseURL: 'http://10.124.131.87:8880/plan/'
 });
+const NWEPlanGET = axios.create({
+  baseURL: 'http://10.124.131.87:8880/plan/get/'
+});
 
 // 資料輸入、維護
 const NWEData = axios.create({
   baseURL: 'http://10.124.131.87:8880/data/'
+});
+const NWEDataGET = axios.create({
+  baseURL: 'http://10.124.131.87:8880/data/get/'
 });
 
 // 計畫預覽、工單計畫
@@ -22,9 +31,10 @@ const NWEOrder = axios.create({
 });
 
 //10.132.41.95:8002 NWE arrangment
-const NWELocal = axios.create({
-  baseURL: 'http://127.0.0.1:8002/api/'
-});
+// const NWELocal = axios.create({
+//   baseURL: 'http://127.0.0.1:8002/api/'
+// });
+
 const Token = axios.create({
   baseURL: 'http://10.124.131.87:8880/token/'
 })
@@ -39,15 +49,21 @@ export const login = (username,passwd) => {
 }
 
 // 攔截器
-axios.interceptors.request.use(config => {
-  // Do something before request is sent
+// Do something before request is sent
+NWEData.interceptors.request.use(config => {
   if (store.getters.token) {
     config.headers['Authorization'] = 'Bearer '+ store.getters.token
   }
   return config
 }, error => {
-  // Do something with request error
-  // console.log(error) // for debug
+  Promise.reject(error)
+})
+NWEPlan.interceptors.request.use(config => {
+  if (store.getters.token) {
+    config.headers['Authorization'] = 'Bearer '+ store.getters.token
+  }
+  return config
+}, error => {
   Promise.reject(error)
 })
 
@@ -146,7 +162,7 @@ export const dataSourceList = () => NWEData.get('/sourcelist/')
 export const dataFileDownload = (filetype) => NWEData.get('/filedown/?filetype='+filetype,{ responseType: 'blob' })
 
 // 生產排程：急單
-export const dataDayPlan = () => NWEData.get('/dayplan/')
+export const dataDayPlan = () => NWEDataGET.get('/dayplan/')
 export const dataImportDayPlan = (user,file) => {
   let formData = new FormData();
   formData.append('user', user)
@@ -177,7 +193,7 @@ export const dataDelDayPlan = (sec_Part_NO) => {
 }
 
 // 生產排程：周料號
-export const dataWeekPlan = () => NWEData.get('/weekplan/')
+export const dataWeekPlan = () => NWEDataGET.get('/weekplan/')
 export const dataImportWeekPlan = (user,file) => {
   let formData = new FormData();
   formData.append('user', user)
@@ -208,9 +224,9 @@ export const planTonList = (line) => {
   else return NWEPlan.get('/tonlist/?line='+line)
 }
 
-// export const planPreview = (field,line) => {
-//   return NWEPlan.get('/preview/',{params: { field: field, line: line}})
-// }
+export const planPreview = (field,line) => {
+  return NWEPlanGET.get('/preview/',{params: { field: field, line: line}})
+}
 
 // 計畫工單
 export const PlanOrder = (field,line,ton) => {
@@ -238,25 +254,25 @@ export const PartNoInfo = (part_no) => {
 }
 
 
-export const planEditPreview = (row) => {
-  let formData = new FormData();
-  formData.append('Part_NO', row.Part_NO)
-  formData.append('plan_number', row.plan_number)
-  formData.append('Seq', row.Seq)
-  return NWELocal.post('/planEditPreview/', formData, { headers: {
-        'Content-Type': 'multipart/form-data'
-      }});
-}
-
 // export const planEditPreview = (row) => {
 //   let formData = new FormData();
 //   formData.append('Part_NO', row.Part_NO)
 //   formData.append('plan_number', row.plan_number)
 //   formData.append('Seq', row.Seq)
-//   return NWEPlan.post('/preview/', formData, { headers: {
+//   return NWELocal.post('/planEditPreview/', formData, { headers: {
 //         'Content-Type': 'multipart/form-data'
 //       }});
 // }
+
+export const planEditPreview = (row) => {
+  let formData = new FormData();
+  formData.append('Part_NO', row.Part_NO)
+  formData.append('plan_number', row.plan_number)
+  formData.append('Seq', row.Seq)
+  return NWEPlan.post('/preview/', formData, { headers: {
+        'Content-Type': 'multipart/form-data'
+      }});
+}
 
 
 export const planWorklist = (line) => {
