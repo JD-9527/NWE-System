@@ -106,7 +106,7 @@ export default {
     },
     comfirmEdit() {
       console.log(this.new_row)
-      this.Edit(this.new_row,'user').then((response)=>{
+      this.Edit(this.new_row,this.$store.getters.name).then((response)=>{
         this.$message.success('新增成功！')
         this.$emit('update')
         this.dialog = false

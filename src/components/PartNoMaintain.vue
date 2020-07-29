@@ -218,7 +218,7 @@ export default {
       this.getTableData();
     },
     saveRow(row, index) {
-      dataEditPlasticColor(row,'user').then((response) => {
+      dataEditPlasticColor(row,this.$store.getters.name).then((response) => {
         this.$message.success('修改成功！');
         // 修改成功之後 刷新表格
         this.getTableData();
@@ -250,7 +250,7 @@ export default {
       })
     },
     submitForm(){
-      dataImportPlasticColor('user',this.file).then((response) => {
+      dataImportPlasticColor(this.$store.getters.name,this.file).then((response) => {
         // console.log(response.data);
         if (response.status == 200) {
           // console.log(response.status)

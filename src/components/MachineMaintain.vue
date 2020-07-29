@@ -356,7 +356,7 @@ export default {
       this.getTableDataCT();
     },
     saveRow(row, index) {
-      dataEditMachineColor(row,'user').then((response) => {
+      dataEditMachineColor(row,this.$store.getters.name).then((response) => {
         this.$message.success('修改成功！');
         // 修改成功之後 刷新表格
         this.getTableData();
@@ -383,7 +383,7 @@ export default {
       });
     },
     saveRowCT(row, index) {
-      dataEditCtTime(row,'user').then((response) => {
+      dataEditCtTime(row,this.$store.getters.name).then((response) => {
         this.$message.success('修改成功！');
         // 修改成功之後 刷新表格
         this.getTableDataCT();

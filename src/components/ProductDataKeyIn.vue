@@ -365,7 +365,7 @@ export default {
         EditPlan = dataEditWeekPlan
       }
       // console.log(row)
-      EditPlan(row,'user').then((response)=>{
+      EditPlan(row,this.$store.getters.name).then((response)=>{
         if (response.status == 200) {
           // console.log(response.status)
           this.$message.success('修改成功！')
