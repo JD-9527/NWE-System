@@ -266,7 +266,7 @@
   opacity: 0;
 }
 .tabs >>> .el-tabs__header {
-  margin:0;
+  /*margin:0;*/
 }
 </style>
 
