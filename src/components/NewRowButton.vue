@@ -21,7 +21,7 @@
         <el-select
           v-model="new_row[column.prop]"
           placeholder="請選擇"
-          v-if="column.prop == 'require_source'"
+          v-show="column.prop == 'require_source' && column.type == 'select'"
           size='small'
         >
           <el-option
@@ -34,7 +34,7 @@
         <el-select
           v-model="new_row[column.prop]"
           placeholder="請選擇"
-          v-if="column.prop == 'plastic_color'"
+          v-if="column.prop == 'plastic_color' && column.type == 'select'"
           size='small'
         >
           <el-option
@@ -49,8 +49,20 @@
           size='small'
           style='width: 100%;'
           v-model="new_row[column.prop]"
+          v-show="column.type == 'input'"
           v-else
         ></el-input>
+        <el-date-picker
+          v-model="new_row[column.prop]"
+          type="date"
+          size='small'
+          :placeholder="column.label"
+          editable-component="el-date-picker"
+          format="yyyy/MM/dd"
+          value-format="yyyy/MM/dd"
+          v-show="column.type == 'date'"
+        >
+        </el-date-picker>
       </div>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="comfirmEdit">新 增</el-button>

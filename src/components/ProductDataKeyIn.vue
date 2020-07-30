@@ -315,15 +315,16 @@ export default {
       file: undefined,
       week_part_no: [],   //周料號
       tableDataInfo: [
-        { prop: 'sec_Part_NO', label: '料號'},
-        { prop: 'require_source', label: '種類'},
-        { prop: 'plan_number', label: '數量'},
-        { prop: 'require_date', label: '交期'},
-        { prop: 'place_of_shipment', label: '出貨地'},
+        { prop: 'sec_Part_NO', label: '料號', type: 'input'},
+        { prop: 'require_source', label: '種類', type: 'select'},
+        { prop: 'plan_number', label: '數量', type: 'input'},
+        { prop: 'require_date', label: '交期', type: 'date'},
+        { prop: 'place_of_shipment', label: '出貨地', type: 'input'},
       ],
       week_partInfo: [
-        { prop: 'Part_NO', label: '料號' },
-        { prop: 'plan_number', label: '數量' },
+        { prop: 'Part_NO', label: '料號', type: 'input'},
+        { prop: 'plan_number', label: '數量', type: 'input' },
+        { prop: 'delivery_time', label: '交期', type: 'date' },
       ],
     }
   },
@@ -418,7 +419,10 @@ export default {
           'Part_NO': row.Part_NO,
           'plan_number': '0',
         }
-        dataEditWeekPlan(row0,'delete')
+        dataEditDayPlan(row0,'delete').then((response)=>{
+          this.$message.success('刪除成功！')
+          this.getTableData();
+        })
       }
     },
     submitForm(){

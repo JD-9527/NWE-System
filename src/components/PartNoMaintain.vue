@@ -176,8 +176,8 @@ export default {
       loading: false,
       file: undefined,
       tableInfo: [
-        { prop: 'plastic_part_NO', label: '塑膠粒料號' },
-        { prop: 'plastic_color', label: '顏色'}
+        { prop: 'plastic_part_NO', label: '塑膠粒料號', type: 'input' },
+        { prop: 'plastic_color', label: '顏色', type: 'select'}
       ]
     }
   },

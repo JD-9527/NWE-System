@@ -286,8 +286,8 @@ export default {
       ],
       tableData: [],
       columnsCT: [
-        {prop: 'machine_ton', label: "噸位"},
-        {prop: 'mold_cttime', label: "前置作業時間"},
+        {prop: 'machine_ton', label: "噸位", type: 'input'},
+        {prop: 'mold_cttime', label: "前置作業時間", type: 'input'},
       ],
       tableDataCT: [],
       activeName: '1',  // 默認激活的tab
