@@ -382,7 +382,6 @@ export default {
       else {
         EditPlan = dataEditWeekPlan
       }
-      // console.log(row)
       EditPlan(row,this.$store.getters.name).then((response)=>{
         if (response.status == 200) {
           // console.log(response.status)
@@ -393,6 +392,9 @@ export default {
         else {
           this.$message.error(error.response)
         }
+      })
+      .catch(error=>{
+        this.$message.error(error.response.status)
       })
     },
     deleteRow(row) {

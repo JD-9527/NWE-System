@@ -206,6 +206,12 @@ export const dataEditWeekPlan = (row, user) => {
   let formData = new FormData();
   formData.append('Part_NO', row.Part_NO)
   formData.append('plan_number', row.plan_number)
+  if (typeof(row.delivery_time) == 'string') {
+    formData.append('delivery_time', row.delivery_time)
+  }
+  else {
+    formData.append('delivery_time', '')
+  }
   formData.append('user', user)
   return NWEData.post('/weekplan/', formData, { headers: {
         'Content-Type': 'multipart/form-data'
