@@ -190,6 +190,23 @@
               </editable-cell>
             </el-table-column>
             <el-table-column
+              prop="delivery_time"
+              label="交期"
+              align="center"
+              show-overflow-tooltip
+            >
+              <editable-cell
+                :show-input="row.editMode"
+                slot-scope="{row}"
+                v-model="row.delivery_time"
+                editable-component="el-date-picker"
+                format="yyyy/MM/dd"
+                value-format="yyyy/MM/dd"
+              >
+                <span slot="content">{{row.delivery_time}}</span>
+              </editable-cell>
+            </el-table-column>
+            <el-table-column
               label="操作"
               align="center"
             >
@@ -217,6 +234,7 @@
                 type="danger"
                 icon="el-icon-delete"
                 size="mini"
+                v-show="!row.editMode"
                 @click="deleteRow(row, $index)">
               </el-button>
              </template>

@@ -13,17 +13,17 @@ const NWEOverview = axios.create({
 const NWEPlan = axios.create({
   baseURL: 'http://10.124.131.87:8880/plan/'
 });
-const NWEPlanGET = axios.create({
-  baseURL: 'http://10.124.131.87:8880/plan/get/'
-});
+// const NWEPlanGET = axios.create({
+//   baseURL: 'http://10.124.131.87:8880/plan/get/'
+// });
 
 // 資料輸入、維護
 const NWEData = axios.create({
   baseURL: 'http://10.124.131.87:8880/data/'
 });
-const NWEDataGET = axios.create({
-  baseURL: 'http://10.124.131.87:8880/data/get/'
-});
+// const NWEDataGET = axios.create({
+//   baseURL: 'http://10.124.131.87:8880/data/get/'
+// });
 
 // 計畫預覽、工單計畫
 const NWEOrder = axios.create({
@@ -162,7 +162,7 @@ export const dataSourceList = () => NWEData.get('/sourcelist/')
 export const dataFileDownload = (filetype) => NWEData.get('/filedown/?filetype='+filetype,{ responseType: 'blob' })
 
 // 生產排程：急單
-export const dataDayPlan = () => NWEDataGET.get('/dayplan/')
+export const dataDayPlan = () => NWEData.get('/dayplan/')
 export const dataImportDayPlan = (user,file) => {
   let formData = new FormData();
   formData.append('user', user)
@@ -193,7 +193,7 @@ export const dataDelDayPlan = (sec_Part_NO) => {
 }
 
 // 生產排程：周料號
-export const dataWeekPlan = () => NWEDataGET.get('/weekplan/')
+export const dataWeekPlan = () => NWEData.get('/weekplan/')
 export const dataImportWeekPlan = (user,file) => {
   let formData = new FormData();
   formData.append('user', user)
@@ -225,7 +225,7 @@ export const planTonList = (line) => {
 }
 
 export const planPreview = (field,line) => {
-  return NWEPlanGET.get('/preview/',{params: { field: field, line: line}})
+  return NWEPlan.get('/preview/',{params: { field: field, line: line}})
 }
 
 // 計畫工單
