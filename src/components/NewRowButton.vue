@@ -21,27 +21,16 @@
         <el-select
           v-model="new_row[column.prop]"
           placeholder="請選擇"
-          v-show="column.prop == 'require_source' && column.type == 'select'"
+          filterable
+          v-show="select_list.indexOf(column.prop) > -1 && column.type == 'select'"
           size='small'
+          @focus="getLists(column.prop)"
         >
           <el-option
-            v-for="(item,index) in categorylist"
+            v-for="(item,index) in Alists"
             :key="index"
             :label="item"
             :value="item"
-          ></el-option>
-        </el-select>
-        <el-select
-          v-model="new_row[column.prop]"
-          placeholder="請選擇"
-          v-if="column.prop == 'plastic_color' && column.type == 'select'"
-          size='small'
-        >
-          <el-option
-            v-for="(item,index) in colorlist"
-            :key="index"
-            :label="item.label"
-            :value="item.value"
           ></el-option>
         </el-select>
         <el-input
@@ -50,7 +39,6 @@
           style='width: 100%;'
           v-model="new_row[column.prop]"
           v-show="column.type == 'input'"
-          v-else
         ></el-input>
         <el-date-picker
           v-model="new_row[column.prop]"
@@ -83,7 +71,10 @@ export default {
       new_row: {},
       Edit: '',
       categorylist: ['急單', 'D11組裝', '成型組裝', 'NSD', '海外', '印刷', '重試' ],
-      colorlist: []
+      colorlist: [],
+      select_list: ['require_source', 'plastic_color', 'a', 'b', 'c', 'd'],
+      machinelist: [],
+      Alists: []
     }
   },
   props: {
@@ -97,6 +88,7 @@ export default {
   methods: {
     addRow() {
       this.dialog = true
+      this
     },
     initNewRow() {
       let row = ''
@@ -132,18 +124,57 @@ export default {
     getColorList() {
       dataColorList().then((response)=>{
         let data = response.data.color
-        for (let i=0;i<data.length;i++) {
-          this.colorlist.push({
-            value: data[i].toString(),
-            label: data[i].toString()
-          })
-        }
+        this.colorlist = data
+        // for (let i=0;i<data.length;i++) {
+        //   this.colorlist.push({
+        //     value: data[i].toString(),
+        //     label: data[i].toString()
+        //   })
+        // }
       })
+    },
+    getMachineList() {
+      let tmp = []
+      for (let i=0;i<15;i++) {
+        let num = (i+1)<10? '0'+(i+1): (i+1)
+        tmp.push('A'+num)
+      }
+      for (let i=0;i<14;i++) {
+        let num = (i+1)<10? '0'+(i+1): (i+1)
+        tmp.push('B'+num)
+      }
+      for (let i=0;i<12;i++) {
+        let num = (i+1)<10? '0'+(i+1): (i+1)
+        tmp.push('C'+num)
+      }
+      for (let i=0;i<19;i++) {
+        let num = (i+1)<10? '0'+(i+1): (i+1)
+        tmp.push('D'+num)
+      }
+      for (let i=0;i<21;i++) {
+        let num = (i+1)<10? '0'+(i+1): (i+1)
+        tmp.push('E'+num)
+      }
+      for (let i=0;i<17;i++) {
+        let num = (i+1)<10? '0'+(i+1): (i+1)
+        tmp.push('F'+num)
+      }
+      for (let i=0;i<9;i++) {
+        let num = (i+1)<10? '0'+(i+1): (i+1)
+        tmp.push('G'+num)
+      }
+      this.machinelist = tmp
+    },
+    getLists(prop) {
+      if (prop == 'require_source') this.Alists = this.categorylist
+      else if (prop == 'plastic_color') this.Alists = this.colorlist
+      else if (prop == 'b') this.Alists = this.machinelist
     }
   },
   mounted() {
     this.getEditFunct()
     this.getColorList()
+    this.getMachineList()
   }
 }
 </script>
