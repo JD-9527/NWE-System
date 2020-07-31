@@ -22,7 +22,9 @@
           v-model="new_row[column.prop]"
           placeholder="請選擇"
           filterable
-          v-show="select_list.indexOf(column.prop) > -1 && column.type == 'select'"
+          clearable
+          :multiple="column.prop == 'machine_NO'"
+          v-if="select_list.indexOf(column.prop) > -1 && column.type == 'select'"
           size='small'
           @focus="getLists(column.prop)"
         >
@@ -38,7 +40,7 @@
           size='small'
           style='width: 100%;'
           v-model="new_row[column.prop]"
-          v-show="column.type == 'input'"
+          v-else-if="column.type == 'input'"
         ></el-input>
         <el-date-picker
           v-model="new_row[column.prop]"
@@ -48,7 +50,7 @@
           editable-component="el-date-picker"
           format="yyyy/MM/dd"
           value-format="yyyy/MM/dd"
-          v-show="column.type == 'date'"
+          v-else-if="column.type == 'date'"
         >
         </el-date-picker>
       </div>
@@ -61,7 +63,8 @@
 </template>
 
 <script>
-import { dataEditWeekPlan, dataEditDayPlan, dataEditCtTime, dataEditPlasticColor,dataColorList } from '../api.js'
+import { dataEditWeekPlan, dataEditDayPlan, dataEditCtTime,
+         dataEditPlasticColor,dataColorList, dataSpecPartnoNew } from '../api.js'
 
   /* eslint-disable */
 export default {
@@ -72,7 +75,7 @@ export default {
       Edit: '',
       categorylist: ['急單', 'D11組裝', '成型組裝', 'NSD', '海外', '印刷', '重試' ],
       colorlist: [],
-      select_list: ['require_source', 'plastic_color', 'a', 'b', 'c', 'd'],
+      select_list: ['require_source', 'plastic_color', 'machine_NO'],
       machinelist: [],
       Alists: []
     }
@@ -88,7 +91,6 @@ export default {
   methods: {
     addRow() {
       this.dialog = true
-      this
     },
     initNewRow() {
       let row = ''
@@ -107,9 +109,12 @@ export default {
       else if (this.type == 'partno') {
         this.Edit = dataEditPlasticColor
       }
+      else if (this.type == 'partnoS') {
+        this.Edit = dataSpecPartnoNew
+      }
     },
     comfirmEdit() {
-      console.log(this.new_row)
+      // console.log(this.new_row)
       this.Edit(this.new_row,this.$store.getters.name).then((response)=>{
         this.$message.success('新增成功！')
         this.$emit('update')
@@ -166,9 +171,10 @@ export default {
       this.machinelist = tmp
     },
     getLists(prop) {
+      // console.log(this.new_row.b)
       if (prop == 'require_source') this.Alists = this.categorylist
       else if (prop == 'plastic_color') this.Alists = this.colorlist
-      else if (prop == 'b') this.Alists = this.machinelist
+      else if (prop == 'machine_NO') this.Alists = this.machinelist
     }
   },
   mounted() {

@@ -19,6 +19,7 @@ export default {
     },
   },
   methods: {
+    /* eslint-disable */
     downloadData() {
       // const url='http://10.124.131.87:8880/data/filedown/?filetype='+this.file_type
       // this.$http({
@@ -38,6 +39,9 @@ export default {
         link.setAttribute('download', this.file_type+'_example.xlsx')
         document.body.appendChild(link)
         link.click()
+      })
+      .catch((error)=>{
+        console.log(error.response.data)
       })
     },
   }

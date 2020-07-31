@@ -151,6 +151,29 @@ export const dataEditPlasticColor = (row, user) => {
         'Content-Type': 'multipart/form-data'
       }});
 }
+// 料號維護：特殊料號
+export const dataSpecPartno = (partno) => {
+  let params = { part_NO: partno }
+  return NWEData.get('/partno/',{params})
+}
+export const dataSpecPartnoNew = (row, user) => {
+  let formData = new FormData();
+  formData.append('part_NO', row.Part_NO)
+  formData.append('machine_NO', row.machine_NO)
+  formData.append('user', user)
+  return NWEData.post('/add/partno/', formData, { headers: {
+        'Content-Type': 'multipart/form-data'
+      }});
+}
+export const dataSpecPartnoEdit = (row, user) => {
+  let formData = new FormData();
+  formData.append('part_NO', row.Part_NO)
+  formData.append('machine_NO', row.machine_NO)
+  formData.append('user', user)
+  return NWEData.post('/partno/', formData, { headers: {
+        'Content-Type': 'multipart/form-data'
+      }});
+}
 
 // 常用or共有api
 export const dataColorList = () => NWEData.get('/colorlist/')
@@ -158,7 +181,7 @@ export const dataTonList = () => NWEData.get('/tonlist/')
 export const dataSourceList = () => NWEData.get('/sourcelist/')
 // 範例檔案下載 filetype =>
 // tondata: 前置作業時間、machineton: 機台維護、plasticcolor: 料號維護
-// dayplan: 急單、weekplan: 周料號
+// dayplan: 急單、weekplan: 周料號、specialpartno: 特殊料號
 export const dataFileDownload = (filetype) => NWEData.get('/filedown/?filetype='+filetype,{ responseType: 'blob' })
 
 // 生產排程：急單
@@ -283,10 +306,10 @@ export const planEditPreview = (row) => {
 export const Export_NWE_Planning = (start_date,end_date,data_type) => {
   return NWEPlan.get('/export/?',{params: { start_date : start_date,end_date:end_date,data_type:data_type}})
 }
-
 export const planWorklist = (line) => {
   return NWEPlan.get('/worklist/',{params: { line: line }})
 }
 export const planWorkTonlist = (line) => {
   return NWEPlan.get('/worktonlist/',{params: { line: line }})
 }
+
