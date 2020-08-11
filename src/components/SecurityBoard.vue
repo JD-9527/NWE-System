@@ -188,6 +188,10 @@
               <div :style="securityColor(machine_state.emergency2_signal)"></div>
               <div class="alarm_title">急停2 {{ signalStatus(machine_state.emergency2_signal) }}</div>
             </div>
+            <div class="alarm_box" v-show="machine_state.injection != ''" style="display: block;">
+              <div :style="securityColor(machine_state.injection)"></div>
+              <div class="alarm_title">射嘴防護罩 {{ signalStatus(machine_state.injection) }}</div>
+            </div>
             <div class="alarm_box" v-show="machine_state.safe_door_total_signal != ''">
               <div :style="securityColor(machine_state.safe_door_total_signal)"></div>
               <div class="alarm_title">安全門聯桿 {{ signalStatus(machine_state.safe_door_total_signal) }}</div>

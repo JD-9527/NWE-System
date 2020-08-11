@@ -52,7 +52,7 @@
 </template>
 
 <script>
-import { login } from '@/api.js'
+// import { login } from '@/api.js'
 export default {
   data () {
     return {
@@ -62,39 +62,6 @@ export default {
   },
   methods: {
     /* eslint-disable */
-    // login() {
-    //   if( this.userName == 'nwe' && this.password == 'foxconn88' ){
-    //     localStorage.setItem('token', 'ImLogin')
-    //     this.$message({
-    //       message: '登入成功！',
-    //       type: 'success',
-    //       center: true,
-    //       duration: 2000
-    //     });
-    //     this.$store.dispatch('user/login',['visitor'])
-    //     // console.log(this.$store.getters)
-    //     this.$router.push('/overview/dashboard').catch((err) => { console.log('Error:',err) });
-    //   }
-    //   else if ( this.userName == 'admin' && this.password == 'foxconn88' ){
-    //     localStorage.setItem('token', 'ImLogin')
-    //     this.$message({
-    //       message: '登入成功！',
-    //       type: 'success',
-    //       center: true,
-    //       duration: 2000
-    //     });
-    //     this.$store.dispatch('user/login', ['website_maintainer'])
-    //     this.$router.push('/overview/dashboard').catch((err) => { console.log('Error:',err) });
-    //   }
-    //   else{
-    //     this.$message.error({
-    //       message: '帳號或密碼錯誤！',
-    //       center: true,
-    //       duration: 2000
-    //     });
-    //   }
-    //   // console.log(this.$store.getters.roles)
-    // }
     // login(){
     //   // write login authencation logic here!323
     //   if( this.userName == 'nwe' && this.password == 'foxconn88' ){
@@ -105,6 +72,10 @@ export default {
     //       center: true,
     //       duration: 2000
     //     });
+    //     let access = 'login'
+    //     let groups = 'website_maintainer'
+    //     let username = 'nwe'
+    //     this.$store.dispatch('user/login', { access, groups, username })
     //     this.$router.push('/overview/dashboard');
     //   } else{
     //     this.$message.error({
@@ -113,6 +84,7 @@ export default {
     //       duration: 2000
     //     });
     //   }
+    // },
     login() {
       let username=this.userName
       let password=this.password
@@ -138,7 +110,6 @@ export default {
             duration: 5000
           });
         }
-
       })
       .catch((error) => {
         this.$message.error({
