@@ -25,15 +25,6 @@ const NWEData = axios.create({
 //   baseURL: 'http://10.124.131.87:8880/data/get/'
 // });
 
-// 計畫預覽、工單計畫
-const NWEOrder = axios.create({
-  baseURL: 'http://10.132.41.95:8002/api/'
-});
-
-//10.132.41.95:8002 NWE arrangment
-// const NWELocal = axios.create({
-//   baseURL: 'http://127.0.0.1:8002/api/'
-// });
 
 const Token = axios.create({
   baseURL: 'http://10.124.131.87:8880/token/'
@@ -259,12 +250,12 @@ export const planPreview = (field,line) => {
 
 // 計畫工單
 export const PlanOrder = (field,line,ton) => {
-  return NWEOrder.get('/planorder/?',{params: { field: field, line: line, ton: ton}})
+  return NWEPlan.get('/planorder/?',{params: { field: field, line: line, ton: ton}})
 }
 
 // 計畫工單
 export const WorkOrder = (field,line,ton) => {
-  return NWEOrder.get('/workorder/?',{params: { field: field, line: line, ton: ton}})
+  return NWEPlan.get('/workorder/?',{params: { field: field, line: line, ton: ton}})
 }
 
 //機台資料

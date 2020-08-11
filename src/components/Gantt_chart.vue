@@ -804,7 +804,7 @@ import Gantt from "gantt-schedule-timeline-calendar"
 import ItemMovement from "gantt-schedule-timeline-calendar/dist/ItemMovement.plugin.js"
 import ItemHold from 'gantt-schedule-timeline-calendar/dist/ItemHold.plugin.js'
 import { isNull } from 'util'
-import { PlanOrder,WorkOrder,PartNoInfo,WeeksPlan,MachineData} from '../api.js'
+import { PlanOrder,WorkOrder,PartNoInfo,WeeksPlan,MachineData,Export_NWE_Planning} from '../api.js'
 import EditableCell from "./EditableCell.vue";
 
 let subs = [];
@@ -1547,6 +1547,8 @@ export default {
           alert('新增成功')
         } //else
       } //if
+
+      this.clearTable()
     },
     deleteRow(){   //刪除計畫
       if(this.selected_order.id=='')
