@@ -347,7 +347,7 @@ export default {
       this.loadingS=true
       dataSpecPartno(data).then((response)=>{
         this.loadingS=false
-        console.log(response.data.data)
+        // console.log(response.data.data)
         this.tableData_s = response.data.data
         this.tableData_s = this.tableData_s.map(row => {
           return {

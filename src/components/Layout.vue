@@ -151,7 +151,7 @@
               料號維護
             </el-menu-item>
           </el-submenu>
-          <el-submenu index="5">
+          <!-- <el-submenu index="5">
             <template slot="title">
               <i class="el-icon-s-opportunity"></i>
               <span slot="title">智能節電</span>
@@ -161,7 +161,7 @@
             >
               機台看板
             </el-menu-item>
-          </el-submenu>
+          </el-submenu> -->
         </el-menu>
       </el-aside>
       <el-container>
