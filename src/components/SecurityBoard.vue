@@ -181,17 +181,17 @@
           </div>
           <div class="message"  v-show="current != ''">
             <div>
-              <div class="alarm_box" v-show="machine_state.emergency1_signal != ''">
-                <div :style="securityColor(machine_state.emergency1_signal)"></div>
-                <div class="alarm_title">急停1 {{ signalStatus(machine_state.emergency1_signal) }}</div>
+              <div class="alarm_box" v-show="machine_state.emergency_signal_1 != ''">
+                <div :style="securityColor(machine_state.emergency_signal_1)"></div>
+                <div class="alarm_title">急停1 {{ signalStatus(machine_state.emergency_signal_1) }}</div>
               </div>
-              <div class="alarm_box" v-show="machine_state.emergency2_signal != ''">
-                <div :style="securityColor(machine_state.emergency2_signal)"></div>
-                <div class="alarm_title">急停2 {{ signalStatus(machine_state.emergency2_signal) }}</div>
+              <div class="alarm_box" v-show="machine_state.emergency_signal_2 != ''">
+                <div :style="securityColor(machine_state.emergency_signal_2)"></div>
+                <div class="alarm_title">急停2 {{ signalStatus(machine_state.emergency_signal_2) }}</div>
               </div>
-              <div class="alarm_box" v-show="machine_state.injection != ''">
-                <div :style="securityColor(machine_state.injection)"></div>
-                <div class="alarm_title">射嘴防護罩 {{ signalStatus(machine_state.injection) }}</div>
+              <div class="alarm_box" v-show="machine_state.nozzle_protection != ''">
+                <div :style="securityColor(machine_state.nozzle_protection)"></div>
+                <div class="alarm_title">射嘴防護罩 {{ signalStatus(machine_state.nozzle_protection) }}</div>
               </div>
             </div>
             <div class="alarm_box" v-show="machine_state.safe_door_total_signal != ''">
@@ -242,19 +242,28 @@
                 align="center"
               >
                 <template slot-scope="scoped">
-                  <div
-                    class="door_block"
-                    :style="'color:'+ (scoped.row.emergency1_OK == '0'? '#F50000;': '#111;')"
-                    v-show="scoped.row.emergency1_OK != ''"
-                  >
-                    急停1 {{ doorState(scoped.row.emergency1_OK) }}
-                  </div>
-                  <div
-                    class="door_block"
-                    :style="'color:'+ (scoped.row.emergency2_OK == '0'? '#F50000;': '#111;')"
-                    v-show="scoped.row.emergency2_OK != ''"
-                  >
-                    急停2 {{ doorState(scoped.row.emergency2_OK) }}
+                  <div>
+                    <div
+                      class="door_block"
+                      :style="'color:'+ (scoped.row.emergency1_OK == '0'? '#F50000;': '#111;')"
+                      v-show="scoped.row.emergency1_OK != ''"
+                    >
+                      急停1 {{ doorState(scoped.row.emergency1_OK) }}
+                    </div>
+                    <div
+                      class="door_block"
+                      :style="'color:'+ (scoped.row.emergency2_OK == '0'? '#F50000;': '#111;')"
+                      v-show="scoped.row.emergency2_OK != ''"
+                    >
+                      急停2 {{ doorState(scoped.row.emergency2_OK) }}
+                    </div>
+                    <div
+                      class="door_block"
+                      :style="'color:'+ (scoped.row.nozzle_protection == '0'? '#F50000;': '#111;')"
+                      v-show="scoped.row.nozzle_protection != ''"
+                    >
+                      射嘴防護罩 {{ doorState(scoped.row.nozzle_protection) }}
+                    </div>
                   </div>
                   <div
                     class="door_block"
@@ -400,8 +409,8 @@ export default {
     line: '',
     lines: ['D9 - 1F','D10 - 1F'],
     machine_state: {
-      emergency1_signal: '0',
-      emergency2_signal: '0',
+      emergency_signal_1: '0',
+      emergency_signal_2: '0',
       safe_door_total_signal: '0',
       safe_door_front_signal: '0',
       safe_door_back_signal: '0'
