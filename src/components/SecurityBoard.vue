@@ -180,17 +180,19 @@
             <span class="message-row">{{ current }} 機台安全訊息</span>
           </div>
           <div class="message"  v-show="current != ''">
-            <div class="alarm_box" v-show="machine_state.emergency1_signal != ''">
-              <div :style="securityColor(machine_state.emergency1_signal)"></div>
-              <div class="alarm_title">急停1 {{ signalStatus(machine_state.emergency1_signal) }}</div>
-            </div>
-            <div class="alarm_box" v-show="machine_state.emergency2_signal != ''">
-              <div :style="securityColor(machine_state.emergency2_signal)"></div>
-              <div class="alarm_title">急停2 {{ signalStatus(machine_state.emergency2_signal) }}</div>
-            </div>
-            <div class="alarm_box" v-show="machine_state.injection != ''" style="display: block;">
-              <div :style="securityColor(machine_state.injection)"></div>
-              <div class="alarm_title">射嘴防護罩 {{ signalStatus(machine_state.injection) }}</div>
+            <div>
+              <div class="alarm_box" v-show="machine_state.emergency1_signal != ''">
+                <div :style="securityColor(machine_state.emergency1_signal)"></div>
+                <div class="alarm_title">急停1 {{ signalStatus(machine_state.emergency1_signal) }}</div>
+              </div>
+              <div class="alarm_box" v-show="machine_state.emergency2_signal != ''">
+                <div :style="securityColor(machine_state.emergency2_signal)"></div>
+                <div class="alarm_title">急停2 {{ signalStatus(machine_state.emergency2_signal) }}</div>
+              </div>
+              <div class="alarm_box" v-show="machine_state.injection != ''">
+                <div :style="securityColor(machine_state.injection)"></div>
+                <div class="alarm_title">射嘴防護罩 {{ signalStatus(machine_state.injection) }}</div>
+              </div>
             </div>
             <div class="alarm_box" v-show="machine_state.safe_door_total_signal != ''">
               <div :style="securityColor(machine_state.safe_door_total_signal)"></div>
