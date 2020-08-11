@@ -413,7 +413,8 @@ export default {
       emergency_signal_2: '0',
       safe_door_total_signal: '0',
       safe_door_front_signal: '0',
-      safe_door_back_signal: '0'
+      safe_door_back_signal: '0',
+      nozzle_protection: '0'
     },
     tableData: [],
     status_message: '',
