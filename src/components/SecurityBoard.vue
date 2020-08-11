@@ -363,7 +363,7 @@
 .alarm_title {
   display: inline-block;
   min-height: 20px;
-  width: 110px;
+  min-width: 130px;
   text-align: left;
   margin-left: 5px;
 }
