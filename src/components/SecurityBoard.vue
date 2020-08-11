@@ -200,11 +200,11 @@
             </div>
             <div class="alarm_box" v-show="machine_state.safe_door_front_signal != ''">
               <div :style="securityColor(machine_state.safe_door_front_signal)"></div>
-              <div class="alarm_title">前安全門聯桿 {{ signalStatus(machine_state.safe_door_front_signal) }}</div>
+              <div class="alarm_title">前安全門 {{ signalStatus(machine_state.safe_door_front_signal) }}</div>
             </div>
             <div class="alarm_box" v-show="machine_state.safe_door_back_signal != ''">
               <div :style="securityColor(machine_state.safe_door_back_signal)"></div>
-              <div class="alarm_title">後安全門聯桿 {{ signalStatus(machine_state.safe_door_back_signal) }}</div>
+              <div class="alarm_title">後安全門 {{ signalStatus(machine_state.safe_door_back_signal) }}</div>
             </div>
             <img src="../assets/Vsp.png" style="width: 100%;" />
           </div>
@@ -268,14 +268,14 @@
                     :style="'color:'+ (scoped.row.safe_door_front_OK == '0'? '#F50000;': '#111;')"
                     v-show="scoped.row.safe_door_front_OK != ''"
                   >
-                    前安全門聯桿 {{ doorState(scoped.row.safe_door_front_OK) }}
+                    前安全門 {{ doorState(scoped.row.safe_door_front_OK) }}
                   </div>
                   <div
                     class="door_block"
                     :style="'color:'+ (scoped.row.safe_door_back_OK == '0'? '#F50000;': '#111;')"
                     v-show="scoped.row.safe_door_back_OK != ''"
                   >
-                    後安全門聯桿 {{ doorState(scoped.row.safe_door_back_OK) }}
+                    後安全門 {{ doorState(scoped.row.safe_door_back_OK) }}
                   </div>
                 </template>
               </el-table-column>
