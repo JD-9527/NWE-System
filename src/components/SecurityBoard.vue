@@ -183,28 +183,58 @@
             <div>
               <div class="alarm_box" v-show="machine_state.emergency_signal_1 != ''">
                 <div :style="securityColor(machine_state.emergency_signal_1)"></div>
-                <div class="alarm_title">急停1 {{ signalStatus(machine_state.emergency_signal_1) }}</div>
+                <div
+                  class="alarm_title"
+                  :style="'color:'+ (scoped.row.emergency_status_1 == '0'? '#F50000;': '#111;')"
+                >
+                  急停1 {{ signalStatus(machine_state.emergency_status_1) }}
+                </div>
               </div>
               <div class="alarm_box" v-show="machine_state.emergency_signal_2 != ''">
                 <div :style="securityColor(machine_state.emergency_signal_2)"></div>
-                <div class="alarm_title">急停2 {{ signalStatus(machine_state.emergency_signal_2) }}</div>
+                <div
+                  class="alarm_title"
+                  :style="'color:'+ (scoped.row.emergency_status_2 == '0'? '#F50000;': '#111;')"
+                >
+                  急停2 {{ signalStatus(machine_state.emergency_status_2) }}
+                </div>
               </div>
               <div class="alarm_box" v-show="machine_state.nozzle_protection != ''">
                 <div :style="securityColor(machine_state.nozzle_protection)"></div>
-                <div class="alarm_title">射嘴防護罩 {{ signalStatus(machine_state.nozzle_protection) }}</div>
+                <div
+                  class="alarm_title"
+                  :style="'color:'+ (scoped.row.nozzle_protection_status == '0'? '#F50000;': '#111;')"
+                >
+                  射嘴防護罩 {{ signalStatus(machine_state.nozzle_protection_status) }}
+                </div>
               </div>
             </div>
             <div class="alarm_box" v-show="machine_state.safe_door_total_signal != ''">
               <div :style="securityColor(machine_state.safe_door_total_signal)"></div>
-              <div class="alarm_title">安全門聯桿 {{ signalStatus(machine_state.safe_door_total_signal) }}</div>
+              <div
+                class="alarm_title"
+                :style="'color:'+ (scoped.row.safe_door_total_status == '0'? '#F50000;': '#111;')"
+              >
+                安全門聯桿 {{ signalStatus(machine_state.safe_door_total_status) }}
+              </div>
             </div>
             <div class="alarm_box" v-show="machine_state.safe_door_front_signal != ''">
               <div :style="securityColor(machine_state.safe_door_front_signal)"></div>
-              <div class="alarm_title">前安全門 {{ signalStatus(machine_state.safe_door_front_signal) }}</div>
+              <div
+                class="alarm_title"
+                :style="'color:'+ (scoped.row.safe_door_front_status == '0'? '#F50000;': '#111;')"
+              >
+                前安全門 {{ signalStatus(machine_state.safe_door_front_status) }}
+              </div>
             </div>
             <div class="alarm_box" v-show="machine_state.safe_door_back_signal != ''">
               <div :style="securityColor(machine_state.safe_door_back_signal)"></div>
-              <div class="alarm_title">後安全門 {{ signalStatus(machine_state.safe_door_back_signal) }}</div>
+              <div
+                class="alarm_title"
+                :style="'color:'+ (scoped.row.safe_door_back_status == '0'? '#F50000;': '#111;')"
+              >
+                後安全門 {{ signalStatus(machine_state.safe_door_back_status) }}
+              </div>
             </div>
             <img src="../assets/Vsp.png" style="width: 100%;" />
           </div>
@@ -414,7 +444,14 @@ export default {
       safe_door_total_signal: '0',
       safe_door_front_signal: '0',
       safe_door_back_signal: '0',
-      nozzle_protection: '0'
+      nozzle_protection: '0',
+
+      emergency_status_1: '0',
+      emergency_status_2: '0',
+      safe_door_total_status: '0',
+      safe_door_front_status: '0',
+      safe_door_back_status: '0',
+      nozzle_protection_status: '0'
     },
     tableData: [],
     status_message: '',
@@ -467,6 +504,21 @@ export default {
           break;
         default:
           tmp = "color: #909399;";
+          break;
+      }
+      return tmp;
+    },
+    testStatusToColor(data) {
+      let tmp
+      switch (data.status) {
+        case 0: //異常
+          tmp = "color: #F50000;";
+          break;
+        case 1:  //正常
+          tmp = "color: #000;";
+          break;
+        default:
+          tmp = "color: #000;";
           break;
       }
       return tmp;
