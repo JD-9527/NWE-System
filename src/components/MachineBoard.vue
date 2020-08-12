@@ -177,7 +177,7 @@
       <el-col :span="12">
         <el-card shadow="never" style="margin-bottom: 20px;">
           <div slot="header" class="clearfix">
-            <span class="message-row">機台訊息</span>
+            <span class="message-row">{{ current }} 機台訊息</span>
           </div>
           <div class="message">
             <el-row
@@ -378,14 +378,14 @@
                   {{ produce_message.end_time }}
                 </div>
               </el-col>
-              <el-col :span="12">
+              <!-- <el-col :span="12">
                 <div class="message-subtitle">
                   維修成本(RMB) (單機成本/總成本)
                 </div>
                 <div>
                   {{ produce_message.pay }}
                 </div>
-              </el-col>
+              </el-col> -->
             </el-row>
           </div>
         </el-card>
@@ -511,7 +511,8 @@ export default {
     machine_message: machine_message,
     new_machine_message: new_machine_message,
     now_work_order: now_work_order,
-    produce_message: produce_message
+    produce_message: produce_message,
+    current: '',
   }),
   watch: {
     line: function() {
@@ -540,7 +541,8 @@ export default {
   methods: {
     onClick(params) {
       // eslint-disable-next-line no-console
-      console.log(params.name)
+      this.current = params.name
+      // console.log(params.name)
     },
     legendClick(index){
       // eslint-disable-next-line no-console
