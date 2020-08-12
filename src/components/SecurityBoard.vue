@@ -185,7 +185,7 @@
                 <div :style="securityColor(machine_state.emergency_signal_1)"></div>
                 <div
                   class="alarm_title"
-                  :style="'color:'+ (scoped.row.emergency_status_1 == '0'? '#F50000;': '#111;')"
+                  :style="'color:'+ (machine_state.emergency_status_1 == '0'? '#F50000;': '#111;')"
                 >
                   急停1 {{ signalStatus(machine_state.emergency_status_1) }}
                 </div>
@@ -194,7 +194,7 @@
                 <div :style="securityColor(machine_state.emergency_signal_2)"></div>
                 <div
                   class="alarm_title"
-                  :style="'color:'+ (scoped.row.emergency_status_2 == '0'? '#F50000;': '#111;')"
+                  :style="'color:'+ (machine_state.emergency_status_2 == '0'? '#F50000;': '#111;')"
                 >
                   急停2 {{ signalStatus(machine_state.emergency_status_2) }}
                 </div>
@@ -203,7 +203,7 @@
                 <div :style="securityColor(machine_state.nozzle_protection)"></div>
                 <div
                   class="alarm_title"
-                  :style="'color:'+ (scoped.row.nozzle_protection_status == '0'? '#F50000;': '#111;')"
+                  :style="'color:'+ (machine_state.nozzle_protection_status == '0'? '#F50000;': '#111;')"
                 >
                   射嘴防護罩 {{ signalStatus(machine_state.nozzle_protection_status) }}
                 </div>
@@ -213,7 +213,7 @@
               <div :style="securityColor(machine_state.safe_door_total_signal)"></div>
               <div
                 class="alarm_title"
-                :style="'color:'+ (scoped.row.safe_door_total_status == '0'? '#F50000;': '#111;')"
+                :style="'color:'+ (machine_state.safe_door_total_status == '0'? '#F50000;': '#111;')"
               >
                 安全門聯桿 {{ signalStatus(machine_state.safe_door_total_status) }}
               </div>
@@ -222,7 +222,7 @@
               <div :style="securityColor(machine_state.safe_door_front_signal)"></div>
               <div
                 class="alarm_title"
-                :style="'color:'+ (scoped.row.safe_door_front_status == '0'? '#F50000;': '#111;')"
+                :style="'color:'+ (machine_state.safe_door_front_status == '0'? '#F50000;': '#111;')"
               >
                 前安全門 {{ signalStatus(machine_state.safe_door_front_status) }}
               </div>
@@ -231,7 +231,7 @@
               <div :style="securityColor(machine_state.safe_door_back_signal)"></div>
               <div
                 class="alarm_title"
-                :style="'color:'+ (scoped.row.safe_door_back_status == '0'? '#F50000;': '#111;')"
+                :style="'color:'+ (machine_state.safe_door_back_status == '0'? '#F50000;': '#111;')"
               >
                 後安全門 {{ signalStatus(machine_state.safe_door_back_status) }}
               </div>
