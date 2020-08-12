@@ -439,12 +439,12 @@ export default {
     line: '',
     lines: ['D9 - 1F','D10 - 1F'],
     machine_state: {
-      emergency_signal_1: '0',
-      emergency_signal_2: '0',
-      safe_door_total_signal: '0',
-      safe_door_front_signal: '0',
-      safe_door_back_signal: '0',
-      nozzle_protection: '0',
+      emergency_signal_1: '2',
+      emergency_signal_2: '2',
+      safe_door_total_signal: '2',
+      safe_door_front_signal: '2',
+      safe_door_back_signal: '2',
+      nozzle_protection: '2',
 
       emergency_status_1: '0',
       emergency_status_2: '0',
