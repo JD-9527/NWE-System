@@ -562,11 +562,11 @@ export default {
                 vertical-align: middle;"
       }
       else if (status == '1') {
-        return "background: #17ba6a;\
-                color: #17ba6a;\
+        return "background: #909399;\
+                color: #909399;\
                 height: 20px;\
                 width: 20px;\
-                border: 1px #17ba6a solid;\
+                border: 1px #909399 solid;\
                 border-radius: 50%;\
                 display: inline-block;\
                 vertical-align: middle;"
