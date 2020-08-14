@@ -544,9 +544,9 @@ export default {
     onClick(params) {
       // eslint-disable-next-line no-console
       this.current = params.name
-      this.getMachineInfo(current);
-      this.getMachineWorkList(current);
-      this.getMachineProduceInfo(current);
+      this.getMachineInfo(this.current);
+      this.getMachineWorkList(this.current);
+      this.getMachineProduceInfo(this.current);
       // console.log(params.name)
     },
     legendClick(index){
