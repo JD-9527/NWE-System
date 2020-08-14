@@ -409,7 +409,7 @@
                   良品率
                 </div>
                 <div>
-                  {{ produce_message.good_rate }} %
+                  {{ produce_message.good_rate }}
                 </div>
               </el-col>
               <el-col :span="8">
