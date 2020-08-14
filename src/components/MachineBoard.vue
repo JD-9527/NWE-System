@@ -233,7 +233,7 @@
                   工單編號
                 </div>
                 <div>
-                  {{ now_work_order.no }}
+                  {{ now_work_order.work_list_no }}
                 </div>
               </el-col>
               <el-col :span="5">
@@ -249,7 +249,7 @@
                   模具編號
                 </div>
                 <div>
-                  {{ now_work_order.mod_no }}
+                  {{ now_work_order.mold_no }}
                 </div>
               </el-col>
               <el-col :span="9">
@@ -275,7 +275,7 @@
                   計畫完成時間
                 </div>
                 <div>
-                  {{ now_work_order.end_time }}
+                  {{ now_work_order.planned_end_time }}
                 </div>
               </el-col>
             </el-row>
@@ -304,7 +304,7 @@
                         預計
                       </div>
                       <div class="message">
-                        {{ produce_message.produce_status.expect }}
+                        {{ produce_message.info.expected }}
                       </div>
                     </el-col>
                     <el-col :span="6">
@@ -312,7 +312,7 @@
                         實際
                       </div>
                       <div class="message">
-                        {{ produce_message.produce_status.real }}
+                        {{ produce_message.info.real }}
                       </div>
                     </el-col>
                     <el-col :span="4">
@@ -320,7 +320,7 @@
                         良品
                       </div>
                       <div class="message">
-                        {{ produce_message.produce_status.good }}
+                        {{ produce_message.info.good }}
                       </div>
                     </el-col>
                     <el-col :span="4">
@@ -328,7 +328,7 @@
                         不良品
                       </div>
                       <div class="message">
-                        {{ produce_message.produce_status.bad }}
+                        {{ produce_message.info.NG }}
                       </div>
                     </el-col>
                     <el-col :span="4">
@@ -336,7 +336,7 @@
                         調機損耗
                       </div>
                       <div class="message">
-                        {{ produce_message.produce_status.fix }}
+                        {{ produce_message.info.adj_total }}
                       </div>
                     </el-col>
                   </el-row>
@@ -357,7 +357,7 @@
                   週期時間(s) (預計/實際)
                 </div>
                 <div>
-                  {{ produce_message.cycle_time }}
+                  {{ produce_message.CT }}
                 </div>
               </el-col>
               <el-col :span="8">
@@ -365,7 +365,7 @@
                   剩餘生產時間(h)
                 </div>
                 <div>
-                  {{ produce_message.left_time }}
+                  {{ produce_message.lasttime }}
                 </div>
               </el-col>
             </el-row>
@@ -375,7 +375,7 @@
                   預計完成時間
                 </div>
                 <div>
-                  {{ produce_message.end_time }}
+                  {{ produce_message.plan_e_time }}
                 </div>
               </el-col>
               <!-- <el-col :span="12">
