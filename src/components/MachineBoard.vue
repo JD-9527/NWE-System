@@ -289,10 +289,10 @@
               {{ infoTitle }}
             </span>
           </div>
-          <div class="message" v-show="current != '' && statusCode.indexOf(currentStatus) == -1">
+          <div class="message" v-show="current != '' && statusCode.indexOf(currentStatus) != -1">
             <el-row>
-              <el-col class="message-subtitle" :span="12">
-                <div>
+              <el-col :span="12">
+                <div class="message-subtitle">
                   {{ machineStatus }}開始時間
                 </div>
                 <div>
@@ -347,7 +347,7 @@
               </el-col>
             </el-row>
           </div>
-          <div class="message" v-show="current != '' && statusCode.indexOf(currentStatus) != -1">
+          <div class="message" v-show="current != '' && statusCode.indexOf(currentStatus) == -1">
             <el-row>
               <el-col class="message-subtitle">
                 <div>
