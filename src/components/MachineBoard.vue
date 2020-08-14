@@ -179,7 +179,7 @@
           <div slot="header" class="clearfix">
             <span class="message-row">{{ current }} 機台訊息</span>
           </div>
-          <div class="message">
+          <div class="message" v-show="current != ''">
             <el-row
               type="flex"
               justify="center"
@@ -226,7 +226,7 @@
           <div slot="header" class="clearfix">
             <span class="message-row">工單、塑料訊息</span>
           </div>
-          <div class="message">
+          <div class="message" v-show="current != ''">
             <el-row>
               <el-col :span="5">
                 <div class="message-subtitle">
@@ -287,7 +287,7 @@
           <div slot="header" class="clearfix">
             <span class="message-row">生產訊息</span>
           </div>
-          <div class="message">
+          <div class="message" v-show="current != ''">
             <el-row>
               <el-col class="message-subtitle">
                 <div>
@@ -544,6 +544,9 @@ export default {
     onClick(params) {
       // eslint-disable-next-line no-console
       this.current = params.name
+      this.getMachineInfo(current);
+      this.getMachineWorkList(current);
+      this.getMachineProduceInfo(current);
       // console.log(params.name)
     },
     legendClick(index){
@@ -779,9 +782,9 @@ export default {
   mounted() {
     // this.getMachineState(this.$route.params.line)
     this.line = this.$route.params.line == 'D10'? 'D10 - 1F': 'D9 - 1F';
-    this.getMachineInfo();
-    this.getMachineWorkList();
-    this.getMachineProduceInfo();
+    // this.getMachineInfo();
+    // this.getMachineWorkList();
+    // this.getMachineProduceInfo();
   },
   computed: {
   }
