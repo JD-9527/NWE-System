@@ -764,6 +764,7 @@ export default {
             }
           }
         })
+        this.new_machine_message = tmp
       })
     },
     getMachineWorkList(machine) {
