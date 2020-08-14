@@ -547,7 +547,7 @@ export default {
       this.getMachineInfo(this.current);
       this.getMachineWorkList(this.current);
       this.getMachineProduceInfo(this.current);
-      // console.log(params.name)
+      console.log(params)
     },
     legendClick(index){
       // eslint-disable-next-line no-console
