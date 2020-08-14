@@ -285,9 +285,69 @@
       <el-col :span="12">
         <el-card shadow="never" >
           <div slot="header" class="clearfix">
-            <span class="message-row">生產訊息</span>
+            <span class="message-row">
+              {{ infoTitle }}
+            </span>
           </div>
-          <div class="message" v-show="current != ''">
+          <div class="message" v-show="current != '' && statusCode.indexOf(currentStatus) == -1">
+            <el-row>
+              <el-col class="message-subtitle" :span="12">
+                <div>
+                  {{ machineStatus }}開始時間
+                </div>
+                <div>
+                  12:40:32
+                </div>
+              </el-col>
+            </el-row>
+            <span class="message-row">{{ machineStatus }}接單訊息</span>
+            <el-divider></el-divider>
+            <el-row>
+              <el-col :span="8">
+                <div class="message-subtitle">
+                  {{ machineStatus }}負責人
+                </div>
+                <div>
+                  小賀
+                </div>
+              </el-col>
+              <el-col :span="8">
+                <div class="message-subtitle">
+                  單號
+                </div>
+                <div>
+                  4324234
+                </div>
+              </el-col>
+              <el-col :span="8">
+                <div class="message-subtitle">
+                  單據性質
+                </div>
+                <div>
+                  {{ machineStatus }}
+                </div>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="12">
+                <div class="message-subtitle">
+                  {{ machineStatus }}接單時間
+                </div>
+                <div>
+                  12:40:32
+                </div>
+              </el-col>
+              <el-col :span="12">
+                <div class="message-subtitle">
+                  {{ machineStatus }}持續時間(min)
+                </div>
+                <div>
+                  124.4
+                </div>
+              </el-col>
+            </el-row>
+          </div>
+          <div class="message" v-show="current != '' && statusCode.indexOf(currentStatus) != -1">
             <el-row>
               <el-col class="message-subtitle">
                 <div>
@@ -514,6 +574,8 @@ export default {
     now_work_order: now_work_order,
     produce_message: produce_message,
     current: '',
+    currentStatus: 3,
+    statusCode: [5,6],
     machineInfo: {}
   }),
   watch: {
@@ -545,6 +607,7 @@ export default {
       // eslint-disable-next-line no-console
       console.log(params)
       this.current = params.name
+      this.currentStatus = params.status
       this.getMachineInfo(this.current);
       this.getMachineWorkList(this.current);
       this.getMachineProduceInfo(this.current);
@@ -788,6 +851,14 @@ export default {
     // this.getMachineProduceInfo();
   },
   computed: {
+    infoTitle: function() {
+      return this.currentStatus == 5? '維修基本訊息':
+             this.currentStatus == 6? '修模基本訊息':
+             '生產訊息'
+    },
+    machineStatus: function() {
+      return this.currentStatus == 5? '維修': '修模'
+    },
   }
 };
 </script>
