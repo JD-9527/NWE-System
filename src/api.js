@@ -65,6 +65,11 @@ export const overviewMachineAbnormal = (field) => NWEOverview.get('/machine/abno
 export const overviewMachineFailureRate = (field) => NWEOverview.get('/machine/failurerate/?field='+field)
 export const overviewMachineStartRate = (field) => NWEOverview.get('/machine/state/?field='+field)
 export const overviewMachineBoard = (field) => NWEOverview.get('/machine/board/?field='+field)
+export const overviewMachineInfo = (machine_NO) => NWEOverview.get('/machine/info/?machine_NO='+machine_NO)
+export const overviewMachineWorkList = (machine_NO) => NWEOverview.get('/machine/worklist/?machine_NO='+machine_NO)
+export const overviewMachineProduceInfo = (machine_NO) => NWEOverview.get('/machine/produceinfo/?machine_NO='+machine_NO)
+
+// 安全模塊
 export const overviewSecurityInfo = (machine_NO) => NWEOverview.get('/security/info/?machine_NO='+machine_NO)
 export const overviewSecurityTest = (machine_NO) => NWEOverview.get('/security/test/?machine_NO='+machine_NO)
 export const overviewSecurityState = (field) => NWEOverview.get('/security/state/?field='+field)

@@ -190,7 +190,7 @@
                   狀態
                 </div>
                 <div>
-                  調機
+                  {{ machineInfo.status }}
                 </div>
               </el-col>
               <el-col :span="4">
@@ -198,7 +198,7 @@
                   負責人
                 </div>
                 <div>
-                  小賀
+                  {{ machineInfo.owner }}
                 </div>
               </el-col>
               <el-col :span="16">
@@ -446,7 +446,8 @@
 </style>
 
 <script>
-import { overviewMachineBoard } from '../api.js'
+import { overviewMachineBoard, overviewMachineInfo,
+         overviewMachineWorkList, overviewMachineProduceInfo } from '../api.js'
 const legends = [
   { name:'正常', status: 0 },
   { name:'換模', status: 1 },
@@ -474,26 +475,26 @@ let new_machine_message=[
   {status: '調機', value: '0.6/5', percent: 12},
 ]
 let now_work_order = {
-  no: '611484207',
+  work_list_no: '611484207',
   owner: '小讚',
-  mod_no: 'NP16735',
+  mold_no: 'NP16735',
   part_no: '700-234232-01WB',
   start_time: '2019/11/10 15:35:59',
-  end_time: '2019/11/30 15:12:24'
+  planned_end_time: '2019/11/30 15:12:24'
 }
 let produce_message = {
-  produce_status: {
-    expect: '40,000',
+  info: {
+    expected: '40,000',
     real: '28,000',
     good: '27,000',
-    bad: '500',
-    fix: '500'
+    NG: '500',
+    adj_total: '500'
   },
   good_rate: 99.99,
-  cycle_time: '57.00s / 42.51s',
-  left_time: 43.07,
-  end_time: '2019/11/30 05:49:36',
-  pay: '300RMB / 24,567RMB'
+  CT: '57.00s / 42.51s',
+  lasttime: 43.07,
+  plan_e_time: '2019/11/30 05:49:36',
+  // pay: '300RMB / 24,567RMB'
 }
 export default {
   name: 'MachineBoard',
@@ -513,6 +514,7 @@ export default {
     now_work_order: now_work_order,
     produce_message: produce_message,
     current: '',
+    machineInfo: {}
   }),
   watch: {
     line: function() {
@@ -657,11 +659,129 @@ export default {
           }
         }
       })
+    },
+    getMachineInfo(machine) {
+      overviewMachineInfo(machine).then(response => {
+        let data = response.data
+        this.machineInfo.owner = '小賀'
+        switch (data.status) {
+          case 0:
+            this.machineInfo.status = '正常'
+            break
+          case 1:
+            this.machineInfo.status = '換模'
+            break
+          case 2:
+            this.machineInfo.status = '待機'
+            break
+          case 3:
+            this.machineInfo.status = '斷線'
+            break
+          case 4:
+            this.machineInfo.status = '調機'
+            break
+          case 5:
+            this.machineInfo.status = '維修'
+            break
+          case 6:
+            this.machineInfo.status = '修模待機'
+            break
+          case 7:
+            this.machineInfo.status = '維修+修模'
+            break
+          default:
+            this.machineInfo.status = '斷線'
+            break
+        }
+        // let new_machine_message=[
+        //   {status: '稼動率', value: '3.8/5', percent: 76},
+        //   {status: '維修', value: '0.6/5', percent: 12},
+        //   {status: '調機', value: '0.6/5', percent: 12},
+        // ]
+        let tmp = []
+        Object.keys(data).forEach(key => {
+          if (key != 'status' || key != 'owner') {
+            switch (key) {
+              case 'utilization':
+                tmp.push({
+                  status: '稼動率',
+                  value: data[key] + '/' + data.total,
+                  percent: (data[key]/data.total) * 100
+                })
+                break
+              case 'changeover':
+                tmp.push({
+                  status: '換模',
+                  value: data[key] + '/' + data.total,
+                  percent: (data[key]/data.total) * 100
+                })
+                break
+              case 'waiting':
+                tmp.push({
+                  status: '待機',
+                  value: data[key] + '/' + data.total,
+                  percent: (data[key]/data.total) * 100
+                })
+                break
+              case 'offline':
+                tmp.push({
+                  status: '斷線',
+                  value: data[key] + '/' + data.total,
+                  percent: (data[key]/data.total) * 100
+                })
+                break
+              case 'adj':
+                tmp.push({
+                  status: '調機',
+                  value: data[key] + '/' + data.total,
+                  percent: (data[key]/data.total) * 100
+                })
+                break
+              case 'repair':
+                tmp.push({
+                  status: '維修',
+                  value: data[key] + '/' + data.total,
+                  percent: (data[key]/data.total) * 100
+                })
+                break
+              case 'fixmode':
+                tmp.push({
+                  status: '維修待機',
+                  value: data[key] + '/' + data.total,
+                  percent: (data[key]/data.total) * 100
+                })
+                break
+              case 'repairfixmode':
+                tmp.push({
+                  status: '維修+修模',
+                  value: data[key] + '/' + data.total,
+                  percent: (data[key]/data.total) * 100
+                })
+                break
+            }
+          }
+        })
+      })
+    },
+    getMachineWorkList(machine) {
+      overviewMachineWorkList(machine).then(response => {
+        let data = response.data
+        this.now_work_order = data
+      })
+    },
+    getMachineProduceInfo(machine) {
+      overviewMachineProduceInfo(machine).then(response => {
+        let data = response.data
+        this.produce_message = data
+      })
     }
   },
   mounted() {
     // this.getMachineState(this.$route.params.line)
     this.line = this.$route.params.line == 'D10'? 'D10 - 1F': 'D9 - 1F';
+    this.getMachineInfo();
+    this.getMachineWorkList();
+    this.getMachineProduceInfo();
   },
   computed: {
   }
