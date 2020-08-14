@@ -215,7 +215,7 @@
                 class="alarm_title"
                 :style="'color:'+ (machine_state.safe_door_total_status == '0'? '#F50000;': '#111;')"
               >
-                安全門聯桿 {{ signalStatus(machine_state.safe_door_total_status) }}
+                液壓閥 {{ signalStatus(machine_state.safe_door_total_status) }}
               </div>
             </div>
             <div class="alarm_box" v-show="machine_state.safe_door_front_signal != ''">
@@ -224,7 +224,7 @@
                 class="alarm_title"
                 :style="'color:'+ (machine_state.safe_door_front_status == '0'? '#F50000;': '#111;')"
               >
-                前安全門 {{ signalStatus(machine_state.safe_door_front_status) }}
+                止動開關 {{ signalStatus(machine_state.safe_door_front_status) }}
               </div>
             </div>
             <div class="alarm_box" v-show="machine_state.safe_door_back_signal != ''">
@@ -233,7 +233,7 @@
                 class="alarm_title"
                 :style="'color:'+ (machine_state.safe_door_back_status == '0'? '#F50000;': '#111;')"
               >
-                後安全門 {{ signalStatus(machine_state.safe_door_back_status) }}
+                行程開關 {{ signalStatus(machine_state.safe_door_back_status) }}
               </div>
             </div>
             <img src="../assets/Vsp.png" style="width: 100%;" />
@@ -300,21 +300,21 @@
                     :style="'color:'+ (scoped.row.safe_door_total_OK == '0'? '#F50000;': '#111;')"
                     v-show="scoped.row.safe_door_total_OK != ''"
                   >
-                    安全門聯桿 {{ doorState(scoped.row.safe_door_total_OK) }}
+                    液壓閥 {{ doorState(scoped.row.safe_door_total_OK) }}
                   </div>
                   <div
                     class="door_block"
                     :style="'color:'+ (scoped.row.safe_door_front_OK == '0'? '#F50000;': '#111;')"
                     v-show="scoped.row.safe_door_front_OK != ''"
                   >
-                    前安全門 {{ doorState(scoped.row.safe_door_front_OK) }}
+                    止動開關 {{ doorState(scoped.row.safe_door_front_OK) }}
                   </div>
                   <div
                     class="door_block"
                     :style="'color:'+ (scoped.row.safe_door_back_OK == '0'? '#F50000;': '#111;')"
                     v-show="scoped.row.safe_door_back_OK != ''"
                   >
-                    後安全門 {{ doorState(scoped.row.safe_door_back_OK) }}
+                    行程開關 {{ doorState(scoped.row.safe_door_back_OK) }}
                   </div>
                 </template>
               </el-table-column>
@@ -402,7 +402,7 @@
 .alarm_title {
   display: inline-block;
   min-height: 20px;
-  min-width: 130px;
+  min-width: 120px;
   text-align: left;
   margin-left: 5px;
 }
