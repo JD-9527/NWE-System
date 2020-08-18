@@ -57,12 +57,12 @@
             >
               工單看板
             </el-menu-item>
-            <el-menu-item
+            <!-- <el-menu-item
               v-if="checkPermission(all_character)"
               index="/overview/plan"
             >
               計畫看板
-            </el-menu-item>
+            </el-menu-item> -->
             <el-menu-item
               v-if="checkPermission(all_character)"
               index="/overview/security/D10"
