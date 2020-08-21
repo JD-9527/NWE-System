@@ -8,101 +8,147 @@
       NWE D10 工單看板
     </el-row>
     <el-row>
-      <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
-        <el-tab-pane label="排程中" name="first">
-          <Table :tableData="tableData" @row-click="onClick"></Table>
-        </el-tab-pane>
-        <el-tab-pane label="已完成" name="second">
-          <Table :tableData="tableData" @row-click="onClick"></Table>
-        </el-tab-pane>
-      </el-tabs>
-    </el-row>
-    <el-row>
-      <el-card>
-        <div slot="header" class="header"><span>工單詳情</span></div>
-        <el-row>
-          <el-col :span="9">
-            <div class="message-subtitle">
-              生產數量(件)
-            </div>
-            <div>
-              <el-progress :text-inside="true" :stroke-width="26" :percentage="70" color="#17ba6a"></el-progress>
-            </div>
-          </el-col>
-          <el-col :span="9" :offset="3">
-            <div class="message-subtitle">
-              總進度/超前
-            </div>
-            <div>
-              <el-progress :text-inside="true" :stroke-width="26" :percentage="100" color="#17ba6a"></el-progress>
-            </div>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="3">
-            <div class="message-subtitle">
-              客戶
-            </div>
-            <div class="message">
-              Cisco
-            </div>
-          </el-col>
-          <el-col :span="3">
-            <div class="message-subtitle">
-              工單負責人
-            </div>
-            <div class="message">
-              小兵
-            </div>
-          </el-col>
-          <el-col :span="3" :offset="3">
-            <div class="message-subtitle">
-              生產延遲
-            </div>
-            <div>
-              <el-progress :text-inside="true" :stroke-width="20" :percentage="70" color="#F50000"></el-progress>
-            </div>
-          </el-col>
-          <el-col :span="3">
-            <div class="message-subtitle">
-              調機延遲
-            </div>
-            <div>
-              <el-progress :text-inside="true" :stroke-width="20" :percentage="70" color="#F50000"></el-progress>
-            </div>
-          </el-col>
-          <el-col :span="3">
-            <div class="message-subtitle">
-              維修延遲
-            </div>
-            <div>
-              <el-progress :text-inside="true" :stroke-width="20" :percentage="70" color="#F50000"></el-progress>
-            </div>
-          </el-col>
-          <el-col :span="3">
-            <div class="message-subtitle">
-              修模待機
-            </div>
-            <div>
-              <el-progress :text-inside="true" :stroke-width="20" :percentage="70" color="#F50000"></el-progress>
-            </div>
-          </el-col>
-          <el-col :span="3">
-            <div class="message-subtitle">
-              換模延遲
-            </div>
-            <div>
-              <el-progress :text-inside="true" :stroke-width="20" :percentage="70" color="#F50000"></el-progress>
-            </div>
-          </el-col>
-        </el-row>
-      </el-card>
+    <el-tabs v-model="activeLine" type="card">
+      <div style="position: relative; top: 10px;">
+      <div style="width: 50%; display: inline-block;"></div>
+      <div class="sub-title select">噸位</div>
+      <el-select
+        size='mini'
+        v-model="ton"
+      >
+        <el-option
+          v-for="item in tons"
+          :key="item"
+          :label="item"
+          :value="item">
+        </el-option>
+      </el-select>
+      <div style="padding: 5px; display: inline-block;">
+        <font-awesome-icon
+          :icon="['fas','square']"
+          class="legend-blue"
+        ></font-awesome-icon>
+        已完成
+        </div>
+        <div style="padding: 5px; display: inline-block;">
+          <font-awesome-icon
+            :icon="['fas','square']"
+            class="legend-white"
+          ></font-awesome-icon>
+          待開始
+        </div>
+        <div style="padding: 5px; display: inline-block;">
+          <font-awesome-icon
+            :icon="['fas','square']"
+            class="legend-red"
+          ></font-awesome-icon>
+          延遲
+        </div>
+        <div style="padding: 5px; display: inline-block;">
+          <font-awesome-icon
+            :icon="['fas','square']"
+            class="legend-green"
+          ></font-awesome-icon>
+          正常生產
+        </div>
+      </div>
+      <el-tab-pane
+        v-for="(line,index) in lines"
+        :key="line"
+        :label="line"
+        :name="(index+1).toString()"
+      >
+        <WOTable :name="line" editable @row-click="rowClick"/>
+        <el-card style="width: 100%; margin: 10px 0;">
+          <div slot="header" class="message">
+            <span>工單詳情</span>
+          </div>
+          <el-row style="margin: 0;">
+            <el-col :span="12">
+              <div style="margin-bottom: 10px;">
+                <div class="message-subtitle">生產數量（件）</div>
+                <div style="padding-right: 20px;">
+                  <div class="progress-bar" style="text-align: right; width: 100%;">28,400/40,000</div>
+                  <el-progress
+                    :percentage="28/40*100"
+                    :stroke-width="20"
+                    :show-text='false'
+                    color="#17ba6a"
+                  ></el-progress>
+                </div>
+              </div>
+              <div style="display: inline-block; width: 33%;">
+                <div class="message-subtitle">客戶名稱</div>
+                <div class="message">Cisco</div>
+              </div>
+              <div style="display: inline-block; width: 33%;">
+                <div class="message-subtitle">工單負責人</div>
+                <div class="message">小兵</div>
+              </div>
+              <div style="display: inline-block; width: 33%;">
+                <div class="message-subtitle">工單號</div>
+                <div class="message">6110394</div>
+              </div>
+            </el-col>
+            <el-col :span="12" style="height: 105px;">
+              <div class="message-subtitle">工單生產紀錄</div>
+              <div style="padding: 20px 10px;">
+                <div style=" background: #ddd; height: 20px; border-radius: 5px;">
+                  <div class="progress-bar color-green" style="width:30%">1</div>
+                  <div class="progress-bar color-yellow" style="width:30%">2</div>
+                  <div class="progress-bar color-red" style="width:30%">3</div>
+                </div>
+              </div>
+            </el-col>
+          </el-row>
+        </el-card>
+      </el-tab-pane>
+    </el-tabs>
     </el-row>
   </div>
 </template>
 
+<style scoped>
+.header {
+  font-size: 20px;
+  font-weight: bold;
+}
+.el-card >>> .el-card__header {
+  padding: 10px 20px;
+}
+.legend-blue {
+  color:#cbd2ff;
+  background: #cbd2ff;
+  border: 1px #000 solid;
+}
+.legend-white {
+  color:#f2f2f2;
+  background: #f2f2f2;
+  border: 1px #000 solid;
+}
+.legend-red {
+  color:#ffc8ca;
+  background: #ffc8ca;
+  border: 1px #000 solid;
+}
+.legend-green {
+  color:#bcffc6;
+  background: #bcffc6;
+  border: 1px #000 solid;
+}
+.progress-bar {
+  display: inline-block;
+  border-radius: 5px;
+  height: 20px;
+  text-align: center;
+}
+</style>
+
 <script>
-import Table from './Table'
+// import Table from './Table'
+import WOTable from './WorkOrderTable.vue'
+import { planWorkTonlist } from '../api.js'
+
 
 let data_detail = {
   produced: 28400,
@@ -124,11 +170,17 @@ let data_detail = {
 }
 export default {
   components : {
-    Table
+    // Table
+    WOTable
   },
   data() {
     return {
       activeName: 'first',
+      activeLine: '1',
+      lines: ['A線', 'B線', 'C線', 'D線', 'E線', 'F線', 'G線'],
+      line: 'All',
+      tons: ['50','80','100','130'],
+      ton: '130',
       tableData: [
         {
           no: '611232322',
@@ -210,6 +262,16 @@ export default {
         return 'warning-row';
       }
       return '';
+    },
+    getTonList(line) {
+      planWorkTonlist(line).then((response)=>{
+        let data = response.data.data
+        console.log(data )
+        this.tons = data
+      })
+    },
+    rowClick() {
+      console.log(arguments[0])
     }
     /* eslint-enable */
   },
@@ -217,12 +279,3 @@ export default {
 };
 </script>
 
-<style scoped>
-.header {
-  font-size: 20px;
-  font-weight: bold;
-}
-.el-card >>> .el-card__header {
-  padding: 10px 20px;
-}
-</style>

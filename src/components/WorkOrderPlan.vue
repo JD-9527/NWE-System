@@ -222,6 +222,7 @@
       getTonList(line) {
         planWorkTonlist(line).then((response)=>{
           let data = response.data.data
+          // console.log(data)
           this.tons = data
         })
       }

@@ -5,146 +5,139 @@
       style="width: 100%"
       height="578"
       :row-class-name="tableRowClassName"
+      @row-click="onClick"
     >
       <el-table-column
-        prop="ton"
+        prop="machine_ton"
         label="噸位"
         width="100"
         align="center"
       >
       </el-table-column>
       <el-table-column
-        prop="number"
+        prop="machine_NO"
         label="機台號"
         width="100"
         align="center"
       >
       </el-table-column>
       <el-table-column
-        prop="color"
+        prop="plastic_color"
         label="當前顏色"
         width="100"
         align="center"
       >
       </el-table-column>
       <el-table-column
-        prop="ch_time"
+        prop="real_mold_changerover_time"
         label="上下模時間"
         width="100"
         align="center"
       >
       </el-table-column>
       <el-table-column
-        prop="start_time"
+        prop="plan_s_time"
         label="起始時間"
         width="100"
         align="center"
       >
       </el-table-column>
       <el-table-column
-        prop="end_time"
+        prop="plan_e_time"
         label="結束時間"
         width="100"
         align="center"
       >
       </el-table-column>
       <el-table-column
-        prop="name"
+        prop="product_name"
         label="品名"
         width="100"
         align="center"
       >
       </el-table-column>
       <el-table-column
-        prop="part_num"
+        prop="Part_NO"
         label="料號"
         width="200"
         align="center"
       >
       </el-table-column>
       <el-table-column
-        prop="work_num"
+        prop="work_list_number"
         label="工令號"
         width="100"
         align="center"
       >
       </el-table-column>
       <el-table-column
-        prop="plastic_num"
+        prop="plastic_Part_NO"
         label="塑膠料號"
         width="100"
         align="center"
       >
       </el-table-column>
       <el-table-column
-        prop="count"
+        prop="work_list_number"
         label="數量"
         width="100"
         align="center"
       >
       </el-table-column>
       <el-table-column
-        prop="mold_num"
+        prop="mold_NO"
         label="模號"
         width="100"
         align="center"
       >
       </el-table-column>
       <el-table-column
-        prop="mold_seq"
+        prop="mold_Serial"
         label="模序"
         width="100"
         align="center"
       >
       </el-table-column>
       <el-table-column
-        prop="mold_count"
+        prop="mold_hole"
         label="模穴數"
         width="100"
         align="center"
       >
-        <editable-cell
-          :show-input="row.editMode"
-          slot-scope="{row}"
-          v-model="row.mold_count"
-          v-if="editable"
-        >
-          <span slot="content">{{row.mold_count}}</span>
-        </editable-cell>
-        <template v-else slot-scope="{row}">
-          <span>{{ row.mold_count }}</span>
+        <template slot-scope="{row}">
+          <el-input
+            v-if="row.editMode && editable"
+            v-model="row.mold_hole"
+          ></el-input>
+          <span v-else>{{ row.mold_hole }}</span>
         </template>
       </el-table-column>
       <el-table-column
-        prop="mold_pos"
+        prop="mold_position"
         label="模具儲位"
         width="100"
         align="center"
       >
       </el-table-column>
       <el-table-column
-        prop="plan_time"
+        prop="plan_work_time"
         label="計畫工時"
         width="100"
         align="center"
       >
       </el-table-column>
       <el-table-column
-        prop="standard_cycle"
+        prop="machine_CT"
         label="標準週期"
         width="100"
         align="center"
       >
-        <editable-cell
-          :show-input="row.editMode"
-          slot-scope="{row}"
-          v-model="row.standard_cycle"
-          v-if="editable"
-        >
-          <span slot="content">{{row.standard_cycle}}</span>
-        </editable-cell>
-        <template v-else slot-scope="{row}">
-          <span>{{ row.standard_cycle }}</span>
+        <template slot-scope="{row}">
+          <el-input
+            v-if="row.editMode && editable"
+            v-model="row.machine_CT"
+          ></el-input>
+          <span v-else>{{ row.machine_CT }}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -177,6 +170,7 @@
           type="danger"
           icon="el-icon-delete"
           size="mini"
+          v-show="!row.editMode"
         >
         </el-button>
        </template>
@@ -207,12 +201,12 @@
 </style>
 
 <script>
-import EditableCell from "./EditableCell.vue";
+// import EditableCell from "./EditableCell.vue";
 import { planWorklist } from '../api.js'
 
 export default {
   components: {
-      EditableCell,
+      // EditableCell,
   },
   data: () => ({
     lines: [],
@@ -250,40 +244,18 @@ export default {
   },
   methods: {
     /* eslint-disable */
-    loadTable() {
-      let newTable = []
+    getTableData() {
       planWorklist(this.line).then((response)=>{
-        // console.log(this.line, response.data)
-        let data = response.data
+        // console.log(this.line, response.data.data)
+        let data = response.data.data
+        this.tableData = data
+        this.tableData = this.tableData.map(row => {
+          return {
+            ...row,
+            editMode: false
+          };
+        });
       })
-      // for (let i=0;i<10;i++) {
-      //   newTable.push({
-      //     ton: '130',
-      //     number: 'A01',
-      //     color: '黑',
-      //     ch_time: '00:00',
-      //     start_time: '02:00',
-      //     end_time: '14:00',
-      //     name: '支架',
-      //     part_num: '700-30985-01WA',
-      //     work_num: '6110394',
-      //     plastic_num: '8M460-002E',
-      //     count: '513',
-      //     mold_num: 'NP10713',
-      //     mold_seq: 'M1',
-      //     mold_count: '2',
-      //     mold_pos: 'D10-C2-02',
-      //     plan_time: '24',
-      //     standard_cycle: '24',
-      //   })
-      // }
-      newTable = newTable.map(row => {
-        return {
-          ...row,
-          editMode: false
-        };
-      });
-      return newTable
     },
     saveRow(row, index) {
       row.editMode = false;
@@ -297,8 +269,6 @@ export default {
     },
     cancelEditMode(row, index) {
       row.editMode = false;
-      // this.getTableData();
-      // this.getTableDataCT();
     },
     tableRowClassName({row, rowIndex}) {
       if (rowIndex === 1) {
@@ -315,11 +285,15 @@ export default {
       this.currentPage = currentPage;
       /*console.log(this.currentPage) */
     },
+    onClick(row) {
+      // eslint-disable-next-line no-console
+      // console.log(row);
+      this.$emit('row-click',row)
+    },
     /* eslint-enable */
   },
   mounted() {
-    // this.tableData = this.loadTable()
-    this.loadTable()
+    this.getTableData()
   }
 }
 </script>
