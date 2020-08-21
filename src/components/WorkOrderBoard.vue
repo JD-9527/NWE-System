@@ -68,9 +68,11 @@
               <div style="margin-bottom: 10px;">
                 <div class="message-subtitle">生產數量（件）</div>
                 <div style="padding-right: 20px;">
-                  <div class="progress-bar" style="text-align: right; width: 100%;">28,400/40,000</div>
+                  <div class="progress-bar" style="text-align: right; width: 100%;">
+                    {{ data_detail.produced + '/' + data_detail.plan_count }}
+                  </div>
                   <el-progress
-                    :percentage="28/40*100"
+                    :percentage="data_detail.produced/data_detail.plan_count*100"
                     :stroke-width="20"
                     :show-text='false'
                     color="#17ba6a"
@@ -79,24 +81,30 @@
               </div>
               <div style="display: inline-block; width: 33%;">
                 <div class="message-subtitle">客戶名稱</div>
-                <div class="message">Cisco</div>
+                <div class="message">{{ data_detail.customer }}</div>
               </div>
               <div style="display: inline-block; width: 33%;">
                 <div class="message-subtitle">工單負責人</div>
-                <div class="message">小兵</div>
+                <div class="message">{{ data_detail.owner }}</div>
               </div>
               <div style="display: inline-block; width: 33%;">
                 <div class="message-subtitle">工單號</div>
-                <div class="message">6110394</div>
+                <div class="message">{{ data_detail.work_no }}</div>
               </div>
             </el-col>
             <el-col :span="12" style="height: 105px;">
               <div class="message-subtitle">工單生產紀錄</div>
               <div style="padding: 20px 10px;">
                 <div style=" background: #ddd; height: 20px; border-radius: 5px;">
-                  <div class="progress-bar color-green" style="width:30%">1</div>
-                  <div class="progress-bar color-yellow" style="width:30%">2</div>
-                  <div class="progress-bar color-red" style="width:30%">3</div>
+                  <div
+                    v-for="(item,index) in data_detail.product_record"
+                    :key="index"
+                    :class="color(item.status)"
+                    :style="'width:' + item.time/total_time*100 + '%'"
+                  ></div>
+                  <!-- <div class="progress-bar color-green" style="width:30%"></div>
+                  <div class="progress-bar color-yellow" style="width:30%"></div>
+                  <div class="progress-bar color-red" style="width:30%"></div> -->
                 </div>
               </div>
             </el-col>
@@ -151,23 +159,20 @@ import { planWorkTonlist } from '../api.js'
 
 
 let data_detail = {
-  produced: 28400,
   plan_count: 40000,
+  produced: 28400,
   customer: 'Cisco',
   owner: '小兵',
-  // 0:超前, 1:延遲
-  progress: 1,
-  //生產延遲
-  produced_delay: 0,
-  // 調機延遲
-  config_delay: 5,
-  // 維修延遲
-  repair_delay: 5,
-  // 修模待機
-  fix_delay: 5,
-  // 換模延遲
-  change_delay: 5
+  work_no: 6110394,
+  start_time: '15:13:12',
+  product_record: [
+    { status: 0, time: 60 },
+    { status: 5, time: 60 },
+    { status: 0, time: 60 },
+    { status: 3, time: 60 },
+  ]
 }
+
 export default {
   components : {
     // Table
@@ -246,6 +251,15 @@ export default {
       data_detail: data_detail
     };
   },
+  computed: {
+    total_time: function(){
+      let tmp = 0
+      this.data_detail.product_record.forEach(obj => {
+        tmp += obj.time
+      })
+      return tmp
+    },
+  },
   methods: {
     handleClick(tab, event) {
       // eslint-disable-next-line no-console
@@ -272,6 +286,26 @@ export default {
     },
     rowClick() {
       console.log(arguments[0])
+    },
+    color: function(data) {
+      switch (data) {
+        case 0:
+          return 'progress-bar color-green'
+        case 1:
+          return 'progress-bar color-purple'
+        case 2:
+          return 'progress-bar color-yellow'
+        case 3:
+          return 'progress-bar color-grey'
+        case 4:
+          return 'progress-bar color-orange'
+        case 5:
+          return 'progress-bar color-red'
+        case 6:
+          return 'progress-bar color-blue'
+        default:
+          return 'progress-bar color-grey'
+      }
     }
     /* eslint-enable */
   },
