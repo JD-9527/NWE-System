@@ -106,7 +106,7 @@
       >
         <template slot-scope="{row}">
           <el-input
-            v-if="row.editMode && editable"
+            v-if="row.editMode"
             v-model="row.mold_hole"
           ></el-input>
           <span v-else>{{ row.mold_hole }}</span>
@@ -134,7 +134,7 @@
       >
         <template slot-scope="{row}">
           <el-input
-            v-if="row.editMode && editable"
+            v-if="row.editMode"
             v-model="row.machine_CT"
           ></el-input>
           <span v-else>{{ row.machine_CT }}</span>
@@ -151,6 +151,7 @@
         <el-button
           size="mini"
           icon="el-icon-edit"
+          :disabled="row.status == 1"
           @click="setEditMode(row, index)">
         </el-button>
         <el-button
@@ -171,6 +172,7 @@
           type="danger"
           icon="el-icon-delete"
           size="mini"
+          :disabled="row.status == 1"
           v-show="!row.editMode"
         >
         </el-button>
