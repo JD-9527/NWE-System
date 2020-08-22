@@ -36,15 +36,15 @@
       >
       </el-table-column>
       <el-table-column
-        prop="plan_s_time"
-        label="起始時間"
+        prop="real_s_time"
+        :label="'實際\n開始時間'"
         width="100"
         align="center"
       >
       </el-table-column>
       <el-table-column
         prop="plan_e_time"
-        label="結束時間"
+        :label="'預計\n結束時間'"
         width="100"
         align="center"
       >
@@ -73,7 +73,7 @@
       <el-table-column
         prop="plastic_Part_NO"
         label="塑膠料號"
-        width="100"
+        width="150"
         align="center"
       >
       </el-table-column>

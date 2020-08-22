@@ -1,3 +1,7 @@
+.el-table .cell {
+  white-space: pre-line;/*保留换行符*/
+}
+
 .header-row {
   font-size: 32px;
   font-weight:bold;
