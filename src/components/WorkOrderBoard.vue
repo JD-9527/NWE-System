@@ -62,7 +62,6 @@
         <WOTable
           :name="line"
           :ton='ton'
-          editable
           @row-click="rowClick"
         />
         <el-card style="width: 100%; margin: 10px 0;">
@@ -289,6 +288,7 @@ export default {
       else if  (this.activeLine == '5') this.getTonList('E')
       else if  (this.activeLine == '6') this.getTonList('F')
       else if  (this.activeLine == '7') this.getTonList('G')
+      this.ton = null
     }
     },
   methods: {

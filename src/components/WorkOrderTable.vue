@@ -145,6 +145,7 @@
         align="center"
         fixed="right"
         width="180"
+        v-if="editable"
       >
        <template slot-scope="{row, index}">
         <el-button
@@ -277,13 +278,17 @@ export default {
     cancelEditMode(row, index) {
       row.editMode = false;
     },
-    tableRowClassName({row, rowIndex}) {
-      if (rowIndex === 1) {
+    tableRowClassName({row}) {
+      if (row.status == 3) {
+        // 紅
         return 'warning-row';
-      } else if (rowIndex === 3) {
+      }
+      else if (row.status == 4) {
+        // 綠
         return 'success-row';
       }
-      else if (rowIndex === 5) {
+      else if (row.status == 1) {
+        // 藍
         return 'safe-row';
       }
       return '';

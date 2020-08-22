@@ -13,6 +13,7 @@
             <el-select
               size='mini'
               v-model="ton"
+              clearable
             >
               <el-option
                 v-for="item in tons"
@@ -244,6 +245,7 @@
         else if  (this.activeLine == '5') this.getTonList('E')
         else if  (this.activeLine == '6') this.getTonList('F')
         else if  (this.activeLine == '7') this.getTonList('G')
+        this.ton = null
       }
     },
     computed: {
