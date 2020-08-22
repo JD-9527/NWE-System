@@ -64,7 +64,7 @@
       >
       </el-table-column>
       <el-table-column
-        prop="work_list_number"
+        prop="work_list"
         label="工令號"
         width="100"
         align="center"
@@ -78,7 +78,7 @@
       >
       </el-table-column>
       <el-table-column
-        prop="work_list"
+        prop="work_list_number"
         label="數量"
         width="100"
         align="center"
