@@ -8,7 +8,7 @@
         <el-tabs v-model="activeLine" type="card">
           <div style="position: relative; top: 10px;">
             <NewRowButton :tableInfo="tableInfo"/>
-            <div style="width: 50%; display: inline-block;"></div>
+            <div style="width: 45%; display: inline-block;"></div>
             <div class="sub-title select">噸位</div>
             <el-select
               size='mini'
@@ -57,7 +57,12 @@
             :label="line"
             :name="(index+1).toString()"
           >
-            <WOTable :name="line" :ton="ton" editable/>
+            <WOTable
+              :name="line"
+              :ton="ton"
+              editable
+              @row-click="rowClick"
+            />
             <el-card style="width: 100%; margin: 10px 0;">
               <div slot="header" class="message">
                 <span>工單詳情</span>
@@ -215,23 +220,23 @@
         site: 'D10 - 1F',
         dataType:'workorder',
         tableInfo: [
-          {prop: 'ton',label: '噸位', type: 'input'},
-          {prop: 'number',label: '機台號', type: 'input'},
-          {prop: 'color',label: '當前顏色', type: 'input'},
-          {prop: 'ch_time',label: '上下模時間', type: 'input'},
-          {prop: 'start_time',label: '起始時間', type: 'input'},
-          {prop: 'end_time',label: '結束時間', type: 'input'},
-          {prop: 'name',label: '品名', type: 'input'},
-          {prop: 'part_num',label: '料號', type: 'input'},
-          {prop: 'work_num',label: '工令號', type: 'input'},
-          {prop: 'plastic_num',label: '塑膠料號', type: 'input'},
-          {prop: 'count',label: '數量', type: 'input'},
-          {prop: 'mold_num',label: '模號', type: 'input'},
-          {prop: 'mold_seq',label: '模序', type: 'input'},
-          {prop: 'mold_count',label: '模穴術', type: 'input'},
-          {prop: 'mold_pos',label: '模具儲位', type: 'input'},
-          {prop: 'plan_time',label: '計畫工時', type: 'input'},
-          {prop: 'standard_cycle',label: '標準週期', type: 'input'},
+          {prop: 'machine_ton',label: '噸位', type: 'input'},
+          {prop: 'machine_NO',label: '機台號', type: 'input'},
+          {prop: 'plastic_color',label: '當前顏色', type: 'input'},
+          {prop: 'real_mold_changerover_time',label: '上下模時間', type: 'input'},
+          {prop: 'real_s_time',label: '實際開始時間', type: 'input'},
+          {prop: 'plan_e_time',label: '預計結束時間', type: 'input'},
+          {prop: 'product_name',label: '品名', type: 'input'},
+          {prop: 'Part_NO',label: '料號', type: 'input'},
+          {prop: 'work_list_number',label: '工令號', type: 'input'},
+          {prop: 'plastic_Part_NO',label: '塑膠料號', type: 'input'},
+          {prop: 'work_list',label: '數量', type: 'input'},
+          {prop: 'mold_NO',label: '模號', type: 'input'},
+          {prop: 'mold_Serial',label: '模序', type: 'input'},
+          {prop: 'mold_hole',label: '模穴數', type: 'input'},
+          {prop: 'mold_position',label: '模具儲位', type: 'input'},
+          {prop: 'plan_work_time',label: '計畫工時', type: 'input'},
+          {prop: 'machine_CT',label: '標準週期', type: 'input'},
         ],
         data_detail: data_detail
       };
@@ -271,6 +276,9 @@
           // console.log(data)
           this.tons = data
         })
+      },
+      rowClick() {
+        console.log(arguments[0])
       },
       color: function(data) {
         switch (data) {

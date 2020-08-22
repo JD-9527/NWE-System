@@ -78,7 +78,7 @@
       >
       </el-table-column>
       <el-table-column
-        prop="work_list_number"
+        prop="work_list"
         label="數量"
         width="100"
         align="center"
