@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-table
-      :data="tableData"
+      :data="tableData.filter(data => !ton || data.machine_ton.toString() == ton)"
       style="width: 100%"
       height="578"
       :row-class-name="tableRowClassName"
@@ -210,7 +210,7 @@ export default {
   },
   data: () => ({
     lines: [],
-    ton: 'All',
+    // ton: 'All',
     tableData: [],
     currentPage: 1,
     pageSize: 10,
@@ -221,6 +221,10 @@ export default {
     editable: {
       type: Boolean,
       default: false
+    },
+    ton: {
+      type: String,
+      default: null
     },
     // line: String,
   },
@@ -256,6 +260,9 @@ export default {
           };
         });
       })
+    },
+    print(data) {
+      console.log(data)
     },
     saveRow(row, index) {
       row.editMode = false;

@@ -15,6 +15,7 @@
       <el-select
         size='mini'
         v-model="ton"
+        clearable
       >
         <el-option
           v-for="item in tons"
@@ -58,7 +59,12 @@
         :label="line"
         :name="(index+1).toString()"
       >
-        <WOTable :name="line" editable @row-click="rowClick"/>
+        <WOTable
+          :name="line"
+          :ton='ton'
+          editable
+          @row-click="rowClick"
+        />
         <el-card style="width: 100%; margin: 10px 0;">
           <div slot="header" class="message">
             <span>工單詳情</span>
@@ -94,18 +100,25 @@
             </el-col>
             <el-col :span="12" style="height: 105px;">
               <div class="message-subtitle">工單生產紀錄</div>
-              <div style="padding: 20px 10px;">
-                <div style=" background: #ddd; height: 20px; border-radius: 5px;">
-                  <div
-                    v-for="(item,index) in data_detail.product_record"
-                    :key="index"
-                    :class="color(item.status)"
-                    :style="'width:' + item.time/total_time*100 + '%'"
-                  ></div>
-                  <!-- <div class="progress-bar color-green" style="width:30%"></div>
-                  <div class="progress-bar color-yellow" style="width:30%"></div>
-                  <div class="progress-bar color-red" style="width:30%"></div> -->
+              <div style="padding: 15px 10px; ">
+                <div class="boarder">
+                  <div style=" background: #ddd; height: 20px; border-radius: 5px;">
+                    <div
+                      v-for="(item,index) in data_detail.product_record"
+                      :key="index"
+                      :class="color(item.status)"
+                      :style="'width:' + item.time/total_time*100 + '%'"
+                    ></div>
+                  </div>
                 </div>
+              </div>
+              <div style="display: inline-block; width: 50%;">
+                <div class="message-subtitle">開始時間</div>
+                <div class="message">{{ data_detail.start_time }}</div>
+              </div>
+              <div style="display: inline-block; width: 50%; text-align: right">
+                <div class="message-subtitle">當前/結束時間</div>
+                <div class="message">{{ data_detail.end_time }}</div>
               </div>
             </el-col>
           </el-row>
@@ -150,12 +163,18 @@
   height: 20px;
   text-align: center;
 }
+.boarder {
+  border-left: 1px solid #333;
+  border-bottom: 1px solid #333;
+  padding-top:5px;
+  height: 25px;
+}
 </style>
 
 <script>
 // import Table from './Table'
 import WOTable from './WorkOrderTable.vue'
-import { planWorkTonlist } from '../api.js'
+import { planTonList } from '../api.js'
 
 
 let data_detail = {
@@ -165,6 +184,7 @@ let data_detail = {
   owner: '小兵',
   work_no: 6110394,
   start_time: '15:13:12',
+  end_time: '20:32:45',
   product_record: [
     { status: 0, time: 60 },
     { status: 5, time: 60 },
@@ -185,7 +205,7 @@ export default {
       lines: ['A線', 'B線', 'C線', 'D線', 'E線', 'F線', 'G線'],
       line: 'All',
       tons: ['50','80','100','130'],
-      ton: '130',
+      ton: '',
       tableData: [
         {
           no: '611232322',
@@ -260,6 +280,17 @@ export default {
       return tmp
     },
   },
+  watch: {
+    activeLine: function(){
+      if (this.activeLine == '1') this.getTonList('A')
+      else if  (this.activeLine == '2') this.getTonList('B')
+      else if  (this.activeLine == '3') this.getTonList('C')
+      else if  (this.activeLine == '4') this.getTonList('D')
+      else if  (this.activeLine == '5') this.getTonList('E')
+      else if  (this.activeLine == '6') this.getTonList('F')
+      else if  (this.activeLine == '7') this.getTonList('G')
+    }
+    },
   methods: {
     handleClick(tab, event) {
       // eslint-disable-next-line no-console
@@ -278,9 +309,8 @@ export default {
       return '';
     },
     getTonList(line) {
-      planWorkTonlist(line).then((response)=>{
+      planTonList(line).then((response)=>{
         let data = response.data.data
-        console.log(data )
         this.tons = data
       })
     },
@@ -306,10 +336,12 @@ export default {
         default:
           return 'progress-bar color-grey'
       }
-    }
+    },
     /* eslint-enable */
   },
-
+  mounted() {
+    this.getTonList('A');
+  }
 };
 </script>
 

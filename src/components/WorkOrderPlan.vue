@@ -56,7 +56,7 @@
             :label="line"
             :name="(index+1).toString()"
           >
-            <WOTable :name="line" editable/>
+            <WOTable :name="line" :ton="ton" editable/>
             <el-card style="width: 100%; margin: 10px 0;">
               <div slot="header" class="message">
                 <span>工單詳情</span>
@@ -90,12 +90,25 @@
                 </el-col>
                 <el-col :span="12" style="height: 105px;">
                   <div class="message-subtitle">工單生產紀錄</div>
-                  <div style="padding: 20px 10px;">
-                    <div style=" background: #ddd; height: 20px; border-radius: 5px;">
-                      <div class="progress-bar color-green" style="width:30%">1</div>
-                      <div class="progress-bar color-yellow" style="width:30%">2</div>
-                      <div class="progress-bar color-red" style="width:30%">3</div>
+                  <div style="padding: 15px 10px; ">
+                    <div class="boarder">
+                      <div style=" background: #ddd; height: 20px; border-radius: 5px;">
+                        <div
+                          v-for="(item,index) in data_detail.product_record"
+                          :key="index"
+                          :class="color(item.status)"
+                          :style="'width:' + item.time/total_time*100 + '%'"
+                        ></div>
+                      </div>
                     </div>
+                  </div>
+                  <div style="display: inline-block; width: 50%;">
+                    <div class="message-subtitle">開始時間</div>
+                    <div class="message">{{ data_detail.start_time }}</div>
+                  </div>
+                  <div style="display: inline-block; width: 50%; text-align: right">
+                    <div class="message-subtitle">當前/結束時間</div>
+                    <div class="message">{{ data_detail.end_time }}</div>
                   </div>
                 </el-col>
               </el-row>
@@ -153,6 +166,12 @@
   height: 20px;
   text-align: center;
 }
+.boarder {
+  border-left: 1px solid #333;
+  border-bottom: 1px solid #333;
+  padding-top:5px;
+  height: 25px;
+}
 </style>
 
 <script>
@@ -160,8 +179,23 @@
   import FactorySelection from './FactorySelection.vue'
   import Gantt from './Gantt_chart.vue'
   import NewRowButton from './NewRowButton.vue'
-  import { planWorkTonlist } from '../api.js'
+  import { planTonList } from '../api.js'
 
+  let data_detail = {
+    plan_count: 40000,
+    produced: 28400,
+    customer: 'Cisco',
+    owner: '小兵',
+    work_no: 6110394,
+    start_time: '15:13:12',
+    end_time: '20:32:45',
+    product_record: [
+      { status: 0, time: 60 },
+      { status: 5, time: 60 },
+      { status: 0, time: 60 },
+      { status: 3, time: 60 },
+    ]
+  }
   export default {
     components:{
       WOTable,
@@ -175,7 +209,7 @@
         activeLine: '1',
         lines: ['A線', 'B線', 'C線', 'D線', 'E線', 'F線', 'G線'],
         tons: ['50','80','100','130'],
-        ton: '130',
+        ton: '',
         line: 'All',
         site: 'D10 - 1F',
         dataType:'workorder',
@@ -197,7 +231,8 @@
           {prop: 'mold_pos',label: '模具儲位', type: 'input'},
           {prop: 'plan_time',label: '計畫工時', type: 'input'},
           {prop: 'standard_cycle',label: '標準週期', type: 'input'},
-        ]
+        ],
+        data_detail: data_detail
       };
     },
     watch: {
@@ -211,6 +246,15 @@
         else if  (this.activeLine == '7') this.getTonList('G')
       }
     },
+    computed: {
+      total_time: function(){
+        let tmp = 0
+        this.data_detail.product_record.forEach(obj => {
+          tmp += obj.time
+        })
+        return tmp
+      },
+    },
     methods: {
       /* eslint-disable */
       handleSelect(item) {
@@ -220,13 +264,36 @@
         this.site = item
       },
       getTonList(line) {
-        planWorkTonlist(line).then((response)=>{
+        planTonList(line).then((response)=>{
           let data = response.data.data
           // console.log(data)
           this.tons = data
         })
-      }
+      },
+      color: function(data) {
+        switch (data) {
+          case 0:
+            return 'progress-bar color-green'
+          case 1:
+            return 'progress-bar color-purple'
+          case 2:
+            return 'progress-bar color-yellow'
+          case 3:
+            return 'progress-bar color-grey'
+          case 4:
+            return 'progress-bar color-orange'
+          case 5:
+            return 'progress-bar color-red'
+          case 6:
+            return 'progress-bar color-blue'
+          default:
+            return 'progress-bar color-grey'
+        }
+      },
       /* eslint-enable */
+    },
+    mounted() {
+      this.getTonList('A');
     }
   };
 </script>
