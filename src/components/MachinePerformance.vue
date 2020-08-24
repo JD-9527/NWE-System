@@ -50,6 +50,45 @@
         </el-card>
       </el-tab-pane>
       <el-tab-pane label="成型模具" name="2">
+        <div class="sub-title select">料號</div>
+        <el-select
+          size='mini'
+          v-model="site"
+          style="width: 150px;"
+          @change="siteSelected"
+        >
+          <el-option
+            v-for="item in part_no"
+            :key="item"
+            :label="item"
+            :value="item">
+          </el-option>
+        </el-select>
+        <div
+          class="sub-title select"
+          style="width: 80px;"
+        >維修原因</div>
+        <el-select
+          size='mini'
+          v-model="site"
+          style="width: 200px;"
+          @change="siteSelected"
+        >
+          <el-option
+            v-for="item in part_no"
+            :key="item"
+            :label="item"
+            :value="item">
+          </el-option>
+        </el-select>
+        <div class="sub-title select">日期</div>
+        <el-date-picker
+          v-model="start_end"
+          type="daterange"
+          size="mini"
+          value-format="yyyy-MM-dd"
+          @change="timeSelected"
+        ></el-date-picker>
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -107,7 +146,8 @@ export default {
       time_array: [],            //回傳開始和結束之間的日期(array)
       analyseTitle: ['A線','B線','C線','D線'],
       radio1: 'OEE',
-      radio_list: ['OEE','稼動率','效率','良率']
+      radio_list: ['OEE','稼動率','效率','良率'],
+      part_no: ['123','321','132'],
     }
   },
   methods: {
