@@ -264,7 +264,7 @@
             <el-row>
               <el-col :span="10">
                 <div class="message-subtitle">
-                  實際開始時間
+                  計畫開始時間
                 </div>
                 <div>
                   {{ now_work_order.start_time }}
@@ -432,7 +432,15 @@
             <el-row>
               <el-col :span="12">
                 <div class="message-subtitle">
-                  預計完成時間
+                  實際開始時間
+                </div>
+                <div>
+                  {{ produce_message.plan_s_time }}
+                </div>
+              </el-col>
+              <el-col :span="12">
+                <div class="message-subtitle">
+                  實際完成時間
                 </div>
                 <div>
                   {{ produce_message.plan_e_time }}
