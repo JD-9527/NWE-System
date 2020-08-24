@@ -309,3 +309,6 @@ export const planWorkTonlist = (line) => {
   return NWEPlan.get('/worktonlist/',{params: { line: line }})
 }
 
+export const planWorlistDetail = (state, worklistNO) => {
+  return NWEPlan.get('/worklistdetail/',{params: { state: state, worklistNO: worklistNO }})
+}

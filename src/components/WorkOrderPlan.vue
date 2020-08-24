@@ -67,14 +67,16 @@
               <div slot="header" class="message">
                 <span>工單詳情</span>
               </div>
-              <el-row style="margin: 0;">
+              <el-row style="margin: 0;" v-show= "data_detail.work_no != 0">
                 <el-col :span="12">
                   <div style="margin-bottom: 10px;">
                     <div class="message-subtitle">生產數量（件）</div>
                     <div style="padding-right: 20px;">
-                      <div class="progress-bar" style="text-align: right; width: 100%;">28,400/40,000</div>
+                      <div class="progress-bar" style="text-align: right; width: 100%;">
+                        {{ data_detail.pruduct_now + '/' + data_detail.pruduct_total }}
+                      </div>
                       <el-progress
-                        :percentage="28/40*100"
+                        :percentage="perc"
                         :stroke-width="20"
                         :show-text='false'
                         color="#17ba6a"
@@ -83,15 +85,15 @@
                   </div>
                   <div style="display: inline-block; width: 33%;">
                     <div class="message-subtitle">客戶名稱</div>
-                    <div class="message">Cisco</div>
+                    <div class="message">{{ data_detail.customer }}</div>
                   </div>
                   <div style="display: inline-block; width: 33%;">
                     <div class="message-subtitle">工單負責人</div>
-                    <div class="message">小兵</div>
+                    <div class="message">{{ data_detail.owner }}</div>
                   </div>
                   <div style="display: inline-block; width: 33%;">
                     <div class="message-subtitle">工單號</div>
-                    <div class="message">6110394</div>
+                    <div class="message">{{ data_detail.work_no }}</div>
                   </div>
                 </el-col>
                 <el-col :span="12" style="height: 105px;">
@@ -113,7 +115,9 @@
                     <div class="message">{{ data_detail.start_time }}</div>
                   </div>
                   <div style="display: inline-block; width: 50%; text-align: right">
-                    <div class="message-subtitle">當前/結束時間</div>
+                    <div class="message-subtitle">
+                      {{currentStatus}}
+                    </div>
                     <div class="message">{{ data_detail.end_time }}</div>
                   </div>
                 </el-col>
@@ -185,23 +189,9 @@
   import FactorySelection from './FactorySelection.vue'
   import Gantt from './Gantt_chart.vue'
   import NewRowButton from './NewRowButton.vue'
-  import { planTonList } from '../api.js'
+  import { planTonList, planWorlistDetail } from '../api.js'
+  import { String2Date, Date2String } from '@/utils/common.js'
 
-  let data_detail = {
-    plan_count: 40000,
-    produced: 28400,
-    customer: 'Cisco',
-    owner: '小兵',
-    work_no: 6110394,
-    start_time: '15:13:12',
-    end_time: '20:32:45',
-    product_record: [
-      { status: 0, time: 60 },
-      { status: 5, time: 60 },
-      { status: 0, time: 60 },
-      { status: 3, time: 60 },
-    ]
-  }
   export default {
     components:{
       WOTable,
@@ -238,7 +228,17 @@
           {prop: 'plan_work_time',label: '計畫工時', type: 'input'},
           {prop: 'machine_CT',label: '標準週期', type: 'input'},
         ],
-        data_detail: data_detail
+        data_detail: {
+          pruduct_total: 0,
+          pruduct_now: 0,
+          customer: '',
+          owner: '',
+          work_no: 0,
+          start_time: '',
+          end_time: '',
+          product_record: []
+        },
+        currentRowStatus: 0
       };
     },
     watch: {
@@ -261,6 +261,16 @@
         })
         return tmp
       },
+      currentStatus: function() {
+        return this.currentRowStatus == 1? '結束時間': '當前時間'
+      },
+      perc: function() {
+        return this.data_detail.pruduct_total == 0?
+              0:
+              (this.data_detail.pruduct_now > this.data_detail.pruduct_total)?
+              100:
+              this.data_detail.pruduct_now/this.data_detail.pruduct_total*100
+      }
     },
     methods: {
       /* eslint-disable */
@@ -278,7 +288,18 @@
         })
       },
       rowClick() {
-        console.log(arguments[0])
+        let row = arguments[0]
+        this.currentRowStatus = row.status
+        // console.log(arguments[0])
+        planWorlistDetail(row.status, row.work_list).then(response => {
+          let data = response.data
+          this.data_detail = data
+          let s_time = String2Date(data.start_time)
+          data.pruduct_now = data.pruduct_now? data.pruduct_now: 0
+          let end_time = s_time.setSeconds( s_time.getSeconds() + this.total_time ) ;
+          data.end_time = data.start_time == ''? '': Date2String(end_time)
+          // console.log(data)
+        })
       },
       color: function(data) {
         switch (data) {

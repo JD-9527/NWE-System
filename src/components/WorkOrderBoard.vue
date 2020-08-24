@@ -68,16 +68,16 @@
           <div slot="header" class="message">
             <span>工單詳情</span>
           </div>
-          <el-row style="margin: 0;">
+          <el-row style="margin: 0;" v-show= "data_detail.work_no != 0">
             <el-col :span="12">
               <div style="margin-bottom: 10px;">
                 <div class="message-subtitle">生產數量（件）</div>
                 <div style="padding-right: 20px;">
                   <div class="progress-bar" style="text-align: right; width: 100%;">
-                    {{ data_detail.produced + '/' + data_detail.plan_count }}
+                    {{ data_detail.pruduct_now + '/' + data_detail.pruduct_total }}
                   </div>
                   <el-progress
-                    :percentage="data_detail.produced/data_detail.plan_count*100"
+                    :percentage="perc"
                     :stroke-width="20"
                     :show-text='false'
                     color="#17ba6a"
@@ -116,7 +116,9 @@
                 <div class="message">{{ data_detail.start_time }}</div>
               </div>
               <div style="display: inline-block; width: 50%; text-align: right">
-                <div class="message-subtitle">當前/結束時間</div>
+                <div class="message-subtitle">
+                  {{currentStatus}}
+                </div>
                 <div class="message">{{ data_detail.end_time }}</div>
               </div>
             </el-col>
@@ -173,24 +175,8 @@
 <script>
 // import Table from './Table'
 import WOTable from './WorkOrderTable.vue'
-import { planTonList } from '../api.js'
-
-
-let data_detail = {
-  plan_count: 40000,
-  produced: 28400,
-  customer: 'Cisco',
-  owner: '小兵',
-  work_no: 6110394,
-  start_time: '15:13:12',
-  end_time: '20:32:45',
-  product_record: [
-    { status: 0, time: 60 },
-    { status: 5, time: 60 },
-    { status: 0, time: 60 },
-    { status: 3, time: 60 },
-  ]
-}
+import { planTonList, planWorlistDetail } from '../api.js'
+import { String2Date, Date2String } from '@/utils/common.js'
 
 export default {
   components : {
@@ -205,69 +191,18 @@ export default {
       line: 'All',
       tons: ['50','80','100','130'],
       ton: '',
-      tableData: [
-        {
-          no: '611232322',
-          part_no: '700-234232-01WB',
-          machine: 'C01',
-          mod_no: 'NP12343',
-          plan_count: '40,000',
-          has_count: '28,400',
-          status: '正常',
-          isDelay: 0
-        },
-        {
-          no: '611232322',
-          part_no: '700-234232-01WB',
-          machine: 'C01',
-          mod_no: 'NP12343',
-          plan_count: '40,000',
-          has_count: '28,400',
-          status: '延遲',
-          isDelay: 1
-        },
-        {
-          no: '611232322',
-          part_no: '700-234232-01WB',
-          machine: 'C01',
-          mod_no: 'NP12343',
-          plan_count: '40,000',
-          has_count: '28,400',
-          status: '正常',
-          isDelay: 0
-        },
-        {
-          no: '611232322',
-          part_no: '700-234232-01WB',
-          machine: 'C01',
-          mod_no: 'NP12343',
-          plan_count: '40,000',
-          has_count: '28,400',
-          status: '正常',
-          isDelay: 0
-        },
-        {
-          no: '611232322',
-          part_no: '700-234232-01WB',
-          machine: 'C01',
-          mod_no: 'NP12343',
-          plan_count: '40,000',
-          has_count: '28,400',
-          status: '正常',
-          isDelay: 0
-        },
-        {
-          no: '611232322',
-          part_no: '700-234232-01WB',
-          machine: 'C01',
-          mod_no: 'NP12343',
-          plan_count: '40,000',
-          has_count: '28,400',
-          status: '正常',
-          isDelay: 0
-        },
-      ],
-      data_detail: data_detail
+      tableData: [],
+      data_detail: {
+        pruduct_total: 0,
+        pruduct_now: 0,
+        customer: '',
+        owner: '',
+        work_no: 0,
+        start_time: '',
+        end_time: '',
+        product_record: []
+      },
+      currentRowStatus: 0
     };
   },
   computed: {
@@ -278,6 +213,16 @@ export default {
       })
       return tmp
     },
+    currentStatus: function() {
+      return this.currentRowStatus == 1? '結束時間': '當前時間'
+    },
+    perc: function() {
+      return this.data_detail.pruduct_total == 0?
+            0:
+            (this.data_detail.pruduct_now > this.data_detail.pruduct_total)?
+            100:
+            this.data_detail.pruduct_now/this.data_detail.pruduct_total*100
+    }
   },
   watch: {
     activeLine: function(){
@@ -315,7 +260,18 @@ export default {
       })
     },
     rowClick() {
-      console.log(arguments[0])
+      let row = arguments[0]
+      this.currentRowStatus = row.status
+      // console.log(arguments[0])
+      planWorlistDetail(row.status, row.work_list).then(response => {
+        let data = response.data
+        this.data_detail = data
+        let s_time = String2Date(data.start_time)
+        data.pruduct_now = data.pruduct_now? data.pruduct_now: 0
+        let end_time = s_time.setSeconds( s_time.getSeconds() + this.total_time ) ;
+        data.end_time = data.start_time == ''? '': Date2String(end_time)
+        // console.log(data)
+      })
     },
     color: function(data) {
       switch (data) {
