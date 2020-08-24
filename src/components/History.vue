@@ -88,6 +88,21 @@
           ></el-table-column>
         </el-table>
       </el-tab-pane>
+      <el-tab-pane label="計畫查詢" name="third">
+        <el-table
+          :data="planTableData"
+          style="width: 100%"
+          empty-text="No Data"
+        >
+          <el-table-column
+            v-for="column in planTableInfo"
+            :key="column.label"
+            :prop="column.prop"
+            :label="column.label"
+            align="center"
+          ></el-table-column>
+        </el-table>
+      </el-tab-pane>
     </el-tabs>
   </div>
 </template>
@@ -136,7 +151,28 @@
           { prop: '', label: '完成度', width: ''}
         ],
         reportTableData: [],
-
+        planTableInfo: [
+          { prop: 'Part_NO', label: '料號', width: ''},
+          { prop: 'machine_ton', label: '噸位', width: ''},
+          { prop: 'machine_NO', label: '機台號', width: ''},
+          { prop: 'plastic_color', label: '當前顏色', width: ''},
+          { prop: 'mold_down_t', label: '上下模時間', width: ''},
+          { prop: 'plan_s_time', label: '起始時間', width: ''},
+          { prop: 'plan_e_time', label: '結束時間', width: ''},
+          { prop: 'product_name', label: '品名', width: ''},
+          { prop: 'plastic_Part_NO', label: '塑膠料號', width: ''},
+          { prop: 'plan_number', label: '數量', width: ''},
+          { prop: 'mold_NO', label: '模號', width: ''},
+          { prop: 'mold_Serial', label: '模序', width: ''},
+          { prop: 'mold_position', label: '模具儲位', width: ''},
+          { prop: 'plan_work_time', label: '計畫工時', width: ''},
+          { prop: 'machine_CT', label: '標準週期', width: ''},
+          { prop: 'UPH', label: 'UPH', width: ''},
+          { prop: 'emergency', label: '緊急程度', width: ''},
+          { prop: 'need', label: '量產', width: ''},
+          { prop: 'note', label: '備註', width: ''}
+        ],
+        planTableData: [],
       };
     },
     watch: {
