@@ -38,11 +38,12 @@
           size='mini'
           v-model="part"
           style="width: 200px;"
+          clearable
         >
         </el-input>
-        <el-button size='mini' style="margin-left: 10px;">查詢</el-button>
+        <el-button size='mini' style="margin-left: 10px;" @click="getWeekPlanHis">查詢</el-button>
         <el-table
-          :data="weekTableData"
+          :data="weekTableData.slice((currentPage-1)*10,currentPage*10)"
           style="width: 100%"
           empty-text="No Data"
         >
@@ -54,6 +55,18 @@
             align="center"
           ></el-table-column>
         </el-table>
+        <div style="text-align: center;">
+          <el-pagination
+            :hide-on-single-page='true'
+            @current-change="handleCurrentChange"
+            :current-page="currentPage"
+            :page-size="10"
+            layout="total ,prev, pager, next"
+            :total="weekTableData.length"
+            prev-text="上一頁"
+            next-text="下一頁">
+          </el-pagination>
+        </div>
       </el-tab-pane>
       <el-tab-pane label="工單總結報表" name="second">
         <FactorySelection tonlist/>
@@ -117,6 +130,8 @@
     data() {
       return {
         activeName: 'first',
+        currentPage: 1, //默认显示页面为1
+        pagesize: 9,
         year: '',
         year_list: ['2018', '2019', '2020'],
         week: '',
@@ -178,11 +193,7 @@
     watch: {
       year: function () {
         this.getWeekList(this.year);
-      },
-      week: function () {
-        let num = this.week.substring(1,3)
-        this.getWeekPlanHis(num);
-      },
+      }
     },
     methods: {
       date(item) {
@@ -207,12 +218,20 @@
           this.week_list = tmp
         })
       },
-      getWeekPlanHis(week) {
-        planWeekPlanHis(week).then(response =>{
+      getWeekPlanHis() {
+        let y = undefined,w = undefined,p = undefined
+        if (this.year) y=this.year
+        if (this.week) w = this.week.substring(1,3)
+        if (this.part) p = this.part
+        planWeekPlanHis(y, w, p).then(response =>{
           let data = response.data.data
           this.weekTableData = data
         })
-      }
+      },
+      handleCurrentChange: function(currentPage) {
+        this.currentPage = currentPage;
+        /*console.log(this.currentPage) */
+      },
     },
     mounted() {
       this.getYearList();

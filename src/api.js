@@ -317,7 +317,10 @@ export const planWeeklist = (year) => {
   if (year) return NWEPlan.get('/weekplan/weeklist/', { params: { year: year}})
   else return NWEPlan.get('/weekplan/weeklist/')
 }
-export const planWeekPlanHis = (week) => {
-  if (week) return NWEPlan.get('/weekplan/his/',{params: { week: week }})
-  else return NWEPlan.get('/weekplan/his/')
+export const planWeekPlanHis = (year, week, Part_NO) => {
+  let params = {}
+  if (year) params['year'] = year
+  if (week) params['week'] = week
+  if (Part_NO) params['Part_NO'] = Part_NO
+  return NWEPlan.get('/weekplan/his/',{params})
 }
