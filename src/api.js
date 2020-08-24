@@ -308,7 +308,16 @@ export const planWorklist = (line) => {
 export const planWorkTonlist = (line) => {
   return NWEPlan.get('/worktonlist/',{params: { line: line }})
 }
-
 export const planWorlistDetail = (state, worklistNO) => {
   return NWEPlan.get('/worklistdetail/',{params: { state: state, worklistNO: worklistNO }})
+}
+export const planYearlist = () => NWEPlan.get('/weekplan/yearlist/')
+
+export const planWeeklist = (year) => {
+  if (year) return NWEPlan.get('/weekplan/weeklist/', { params: { year: year}})
+  else return NWEPlan.get('/weekplan/weeklist/')
+}
+export const planWeekPlanHis = (week) => {
+  if (week) return NWEPlan.get('/weekplan/his/',{params: { week: week }})
+  else return NWEPlan.get('/weekplan/his/')
 }

@@ -9,6 +9,7 @@
           v-model="year"
           style="width: 120px;"
           placeholder=""
+          clearable
         >
           <el-option
             v-for="item in year_list"
@@ -23,6 +24,7 @@
           v-model="week"
           style="width: 120px;"
           placeholder=""
+          clearable
         >
           <el-option
             v-for="item in week_list"
@@ -92,6 +94,7 @@
 
 <script>
   import FactorySelection from './FactorySelection'
+  import { planYearlist, planWeeklist, planWeekPlanHis } from '@/api.js'
   export default {
     components: {
       FactorySelection
@@ -106,17 +109,17 @@
         part: '',
         start_end: [],
         weekTableInfo: [
-          { prop: '', label: '年', width: ''},
-          { prop: '', label: '週次', width: ''},
-          { prop: '', label: '品名', width: ''},
-          { prop: '', label: '噸位', width: ''},
-          { prop: '', label: '料號', width: ''},
-          { prop: '', label: '塑膠料號', width: ''},
-          { prop: '', label: '計畫數量', width: ''},
-          { prop: '', label: '已完成數量', width: ''},
-          { prop: '', label: '剩餘數量', width: ''},
-          { prop: '', label: '計畫工時', width: ''},
-          { prop: '', label: '完成度', width: ''}
+          { prop: 'year', label: '年', width: ''},
+          { prop: 'week', label: '週次', width: ''},
+          { prop: 'CHNNAME', label: '品名', width: ''},
+          { prop: 'ton', label: '噸位', width: ''},
+          { prop: 'Part_NO', label: '料號', width: ''},
+          { prop: 'plastic_part_NO', label: '塑膠料號', width: ''},
+          { prop: 'plan_number', label: '計畫數量', width: ''},
+          { prop: 'real_NO', label: '已完成數量', width: ''},
+          { prop: 'last_number', label: '剩餘數量', width: ''},
+          { prop: 'plan_time', label: '計畫工時', width: ''},
+          { prop: 'rate', label: '完成度', width: ''}
         ],
         weekTableData: [],
         reportTableInfo: [
@@ -136,11 +139,49 @@
 
       };
     },
+    watch: {
+      year: function () {
+        this.getWeekList(this.year);
+      },
+      week: function () {
+        let num = this.week.substring(1,3)
+        this.getWeekPlanHis(num);
+      },
+    },
     methods: {
       date(item) {
         /* eslint-disable */
         console.log(item)
+      },
+      getYearList() {
+        planYearlist().then(response=>{
+          let data = response.data.data
+          // console.log(data)
+          this.year_list = data
+        })
+      },
+      getWeekList(year) {
+        planWeeklist(year).then(response=>{
+          let data = response.data.data
+          // console.log(data)
+          let tmp = []
+          data.forEach(item => {
+            tmp.push('W'+item)
+          })
+          this.week_list = tmp
+        })
+      },
+      getWeekPlanHis(week) {
+        planWeekPlanHis(week).then(response =>{
+          let data = response.data.data
+          this.weekTableData = data
+        })
       }
+    },
+    mounted() {
+      this.getYearList();
+      this.getWeekList();
+      this.getWeekPlanHis();
     }
   };
 </script>

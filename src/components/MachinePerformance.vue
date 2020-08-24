@@ -50,45 +50,52 @@
         </el-card>
       </el-tab-pane>
       <el-tab-pane label="成型模具" name="2">
-        <div class="sub-title select">料號</div>
-        <el-select
-          size='mini'
-          v-model="site"
-          style="width: 150px;"
-          @change="siteSelected"
-        >
-          <el-option
-            v-for="item in part_no"
-            :key="item"
-            :label="item"
-            :value="item">
-          </el-option>
-        </el-select>
-        <div
-          class="sub-title select"
-          style="width: 80px;"
-        >維修原因</div>
-        <el-select
-          size='mini'
-          v-model="site"
-          style="width: 200px;"
-          @change="siteSelected"
-        >
-          <el-option
-            v-for="item in part_no"
-            :key="item"
-            :label="item"
-            :value="item">
-          </el-option>
-        </el-select>
-        <div class="sub-title select">日期</div>
-        <el-date-picker
-          v-model="start_end"
-          type="daterange"
-          size="mini"
-          value-format="yyyy-MM-dd"
-          @change="timeSelected"
-        ></el-date-picker>
+        <div>
+          <div class="sub-title select">料號</div>
+          <el-select
+            size='mini'
+            v-model="site"
+            style="width: 150px;"
+            @change="siteSelected"
+          >
+            <el-option
+              v-for="item in part_no"
+              :key="item"
+              :label="item"
+              :value="item">
+            </el-option>
+          </el-select>
+          <div
+            class="sub-title select"
+            style="width: 80px;"
+          >維修原因</div>
+          <el-select
+            size='mini'
+            v-model="site"
+            style="width: 200px;"
+            @change="siteSelected"
+          >
+            <el-option
+              v-for="item in part_no"
+              :key="item"
+              :label="item"
+              :value="item">
+            </el-option>
+          </el-select>
+          <div class="sub-title select">日期</div>
+          <el-date-picker
+            v-model="start_end"
+            type="daterange"
+            size="mini"
+            value-format="yyyy-MM-dd"
+            @change="timeSelected"
+          ></el-date-picker>
+        </div>
+        <v-chart
+          :options="getLineOptions()"
+          style="height: 300px; width: 100%;"
+          autoresize
+        />
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -186,6 +193,48 @@ export default {
     handleSelect(item) {
       this.time_array = this.getAllDate(item)
     },
+    getLineOptions() {
+      return {
+        grid: {
+          top: '10',
+          left: '30'
+        },
+        xAxis: {
+          type: 'category',
+          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+        },
+        yAxis: {
+          type: 'value'
+        },
+        legend: {
+          orient: 'vertical',
+          left: 'right',
+          // align : 'right',
+          data: ['line1', 'line2','line3'],
+          textStyle: {
+            fontSize: '18'
+          }
+        },
+        series: [{
+          name: 'line1',
+          data: [1, 3, 2, 4, 5, 3, 1],
+          type: 'line',
+          smooth: true
+        },
+        {
+          name: 'line2',
+          data: [2, 4, 3, 5, 6, 4, 2],
+          type: 'line',
+          smooth: true
+        },
+        {
+          name: 'line3',
+          data: [3, 5, 4, 6, 7, 5, 3],
+          type: 'line',
+          smooth: true
+        }]
+      }
+    }
     /* eslint-enable */
   },
   mounted() {
