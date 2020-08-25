@@ -92,16 +92,13 @@ export default {
   data() {
     return {
       sites: [
+        { value: 'All' },
         { value: 'D9 - 1F' },
         { value: 'D10 - 1F' }
       ],
       lines: [],
       tons: [
         { value: 'All' },
-        { value: '50' },
-        { value: '80' },
-        { value: '100' },
-        { value: '130' }
       ],
       machs: [],
       classes: [
@@ -110,7 +107,7 @@ export default {
         {value: '晚班'},
       ],
       class1: 'All',
-      site: 'D10 - 1F',
+      site: 'All',
       line: 'All',
       ton: 'All',
       mach: 'All',
@@ -133,18 +130,24 @@ export default {
   },
   watch: {
     site: function() {
-      this.lines = this.loadLine(this.site)
       this.line = 'All'
-      this.machs = this.loadMach(this.line)
+      this.lines = this.loadLine(this.site)
+      this.$emit('lineSelected','')
+
       this.mach = 'All'
+      this.machs = this.loadMach(this.line)
+
       this.ton = 'All'
       this.tons = this.loadTons(this.line)
+      this.$emit('tonSelected','')
     },
     line: function() {
-      this.machs = this.loadMach(this.line)
       this.mach = 'All'
+      this.machs = this.loadMach(this.line)
+
       this.ton = 'All'
       this.tons = this.loadTons(this.line)
+      this.$emit('tonSelected','')
     },
   },
   methods: {
@@ -157,13 +160,18 @@ export default {
           {value: 'G 線'},
         ];
       }
-      else {
+      else if (site == 'D10 - 1F') {
         return [
           {value: 'All'},
           {value: 'A 線'},
           {value: 'B 線'},
           {value: 'C 線'},
           {value: 'D 線'}
+        ];
+      }
+      else {
+        return [
+          {value: 'All'},
         ];
       }
     },
@@ -281,7 +289,7 @@ export default {
     tonSelected(item) {
       this.$emit('tonSelected',item)
     },
-    
+
   },
   mounted() {
     this.lines = this.loadLine()
