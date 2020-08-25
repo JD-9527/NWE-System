@@ -322,5 +322,16 @@ export const planWeekPlanHis = (year, week, Part_NO) => {
   if (year) params['year'] = year
   if (week) params['week'] = week
   if (Part_NO) params['Part_NO'] = Part_NO
-  return NWEPlan.get('/weekplan/his/',{params})
+  return NWEPlan.get('/his/weekplan/',{params})
+}
+
+export const planWorkListHis = (field, line, ton, Part_NO, start_end) => {
+  let params = {}
+  if (field) params['field'] = field
+  if (line) params['line'] = line
+  if (ton) params['ton'] = ton
+  if (Part_NO) params['Part_NO'] = Part_NO
+  params['start_time'] = start_end[0]
+  params['end_time'] = start_end[1]
+  return NWEPlan.get('/his/worklist/',{params})
 }
