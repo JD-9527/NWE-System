@@ -26,6 +26,7 @@
           :multiple="column.prop == 'machine_NO'"
           v-if="select_list.indexOf(column.prop) > -1 && column.type == 'select'"
           size='small'
+          style="width: 100%"
           @focus="getLists(column.prop)"
         >
           <el-option
@@ -64,7 +65,8 @@
 
 <script>
 import { dataEditWeekPlan, dataEditDayPlan, dataEditCtTime,
-         dataEditPlasticColor,dataColorList, dataSpecPartnoNew } from '../api.js'
+         dataEditPlasticColor,dataColorList, dataSpecPartnoNew,
+         dataEditMachineColor } from '../api.js'
 
   /* eslint-disable */
 export default {
@@ -75,7 +77,7 @@ export default {
       Edit: '',
       categorylist: ['急單', 'D11組裝', '成型組裝', 'NSD', '海外', '印刷', '重試' ],
       colorlist: [],
-      select_list: ['require_source', 'plastic_color', 'machine_NO'],
+      select_list: ['require_source', 'plastic_color', 'machine_NO','product_color'],
       machinelist: [],
       Alists: []
     }
@@ -111,6 +113,9 @@ export default {
       }
       else if (this.type == 'partnoS') {
         this.Edit = dataSpecPartnoNew
+      }
+      else if (this.type == 'machinecolor') {
+        this.Edit = dataEditMachineColor
       }
     },
     comfirmEdit() {
@@ -173,7 +178,7 @@ export default {
     getLists(prop) {
       // console.log(this.new_row.b)
       if (prop == 'require_source') this.Alists = this.categorylist
-      else if (prop == 'plastic_color') this.Alists = this.colorlist
+      else if (prop == 'plastic_color' || prop == 'product_color') this.Alists = this.colorlist
       else if (prop == 'machine_NO') this.Alists = this.machinelist
     }
   },

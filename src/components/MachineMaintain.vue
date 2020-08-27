@@ -4,6 +4,21 @@
     <el-tabs v-model="activeName">
       <el-tab-pane label="機台基本資料維護" name="1">
         <div style="display: flex;">
+          <NewRowButton type='machinecolor' :tableInfo='columns' @update="getTableData"/>
+          <a>
+            <el-button size="small" style="margin-right: 5px;" class="upload" plain>選擇檔案</el-button>
+            <input type="file" id="file" ref="file1" @change="onChangeFileUpload()" class="change"/>
+          </a>
+          <span v-if="typeof(file) != 'undefined'" class="commit" style="line-height: 32px;">{{ file.name }}</span>
+          <el-button
+            size="mini"
+            type="primary"
+            @click="submitForm()"
+            class="commit"
+            style="margin-left: 5px;"
+            :disabled="typeof(file) == 'undefined'"
+          >上傳
+          </el-button>
           <div style="flex-grow: 1;"></div>
           <DownloadButton file_type="machineton"/>
         </div>
@@ -116,7 +131,7 @@
             <el-button size="small" style="margin-right: 5px;" class="upload" plain>選擇檔案</el-button>
             <input type="file" id="file" ref="file" @change="onChangeFileUpload()" class="change"/>
           </a>
-          <span v-if="typeof(file) != 'undefined'" class="commit">{{ file.name }}</span>
+          <span v-if="typeof(file) != 'undefined'" class="commit" style="line-height: 32px;">{{ file.name }}</span>
           <el-button
             size="mini"
             type="primary"
@@ -251,7 +266,7 @@
 .change{
   position: absolute;
   overflow: hidden;
-  line-height: 28px;
+  line-height: 32px;
   left: 66px;
   width: 80px;
   opacity: 0;
@@ -263,7 +278,7 @@ import EditableCell from "./EditableCell.vue";
 import DownloadButton from "./DownloadButton.vue";
 import NewRowButton from './NewRowButton.vue'
 import { dataMachineColor, dataEditMachineColor, dataCtTime, dataEditCtTime, dataDelCtTime,
-         dataColorList, dataTonList, dataImportCtTime } from "../api.js"
+         dataColorList, dataTonList, dataImportCtTime, dataImportMachine } from "../api.js"
 
 export default {
   components: {
@@ -274,9 +289,9 @@ export default {
   data() {
     return {
       columns: [
-        {prop: 'machine_NO', label: "機台號"},
-        // {prop: 'machine_ton', label: "噸位"},
-        // {prop: 'product_color', label: "機台當前顏色"},
+        {prop: 'machine_NO', label: "機台號", type: 'input'},
+        {prop: 'machine_ton', label: "噸位", type: 'input'},
+        {prop: 'product_color', label: "機台當前顏色", type: 'select'},
       ],
       tableData: [],
       columnsCT: [
@@ -418,25 +433,46 @@ export default {
       })
     },
     submitForm(){
-      dataImportCtTime('import',this.file).then((response) => {
-        console.log(response.data);
-        if (response.status == 200) {
-          console.log(response)
-          this.$message.success('上傳成功！')
-          this.getTableDataCT();
-        }
-        else {
-          this.$message.error(response.status)
-        }
-      })
-      .catch((error) => {
-        this.$message.error('上傳失敗！')
-        console.log(error.response);
-      });
+      if (this.activeName == '1') {
+        dataImportMachine('import',this.file).then((response) => {
+          console.log(response.data);
+          if (response.status == 200) {
+            console.log(response)
+            this.$message.success('上傳成功！')
+            this.getTableDataCT();
+          }
+          else {
+            this.$message.error(response.status)
+          }
+        })
+        .catch((error) => {
+          this.$message.error('上傳失敗！')
+          console.log(error.response);
+        });
+      }
+      else {
+        dataImportCtTime('import',this.file).then((response) => {
+          console.log(response.data);
+          if (response.status == 200) {
+            console.log(response)
+            this.$message.success('上傳成功！')
+            this.getTableDataCT();
+          }
+          else {
+            this.$message.error(response.status)
+          }
+        })
+        .catch((error) => {
+          this.$message.error('上傳失敗！')
+          console.log(error.response);
+        });
+
+      }
     },
     onChangeFileUpload(){
-      console.log(this.$refs.file.files[0])
-      this.file = this.$refs.file.files[0];
+      if (this.activeName == '1') this.file = this.$refs.file1.files[0];
+      // console.log(this.$refs.file.files[0])
+      else this.file = this.$refs.file.files[0];
     }
     /* eslint-enable */
   },
