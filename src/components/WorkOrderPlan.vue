@@ -6,9 +6,9 @@
     <el-tabs v-model="activeName">
       <el-tab-pane label="工單報表" name="first">
         <el-tabs v-model="activeLine" type="card">
-          <div style="position: relative; top: 10px;">
+          <div style="position: relative; display: flex">
             <NewRowButton :tableInfo="tableInfo"/>
-            <div style="width: 45%; display: inline-block;"></div>
+            <div style="flex-grow: 1;"></div>
             <div class="sub-title select">噸位</div>
             <el-select
               size='mini'

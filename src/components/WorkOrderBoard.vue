@@ -9,22 +9,22 @@
     </el-row>
     <el-row>
     <el-tabs v-model="activeLine" type="card">
-      <div style="position: relative; top: 10px;">
-      <div style="width: 50%; display: inline-block;"></div>
-      <div class="sub-title select">噸位</div>
-      <el-select
-        size='mini'
-        v-model="ton"
-        clearable
-      >
-        <el-option
-          v-for="item in tons"
-          :key="item"
-          :label="item"
-          :value="item">
-        </el-option>
-      </el-select>
-      <div style="padding: 5px; display: inline-block;">
+      <div style="display: flex;">
+        <div style="flex-grow: 1;"></div>
+        <div class="sub-title select">噸位</div>
+        <el-select
+          size='mini'
+          v-model="ton"
+          clearable
+        >
+          <el-option
+            v-for="item in tons"
+            :key="item"
+            :label="item"
+            :value="item">
+          </el-option>
+        </el-select>
+        <div style="padding: 5px; display: inline-block;">
         <font-awesome-icon
           :icon="['fas','square']"
           class="legend-blue"

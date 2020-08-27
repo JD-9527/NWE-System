@@ -3,212 +3,206 @@
     <el-row class="header-row">機台維護</el-row>
     <el-tabs v-model="activeName">
       <el-tab-pane label="機台基本資料維護" name="1">
-        <el-row>
-          <el-col style="text-align: right;" :span="22">
-            <DownloadButton file_type="machineton"/>
-          </el-col>
-          <el-table
-            :data="tableData.slice((currentPage-1)*pagesize,currentPage*pagesize)"
-            style="width: 100%"
-            :max-height="650"
-            v-loading="loading"
+        <div style="display: flex;">
+          <div style="flex-grow: 1;"></div>
+          <DownloadButton file_type="machineton"/>
+        </div>
+        <el-table
+          :data="tableData.slice((currentPage-1)*pagesize,currentPage*pagesize)"
+          style="width: 100%"
+          :max-height="650"
+          v-loading="loading"
+        >
+          <el-table-column
+            prop="machine_NO"
+            label="機台號"
+            align="center"
+            width="300"
+            show-overflow-tooltip
+          ></el-table-column>
+          <el-table-column
+            prop="machine_ton"
+            label="噸位"
+            align="center"
+            show-overflow-tooltip
           >
-            <el-table-column
-              prop="machine_NO"
-              label="機台號"
-              align="center"
-              width="300"
-              show-overflow-tooltip
-            ></el-table-column>
-            <el-table-column
-              prop="machine_ton"
-              label="噸位"
-              align="center"
-              show-overflow-tooltip
+            <editable-cell
+              :show-input="row.editMode"
+              slot-scope="{row}"
+              editable-component="el-select"
+              v-model="row.machine_ton"
             >
-              <editable-cell
-                :show-input="row.editMode"
-                slot-scope="{row}"
-                editable-component="el-select"
-                v-model="row.machine_ton"
-              >
-                <span slot="content">{{row.machine_ton}}</span>
-                <template slot="edit-component-slot">
-                  <el-option
-                    v-for="(ton,index) in tonList"
-                    :key="index"
-                    :label="ton.label"
-                    :value="ton.value"
-                  ></el-option>
-                </template>
-              </editable-cell>
-            </el-table-column>
-            <el-table-column
-              prop="product_color"
-              label="機台當前顏色"
-              align="center"
-              width="150"
-              show-overflow-tooltip
+              <span slot="content">{{row.machine_ton}}</span>
+              <template slot="edit-component-slot">
+                <el-option
+                  v-for="(ton,index) in tonList"
+                  :key="index"
+                  :label="ton.label"
+                  :value="ton.value"
+                ></el-option>
+              </template>
+            </editable-cell>
+          </el-table-column>
+          <el-table-column
+            prop="product_color"
+            label="機台當前顏色"
+            align="center"
+            width="150"
+            show-overflow-tooltip
+          >
+            <editable-cell
+              :show-input="row.editMode"
+              slot-scope="{row}"
+              editable-component="el-select"
+              v-model="row.product_color"
             >
-              <editable-cell
-                :show-input="row.editMode"
-                slot-scope="{row}"
-                editable-component="el-select"
-                v-model="row.product_color"
-              >
-                <span slot="content">{{row.product_color}}</span>
-                <template slot="edit-component-slot">
-                  <el-option
-                    v-for="(color,index) in colorlist"
-                    :key="index"
-                    :label="color.label"
-                    :value="color.value"
-                  ></el-option>
-                </template>
-              </editable-cell>
-            </el-table-column>
-            <el-table-column
-              label="操作"
-              align="center"
-            >
-             <template slot-scope="{row, index}">
-              <el-button
-                size="mini"
-                icon="el-icon-edit"
-                @click="setEditMode(row, index)">
-              </el-button>
-              <el-button
-                type="success"
-                icon="el-icon-check"
-                size="mini"
-                v-show="row.editMode"
-                @click="saveRow(row, index)">
-              </el-button>
-              <el-button
-                type="info"
-                icon="el-icon-close"
-                size="mini"
-                v-show="row.editMode"
-                @click="cancelEditMode(row, index)">
-              </el-button>
-             </template>
-            </el-table-column>
-          </el-table>
-          <div>
-            <el-pagination
-              :hide-on-single-page='true'
-              @size-change="handleSizeChange"
-              @current-change="handleCurrentChange"
-              :current-page="currentPage"
-              :page-sizes="[10,20,50]"
-              :page-size="pagesize"
-              layout="total, sizes,prev, pager, next"
-              :total="tableData.length"
-              prev-text="上一頁"
-              next-text="下一頁">
-            </el-pagination>
-          </div>
-        </el-row>
-      </el-tab-pane>
-      <el-tab-pane label="前置作業時間維護" name="2">
-        <el-row>
-          <el-col :span="12">
-            <!-- <el-button size="mini" style="margin-right: 10px;" @click="addRow">新增</el-button> -->
-            <NewRowButton type='cttime' :tableInfo='columnsCT' @update="getTableDataCT"/>
-            <a>
-              <el-button size="small" style="margin-right: 5px;" class="upload" plain>選擇檔案</el-button>
-              <input type="file" id="file" ref="file" @change="onChangeFileUpload()" class="change"/>
-            </a>
-            <span v-if="typeof(file) != 'undefined'" class="commit">{{ file.name }}</span>
+              <span slot="content">{{row.product_color}}</span>
+              <template slot="edit-component-slot">
+                <el-option
+                  v-for="(color,index) in colorlist"
+                  :key="index"
+                  :label="color.label"
+                  :value="color.value"
+                ></el-option>
+              </template>
+            </editable-cell>
+          </el-table-column>
+          <el-table-column
+            label="操作"
+            align="center"
+          >
+           <template slot-scope="{row, index}">
             <el-button
               size="mini"
-              type="primary"
-              @click="submitForm()"
-              class="commit"
-              style="margin-left: 5px;"
-              :disabled="typeof(file) == 'undefined'"
-            >上傳
+              icon="el-icon-edit"
+              @click="setEditMode(row, index)">
             </el-button>
-          </el-col>
-          <el-col style="text-align: right;" :span="10">
-            <DownloadButton file_type="tondata"/>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-table
-            :data="tableDataCT.slice((currentPageCT-1)*pagesizeCT,currentPageCT*pagesizeCT)"
-            style="width: 100%"
-            max-height="650"
-            v-loading="loading_ct"
+            <el-button
+              type="success"
+              icon="el-icon-check"
+              size="mini"
+              v-show="row.editMode"
+              @click="saveRow(row, index)">
+            </el-button>
+            <el-button
+              type="info"
+              icon="el-icon-close"
+              size="mini"
+              v-show="row.editMode"
+              @click="cancelEditMode(row, index)">
+            </el-button>
+           </template>
+          </el-table-column>
+        </el-table>
+        <div>
+          <el-pagination
+            :hide-on-single-page='true'
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="currentPage"
+            :page-sizes="[10,20,50]"
+            :page-size="pagesize"
+            layout="total, sizes,prev, pager, next"
+            :total="tableData.length"
+            prev-text="上一頁"
+            next-text="下一頁">
+          </el-pagination>
+        </div>
+      </el-tab-pane>
+      <el-tab-pane label="前置作業時間維護" name="2">
+        <div style="display: flex;">
+          <NewRowButton type='cttime' :tableInfo='columnsCT' @update="getTableDataCT"/>
+          <a>
+            <el-button size="small" style="margin-right: 5px;" class="upload" plain>選擇檔案</el-button>
+            <input type="file" id="file" ref="file" @change="onChangeFileUpload()" class="change"/>
+          </a>
+          <span v-if="typeof(file) != 'undefined'" class="commit">{{ file.name }}</span>
+          <el-button
+            size="mini"
+            type="primary"
+            @click="submitForm()"
+            class="commit"
+            style="margin-left: 5px;"
+            :disabled="typeof(file) == 'undefined'"
+          >上傳
+          </el-button>
+          <div style="flex-grow: 1;"></div>
+          <DownloadButton file_type="tondata"/>
+        </div>
+
+        <el-table
+          :data="tableDataCT.slice((currentPageCT-1)*pagesizeCT,currentPageCT*pagesizeCT)"
+          style="width: 100%"
+          max-height="650"
+          v-loading="loading_ct"
+        >
+          <el-table-column
+            prop="machine_ton"
+            label="噸位"
+            align="center"
+            show-overflow-tooltip
           >
-            <el-table-column
-              prop="machine_ton"
-              label="噸位"
-              align="center"
-              show-overflow-tooltip
-            >
-              <editable-cell :show-input="row.editMode" slot-scope="{row}" v-model="row.machine_ton">
-                <span slot="content">{{row.machine_ton}}</span>
-              </editable-cell>
-            </el-table-column>
-            <el-table-column
-              prop="mold_cttime"
-              label="前置作業時間"
-              align="center"
-              show-overflow-tooltip
-            >
-              <editable-cell :show-input="row.editMode" slot-scope="{row}" v-model="row.mold_cttime">
-                <span slot="content">{{row.mold_cttime}}</span>
-              </editable-cell>
-            </el-table-column>
-            <el-table-column
-              label="操作"
-              align="center"
-            >
-             <template slot-scope="{row, $index}">
-              <el-button
-                size="mini"
-                icon="el-icon-edit"
-                @click="setEditMode(row, $index)">
-              </el-button>
-              <el-button
-                type="success"
-                icon="el-icon-check"
-                size="mini"
-                v-show="row.editMode"
-                @click="saveRowCT(row, $index)">
-              </el-button>
-              <el-button
-                type="danger"
-                icon="el-icon-delete"
-                size="mini"
-                @click="openDialog(row, $index)">
-              </el-button>
-              <el-button
-                type="info"
-                icon="el-icon-close"
-                size="mini"
-                v-show="row.editMode"
-                @click="cancelEditMode(row, $index)">
-              </el-button>
-             </template>
-            </el-table-column>
-          </el-table>
-          <div>
-            <el-pagination
-              :hide-on-single-page='true'
-              @size-change="handleSizeChangeCT"
-              @current-change="handleCurrentChangeCT"
-              :current-page="currentPageCT"
-              :page-sizes="[10,20,50]"
-              :page-size="pagesizeCT"
-              layout="total, sizes,prev, pager, next"
-              :total="tableDataCT.length"
-              prev-text="上一頁"
-              next-text="下一頁">
-            </el-pagination>
-          </div>
-        </el-row>
+            <editable-cell :show-input="row.editMode" slot-scope="{row}" v-model="row.machine_ton">
+              <span slot="content">{{row.machine_ton}}</span>
+            </editable-cell>
+          </el-table-column>
+          <el-table-column
+            prop="mold_cttime"
+            label="前置作業時間"
+            align="center"
+            show-overflow-tooltip
+          >
+            <editable-cell :show-input="row.editMode" slot-scope="{row}" v-model="row.mold_cttime">
+              <span slot="content">{{row.mold_cttime}}</span>
+            </editable-cell>
+          </el-table-column>
+          <el-table-column
+            label="操作"
+            align="center"
+          >
+           <template slot-scope="{row, $index}">
+            <el-button
+              size="mini"
+              icon="el-icon-edit"
+              @click="setEditMode(row, $index)">
+            </el-button>
+            <el-button
+              type="success"
+              icon="el-icon-check"
+              size="mini"
+              v-show="row.editMode"
+              @click="saveRowCT(row, $index)">
+            </el-button>
+            <el-button
+              type="danger"
+              icon="el-icon-delete"
+              size="mini"
+              @click="openDialog(row, $index)">
+            </el-button>
+            <el-button
+              type="info"
+              icon="el-icon-close"
+              size="mini"
+              v-show="row.editMode"
+              @click="cancelEditMode(row, $index)">
+            </el-button>
+           </template>
+          </el-table-column>
+        </el-table>
+        <div>
+          <el-pagination
+            :hide-on-single-page='true'
+            @size-change="handleSizeChangeCT"
+            @current-change="handleCurrentChangeCT"
+            :current-page="currentPageCT"
+            :page-sizes="[10,20,50]"
+            :page-size="pagesizeCT"
+            layout="total, sizes,prev, pager, next"
+            :total="tableDataCT.length"
+            prev-text="上一頁"
+            next-text="下一頁">
+          </el-pagination>
+        </div>
         <el-dialog
           :visible.sync="dialogVisible"
           width="20%"
