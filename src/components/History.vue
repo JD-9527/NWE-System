@@ -213,7 +213,7 @@
           { prop: 'plan_number', label: '計畫數量', width: '100'},
           { prop: 'good_number', label: '已完成數量', width: '100'},
           { prop: 'left_number', label: '剩餘數量', width: '100'},
-          { prop: 'rate', label: '完成度', width: '50'}
+          { prop: 'rate', label: '完成度', width: '80'}
         ],
         reportTableData: [],
         planTableInfo: [
@@ -314,9 +314,9 @@
             });
           }
           else {
-            console.log(this.current_site, this.current_line, this.current_ton, this.part, this.start_end )
+            // console.log(this.current_site, this.current_line, this.current_ton, this.part, this.start_end )
             let s = undefined,l = undefined,t = undefined,p = undefined
-            if (this.current_site) s = this.current_site.substring(0,2)
+            if (this.current_site && this.current_site != 'All') s = this.current_site.substring(0,2)
             if (this.current_line) l = this.current_line.substring(0,1)
             if (this.current_ton) t = this.current_ton
             if (this.part) p = this.part
