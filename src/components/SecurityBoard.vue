@@ -177,7 +177,7 @@
       <el-col :span="10">
         <el-card shadow="never" style="margin-bottom: 20px;" class="mach">
           <div slot="header" class="clearfix">
-            <span class="message-row">{{ current }} 機台安全訊息</span>
+            <span class="message-row">{{ current }} 設備邏輯監控</span>
           </div>
           <div class="message"  v-show="current != ''">
             <div
@@ -201,7 +201,7 @@
       <el-col :span="14">
         <el-card shadow="never" >
           <div slot="header" class="clearfix">
-            <span class="message-row">測試訊息</span>
+            <span class="message-row">設備點檢看板</span>
           </div>
           <div class="message" v-show="current != '' ">
             <el-table
