@@ -175,65 +175,23 @@
     <el-divider></el-divider>
     <el-row :gutter="30">
       <el-col :span="10">
-        <el-card shadow="never" style="margin-bottom: 20px;">
+        <el-card shadow="never" style="margin-bottom: 20px;" class="mach">
           <div slot="header" class="clearfix">
             <span class="message-row">{{ current }} 機台安全訊息</span>
           </div>
           <div class="message"  v-show="current != ''">
-            <div>
-              <div class="alarm_box" v-show="machine_state.emergency_signal_1 != ''">
-                <div :style="securityColor(machine_state.emergency_signal_1)"></div>
-                <div
-                  class="alarm_title"
-                  :style="'color:'+ (machine_state.emergency_status_1 == '0'? '#F50000;': '#111;')"
-                >
-                  急停1 {{ signalStatus(machine_state.emergency_status_1) }}
-                </div>
-              </div>
-              <div class="alarm_box" v-show="machine_state.emergency_signal_2 != ''">
-                <div :style="securityColor(machine_state.emergency_signal_2)"></div>
-                <div
-                  class="alarm_title"
-                  :style="'color:'+ (machine_state.emergency_status_2 == '0'? '#F50000;': '#111;')"
-                >
-                  急停2 {{ signalStatus(machine_state.emergency_status_2) }}
-                </div>
-              </div>
-              <div class="alarm_box" v-show="machine_state.nozzle_protection != ''">
-                <div :style="securityColor(machine_state.nozzle_protection)"></div>
-                <div
-                  class="alarm_title"
-                  :style="'color:'+ (machine_state.nozzle_protection_status == '0'? '#F50000;': '#111;')"
-                >
-                  射嘴防護罩 {{ signalStatus(machine_state.nozzle_protection_status) }}
-                </div>
-              </div>
-            </div>
-            <div class="alarm_box" v-show="machine_state.safe_door_total_signal != ''">
-              <div :style="securityColor(machine_state.safe_door_total_signal)"></div>
+            <div
+              v-for="key in Object.keys(machine_state)"
+              :key="key"
+              class="alarm_box"
+              v-show="machine_state[key] != ''"
+            >
+              <div :style="securityColor(machine_state[key])"></div>
               <div
                 class="alarm_title"
-                :style="'color:'+ (machine_state.safe_door_total_status == '0'? '#F50000;': '#111;')"
+                :style="'color:'+ (machine_state[key] == '0'? '#F50000;': '#111;')"
               >
-                液壓閥 {{ signalStatus(machine_state.safe_door_total_status) }}
-              </div>
-            </div>
-            <div class="alarm_box" v-show="machine_state.safe_door_front_signal != ''">
-              <div :style="securityColor(machine_state.safe_door_front_signal)"></div>
-              <div
-                class="alarm_title"
-                :style="'color:'+ (machine_state.safe_door_front_status == '0'? '#F50000;': '#111;')"
-              >
-                止動開關 {{ signalStatus(machine_state.safe_door_front_status) }}
-              </div>
-            </div>
-            <div class="alarm_box" v-show="machine_state.safe_door_back_signal != ''">
-              <div :style="securityColor(machine_state.safe_door_back_signal)"></div>
-              <div
-                class="alarm_title"
-                :style="'color:'+ (machine_state.safe_door_back_status == '0'? '#F50000;': '#111;')"
-              >
-                行程開關 {{ signalStatus(machine_state.safe_door_back_status) }}
+                {{ infoName(key) }} {{ signalStatus(machine_state[key]) }}
               </div>
             </div>
             <img src="../assets/Vsp.png" style="width: 100%;" />
@@ -257,9 +215,6 @@
                 width="180"
                 align="center"
               >
-                <!-- <template slot-scope="scoped">
-                  <span>{{ toDate(scoped.row.timestamp) }}</span>
-                </template> -->
               </el-table-column>
               <el-table-column
                 prop="tester"
@@ -271,51 +226,23 @@
                 label="測試結果"
                 align="center"
               >
-                <template slot-scope="scoped">
-                  <div>
+                <template slot-scope="{row}">
+                  <el-tooltip
+                    v-for="(key) in Object.keys(row)"
+                    :key="key"
+                    class="item"
+                    effect="dark"
+                    :content="testTooltip(key)"
+                    placement="bottom"
+                  >
                     <div
                       class="door_block"
-                      :style="'color:'+ (scoped.row.emergency1_OK == '0'? '#F50000;': '#111;')"
-                      v-show="scoped.row.emergency1_OK != ''"
+                      :style="'color:'+ (row[key] == '0'? '#F50000;': '#606266;')"
+                      v-show="row[key] != '' && key[0]=='I'"
                     >
-                      急停1 {{ doorState(scoped.row.emergency1_OK) }}
+                        {{ testName(key) }} {{ doorState(row[key]) }}
                     </div>
-                    <div
-                      class="door_block"
-                      :style="'color:'+ (scoped.row.emergency2_OK == '0'? '#F50000;': '#111;')"
-                      v-show="scoped.row.emergency2_OK != ''"
-                    >
-                      急停2 {{ doorState(scoped.row.emergency2_OK) }}
-                    </div>
-                    <div
-                      class="door_block"
-                      :style="'color:'+ (scoped.row.nozzle_protection == '0'? '#F50000;': '#111;')"
-                      v-show="scoped.row.nozzle_protection != ''"
-                    >
-                      射嘴防護罩 {{ doorState(scoped.row.nozzle_protection) }}
-                    </div>
-                  </div>
-                  <div
-                    class="door_block"
-                    :style="'color:'+ (scoped.row.safe_door_total_OK == '0'? '#F50000;': '#111;')"
-                    v-show="scoped.row.safe_door_total_OK != ''"
-                  >
-                    液壓閥 {{ doorState(scoped.row.safe_door_total_OK) }}
-                  </div>
-                  <div
-                    class="door_block"
-                    :style="'color:'+ (scoped.row.safe_door_front_OK == '0'? '#F50000;': '#111;')"
-                    v-show="scoped.row.safe_door_front_OK != ''"
-                  >
-                    止動開關 {{ doorState(scoped.row.safe_door_front_OK) }}
-                  </div>
-                  <div
-                    class="door_block"
-                    :style="'color:'+ (scoped.row.safe_door_back_OK == '0'? '#F50000;': '#111;')"
-                    v-show="scoped.row.safe_door_back_OK != ''"
-                  >
-                    行程開關 {{ doorState(scoped.row.safe_door_back_OK) }}
-                  </div>
+                  </el-tooltip>
                 </template>
               </el-table-column>
             </el-table>
@@ -383,6 +310,9 @@
 .el-card >>> .el-card__header {
   padding: 10px 20px;
 }
+.mach >>> .el-card__body {
+  padding: 13px;
+}
 .el-row {
   margin-bottom: 8px;
 }
@@ -403,6 +333,7 @@
   display: inline-block;
   min-height: 20px;
   min-width: 120px;
+  width: 30%;
   text-align: left;
   margin-left: 5px;
 }
@@ -414,6 +345,7 @@
 .door_block {
   display: inline-block;
   margin: 5px;
+ /* border: 0.5px solid #555;*/
 }
 </style>
 
@@ -438,21 +370,7 @@ export default {
     current: '',
     line: '',
     lines: ['D9 - 1F','D10 - 1F'],
-    machine_state: {
-      emergency_signal_1: '2',
-      emergency_signal_2: '2',
-      safe_door_total_signal: '2',
-      safe_door_front_signal: '2',
-      safe_door_back_signal: '2',
-      nozzle_protection: '2',
-
-      emergency_status_1: '0',
-      emergency_status_2: '0',
-      safe_door_total_status: '0',
-      safe_door_front_status: '0',
-      safe_door_back_status: '0',
-      nozzle_protection_status: '0'
-    },
+    machine_state: {},
     tableData: [],
     status_message: '',
     loading: false,
@@ -523,6 +441,66 @@ export default {
       }
       return tmp;
     },
+    infoName: function(key) {
+      switch (key) {
+        case 'safe_door_front_logic':
+          return '止動開關'
+        case 'safe_door_back_logic':
+          return '行程開關'
+        case 'safe_door_total_logic':
+          return '洩壓閥'
+        case 'nozzle_protection_logic':
+          return '射嘴防護罩'
+        case 'emergency_1_logic':
+          return '急停1'
+        case 'emergency_2_logic':
+          return '急停2'
+        case 'emergency_3_logic':
+          return '急停3'
+        case 'emergency_4_logic':
+          return '急停4'
+        case 'emergency_5_logic':
+          return '急停5'
+        default:
+          return ''
+      }
+    },
+    testName: function(key) {
+      switch (key) {
+        case 'ID4_OK':
+          return 'ID4'
+        case 'ID6_OK':
+          return 'ID6'
+        case 'ID9_OK':
+          return 'ID9'
+        case 'ID21_OK':
+          return 'ID21'
+        case 'ID22_OK':
+          return 'ID22'
+        case 'ID27_OK':
+          return 'ID27'
+        default:
+          return ''
+      }
+    },
+    testTooltip: function(key) {
+      switch (key) {
+        case 'ID4_OK':
+          return 'ID4：三色燈是否變紅，是否有報警聲(前/後安全門開)'
+        case 'ID6_OK':
+          return 'ID6：安全門打開後是否有連鎖信號'
+        case 'ID9_OK':
+          return 'ID9：後門安全門開，馬達是否自動關閉'
+        case 'ID21_OK':
+          return 'ID21：急停信號是否正常'
+        case 'ID22_OK':
+          return 'ID22：射嘴防護罩是否正常'
+        case 'ID27_OK':
+          return 'ID27：三色燈是否正常'
+        default:
+          return ''
+      }
+    },
     convertProgess() {
       let sum = 0
       let data = this.machine_message.detail
@@ -562,11 +540,11 @@ export default {
                 vertical-align: middle;"
       }
       else if (status == '1') {
-        return "background: #909399;\
-                color: #909399;\
+        return "background: #17ba6a;\
+                color: #17ba6a;\
                 height: 20px;\
                 width: 20px;\
-                border: 1px #909399 solid;\
+                border: 1px #17ba6a solid;\
                 border-radius: 50%;\
                 display: inline-block;\
                 vertical-align: middle;"
@@ -585,7 +563,7 @@ export default {
     signalStatus(status) {
       if (status == '0') return '失效'
       else if (status == '1') return ''
-      else return '開啟'
+      else return '失效'
     },
     doorState(status) {
       if (status == '0') return 'NG'
@@ -599,9 +577,8 @@ export default {
         this.machinesB = []
         this.machinesC = []
         this.machinesD = []
-        // console.log(field)
         let data=response.data.data
-        // console.log(data)
+
         for (let i=0;i<data.length;i++) {
           let line_cate=data[i].name.slice(0,1)
           if (line_cate == 'A' || line_cate == 'E') {
@@ -652,29 +629,16 @@ export default {
       this.loading = false
     },
     timer() {
-      if (this.current != '') {
-        this.getSecurityState(this.current);
+      // console.log(this.$route.path.substring(0,19))
+      if (this.$route.path.substring(0,19) == '/overview/security/') {
+        if (this.current != '') {
+          this.getSecurityState(this.current);
+        }
+        this.getMachineState(this.$route.params.line)
+        setTimeout(()=>{
+          this.timer()
+        },1000 * 10);
       }
-      this.getMachineState(this.$route.params.line)
-      setTimeout(()=>{
-        this.timer()
-      },1000 * 10);
-    },
-    toDate(time) {
-      let regTime = time.replace(' ', 'T')
-      if(window.navigator.userAgent.match(/^((?!chrome|android).)*safari/i)) {
-        regTime =  new Date(regTime).getTime() - 8 * 60 * 60 * 1000
-      }
-      let year = new Date(regTime).getFullYear()
-      let month = new Date(regTime).getMonth()+1
-      let date = new Date(regTime).getDate()
-      let hour = new Date(regTime).getHours()
-      hour = hour < 10? '0'+hour: hour
-      let minute = new Date(regTime).getMinutes()
-      minute = minute < 10? '0'+minute: minute
-      let second = new Date(regTime).getSeconds()
-      second = second < 10? '0'+second: second
-      return year+'-'+month+'-'+date+' '+hour+':'+minute+':'+second
     },
     handleCurrentChange: function(currentPage) {
       this.currentPage = currentPage;
