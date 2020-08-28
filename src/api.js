@@ -92,6 +92,7 @@ export const dataEditMachineColor = (row, user) => {
   formData.append('machine_NO', row.machine_NO)
   formData.append('machine_ton', row.machine_ton)
   formData.append('product_color', row.product_color)
+  formData.append('owner', row.owner)
   formData.append('user', user)
   return NWEData.post('/machinecolor/', formData, { headers: {
         'Content-Type': 'multipart/form-data'

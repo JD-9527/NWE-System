@@ -82,6 +82,21 @@
             </editable-cell>
           </el-table-column>
           <el-table-column
+            prop="owner"
+            label="負責人"
+            align="center"
+            width=""
+            show-overflow-tooltip
+          >
+            <editable-cell
+              :show-input="row.editMode"
+              slot-scope="{row}"
+              v-model="row.owner"
+            >
+              <span slot="content">{{row.owner}}</span>
+            </editable-cell>
+          </el-table-column>
+          <el-table-column
             label="操作"
             align="center"
           >
