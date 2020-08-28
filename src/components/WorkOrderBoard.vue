@@ -11,7 +11,7 @@
     <el-tabs v-model="activeLine" type="card">
       <div style="display: flex;">
         <div style="flex-grow: 1;"></div>
-        <div class="sub-title select">噸位</div>
+        <div class="sub-title select" style="margin-top: 5px;">噸位</div>
         <el-select
           size='mini'
           v-model="ton"

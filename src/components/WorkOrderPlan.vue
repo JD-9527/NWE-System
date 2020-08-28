@@ -149,6 +149,7 @@
 .select {
   width: 40px;
   display: inline-block;
+  margin-top: 5px;
 }
 .legend-blue {
   color:#cbd2ff;

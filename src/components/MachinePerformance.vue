@@ -96,6 +96,55 @@
           style="height: 300px; width: 100%;"
           autoresize
         />
+        <el-card class="box-card" shadow="never">
+          <div slot="header" class="clearfix">
+            <span>模具維修報表</span>
+          </div>
+          <div>
+            <el-table
+              :data="tableData"
+              style="width: 100%"
+            >
+              <el-table-column
+                prop="date"
+                label="維修原因"
+                width="">
+              </el-table-column>
+              <el-table-column
+                prop="name"
+                label="模序"
+                width="">
+              </el-table-column>
+              <el-table-column
+                prop="address"
+                label="開始時間">
+              </el-table-column>
+              <el-table-column
+                prop="date"
+                label="結束時間"
+                width="">
+              </el-table-column>
+              <el-table-column
+                prop="name"
+                label="實際維修時間 (hr)"
+                width="">
+              </el-table-column>
+              <el-table-column
+                prop="address"
+                label="預計維修時間 (hr)">
+              </el-table-column>
+              <el-table-column
+                prop="name"
+                label="維修對策"
+                width="">
+              </el-table-column>
+              <el-table-column
+                prop="address"
+                label="負責人">
+              </el-table-column>
+            </el-table>
+          </div>
+        </el-card>
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -217,19 +266,19 @@ export default {
         },
         series: [{
           name: 'line1',
-          data: [1, 3, 2, 4, 5, 3, 1],
+          data: [1, 3, 2, 2, 4, 3, 1],
           type: 'line',
           smooth: true
         },
         {
           name: 'line2',
-          data: [2, 4, 3, 5, 6, 4, 2],
+          data: [2, 4, 3, 3, 5, 4, 2],
           type: 'line',
           smooth: true
         },
         {
           name: 'line3',
-          data: [3, 5, 4, 6, 7, 5, 3],
+          data: [3, 5, 4, 4, 6, 5, 3],
           type: 'line',
           smooth: true
         }]

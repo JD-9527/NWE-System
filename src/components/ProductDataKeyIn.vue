@@ -279,7 +279,7 @@
   overflow: hidden;
   line-height: 32px;
   right: 80px;
-  top: 13px;
+  top: 0px;
   width: 80px;
   opacity: 0;
 }
