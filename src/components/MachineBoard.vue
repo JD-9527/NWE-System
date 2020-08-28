@@ -737,7 +737,7 @@ export default {
     getMachineInfo(machine) {
       overviewMachineInfo(machine).then(response => {
         let data = response.data
-        this.machineInfo.owner = '小賀'
+        this.machineInfo.owner = data.owner
         switch (data.status) {
           case 0:
             this.machineInfo.status = '正常'
