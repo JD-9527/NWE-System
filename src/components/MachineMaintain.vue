@@ -4,10 +4,9 @@
     <el-tabs v-model="activeName">
       <el-tab-pane label="機台基本資料維護" name="1">
         <div style="display: flex;">
-          <NewRowButton type='machinecolor' :tableInfo='columns' @update="getTableData"/>
           <a>
-            <el-button size="small" style="margin-right: 5px;" class="upload" plain>選擇檔案</el-button>
-            <input type="file" id="file" ref="file1" @change="onChangeFileUpload()" class="change"/>
+            <el-button size="small" style="margin-right: 5px; left:0;" class="upload" plain>選擇檔案</el-button>
+            <input type="file" id="file" ref="file1" @change="onChangeFileUpload()" class="change" style="left:0;" />
           </a>
           <span v-if="typeof(file) != 'undefined'" class="commit" style="line-height: 32px;">{{ file.name }}</span>
           <el-button
@@ -189,17 +188,18 @@
               @click="saveRowCT(row, $index)">
             </el-button>
             <el-button
-              type="danger"
-              icon="el-icon-delete"
-              size="mini"
-              @click="openDialog(row, $index)">
-            </el-button>
-            <el-button
               type="info"
               icon="el-icon-close"
               size="mini"
               v-show="row.editMode"
               @click="cancelEditMode(row, $index)">
+            </el-button>
+            <el-button
+              type="danger"
+              icon="el-icon-delete"
+              size="mini"
+              v-show="!row.editMode"
+              @click="openDialog(row, $index)">
             </el-button>
            </template>
           </el-table-column>
@@ -288,11 +288,6 @@ export default {
   },
   data() {
     return {
-      columns: [
-        {prop: 'machine_NO', label: "機台號", type: 'input'},
-        {prop: 'machine_ton', label: "噸位", type: 'input'},
-        {prop: 'product_color', label: "機台當前顏色", type: 'select'},
-      ],
       tableData: [],
       columnsCT: [
         {prop: 'machine_ton', label: "噸位", type: 'input'},

@@ -77,7 +77,7 @@ export default {
       Edit: '',
       categorylist: ['急單', 'D11組裝', '成型組裝', 'NSD', '海外', '印刷', '重試' ],
       colorlist: [],
-      select_list: ['require_source', 'plastic_color', 'machine_NO','product_color'],
+      select_list: ['require_source', 'plastic_color', 'machine_NO'],
       machinelist: [],
       Alists: []
     }
@@ -178,7 +178,7 @@ export default {
     getLists(prop) {
       // console.log(this.new_row.b)
       if (prop == 'require_source') this.Alists = this.categorylist
-      else if (prop == 'plastic_color' || prop == 'product_color') this.Alists = this.colorlist
+      else if (prop == 'plastic_color') this.Alists = this.colorlist
       else if (prop == 'machine_NO') this.Alists = this.machinelist
     }
   },
