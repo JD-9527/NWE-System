@@ -613,7 +613,7 @@ export default {
   methods: {
     onClick(params) {
       // eslint-disable-next-line no-console
-      console.log(params)
+      // console.log(params)
       this.current = params.name
       this.currentStatus = params.status
       this.getMachineInfo(this.current);
