@@ -16,7 +16,7 @@
       </el-tab-pane>
       <el-tab-pane label="推薦甘特圖" name="second">
 
-        <Gantt draggable :line="line" :site="site" :ton="ton" :dataType="dataType" />
+        <Gantt :line="line" :site="site" :ton="ton" :dataType="dataType" />
         <!-- <Gantt v-show="line=='A 線' || (site == 'D10 - 1F') && line=='All'" line="A 線"/>
         <Gantt v-show="line=='B 線'" line="B 線"/>
         <Gantt v-show="line=='C 線'" line="C 線"/>
@@ -86,7 +86,7 @@
       /* eslint-enable */
     },
     mounted() {
-      // this.getData();
+      this.getData();
     }
   };
 </script>
