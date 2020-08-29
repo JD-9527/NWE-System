@@ -120,7 +120,12 @@
         </div>
       </el-tab-pane>
       <el-tab-pane label="計畫查詢" name="third">
-        <FactorySelection tonlist/>
+        <FactorySelection
+          tonlist
+          @lineSelected="getLine"
+          @siteSelected="getSite"
+          @tonSelected="getTon"
+        />
         <div class="sub-title select">料號</div>
         <el-input
           size='mini'
@@ -137,7 +142,7 @@
           @change="date"
           style="width: 250px;"
         ></el-date-picker>
-        <el-button size='mini' style="margin-left: 10px;" @click="WorkListSearch">查詢</el-button>
+        <el-button size='mini' style="margin-left: 10px;" @click="ArrangementSearch">查詢</el-button>
         <el-table
           :data="planTableData.slice((currentPage-1)*10,currentPage*10)"
           style="width: 100%"
@@ -149,6 +154,7 @@
             :prop="column.prop"
             :label="column.label"
             :width="column.width"
+            :fixed="column.label == '料號'"
             align="center"
           ></el-table-column>
         </el-table>
@@ -171,7 +177,7 @@
 
 <script>
   import FactorySelection from './FactorySelection'
-  import { planYearlist, planWeeklist, planWeekPlanHis, planWorkListHis } from '@/api.js'
+  import { planYearlist, planWeeklist, planWeekPlanHis, planWorkListHis, planArrangementHis } from '@/api.js'
   import { String2Date } from '@/utils/common.js'
   export default {
     components: {
@@ -322,7 +328,38 @@
             if (this.part) p = this.part
             planWorkListHis(s,l,t,p,this.start_end).then(response => {
               let data = response.data.data
-                this.reportTableData = data
+              this.reportTableData = data
+            })
+          }
+        }
+      },
+      ArrangementSearch() {
+        if (this.start_end.length == 0 || !this.start_end) {
+          this.$alert('請輸入時間範圍！', '溫馨提示', {
+            confirmButtonText: '確定',
+          });
+        }
+        else {
+          let s_time = String2Date(this.start_end[0])
+          let e_time = String2Date(this.start_end[1])
+          // 不能超過三個月時間
+          let time_3Mon = s_time.setMonth( s_time.getMonth() + 3 ) ;
+          if (time_3Mon < e_time) {
+            this.$alert('時間範圍不可超過三個月！', '溫馨提示', {
+              confirmButtonText: '確定',
+            });
+          }
+          else {
+            // console.log(this.current_site, this.current_line, this.current_ton, this.part, this.start_end )
+            let s = undefined,l = undefined,t = undefined,p = undefined
+            if (this.current_site && this.current_site != 'All') s = this.current_site.substring(0,2)
+            if (this.current_line) l = this.current_line.substring(0,1)
+            if (this.current_ton) t = this.current_ton
+            if (this.part) p = this.part
+            planArrangementHis(s,l,t,p,this.start_end).then(response => {
+              let data = response.data.data
+              console.log(data)
+              this.planTableData = data
             })
           }
         }

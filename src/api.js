@@ -336,3 +336,14 @@ export const planWorkListHis = (field, line, ton, Part_NO, start_end) => {
   params['end_time'] = start_end[1]
   return NWEPlan.get('/his/worklist/',{params})
 }
+
+export const planArrangementHis = (field, line, ton, Part_NO, start_end) => {
+  let params = {}
+  if (field) params['field'] = field
+  if (line) params['line'] = line
+  if (ton) params['ton'] = ton
+  if (Part_NO) params['Part_NO'] = Part_NO
+  params['start_time'] = start_end[0]
+  params['end_time'] = start_end[1]
+  return NWEPlan.get('/his/arrangementhis/',{params})
+}
