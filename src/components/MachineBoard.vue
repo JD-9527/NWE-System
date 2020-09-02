@@ -695,6 +695,9 @@ export default {
       else if (data == '調機') {
         return 'color-orange'
       }
+      else if (data == '斷線') {
+        return 'color-grey'
+      }
     },
     getMachineState(line) {
       overviewMachineBoard(line).then((response)=>{
