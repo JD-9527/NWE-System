@@ -176,8 +176,10 @@
     <el-row :gutter="30">
       <el-col :span="12">
         <el-card shadow="never" style="margin-bottom: 20px;">
-          <div slot="header" class="clearfix">
+          <div slot="header" class="clearfix" style="display: flex;">
             <span class="message-row">{{ current }} 機台訊息</span>
+            <div style="flex-grow: 1"></div>
+            <el-button round size="mini" v-show="current != ''" @click="trigger()">停止機台</el-button>
           </div>
           <div class="message" v-show="current != ''">
             <el-row
@@ -514,7 +516,7 @@
 </style>
 
 <script>
-import { overviewMachineBoard, overviewMachineInfo,
+import { overviewMachineBoard, overviewMachineInfo, overviewMachineStop,
          overviewMachineWorkList, overviewMachineProduceInfo } from '../api.js'
 const legends = [
   { name:'正常', status: 0 },
@@ -848,6 +850,24 @@ export default {
       overviewMachineProduceInfo(machine).then(response => {
         let data = response.data
         this.produce_message = data
+      })
+    },
+    trigger() {
+      /* eslint-disable */
+      overviewMachineStop(this.current).then(response => {
+        this.$message({
+          message: '送出停機訊號',
+          type: 'success',
+          center: true,
+          duration: 2000
+        });
+      })
+      .catch(error => {
+        this.$message.error({
+          message: '發生問題，請聯繫管理員',
+          center: true,
+          duration: 2000
+        });
       })
     }
   },

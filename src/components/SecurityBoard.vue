@@ -1,177 +1,225 @@
 <template>
   <div>
-    <el-row
-      class="header-row"
-      type="flex"
-      align="middle"
-    >
-      <el-col :span="8">
-        NWE {{ $route.params.line }}機台監控訊息
-      </el-col>
-      <el-col
-        :span="3"
+    <div v-show="current == ''">
+      <el-row
+        class="header-row"
+        type="flex"
+        align="middle"
       >
-        <el-select
-          v-model="line"
-          :placeholder="$route.params.line == 'D10'? 'D10 - 1F': 'D9 - 1F'"
-          size="small"
+        <el-col :span="8">
+          NWE {{ $route.params.line }} 機台監控訊息
+        </el-col>
+        <el-col
+          :span="3"
         >
-          <el-option
-            v-for="item in lines"
-            :key="item"
-            :label="item"
-            :value="item"
+          <el-select
+            v-model="line"
+            :placeholder="$route.params.line == 'D10'? 'D10 - 1F': 'D9 - 1F'"
+            size="small"
           >
-          </el-option>
-        </el-select>
-      </el-col>
-      <el-col :span="13">
-        <el-row
-          type="flex"
-          align="bottom"
-          justify="end"
+            <el-option
+              v-for="item in lines"
+              :key="item"
+              :label="item"
+              :value="item"
+            >
+            </el-option>
+          </el-select>
+        </el-col>
+        <el-col :span="13">
+          <el-row
+            type="flex"
+            align="bottom"
+            justify="end"
+          >
+            <el-col
+              :span="3"
+              v-for="legend in legends"
+              :key="legend.name"
+            >
+              <el-button
+                type="text"
+                :style="statusToColor(legend)"
+                class="legend"
+                @click="legendClick(legend.status)"
+              >
+                <font-awesome-icon
+                  :icon="['fas','square']"
+                ></font-awesome-icon>
+                <span style="color: #333">{{ legend.name }}</span>
+              </el-button>
+             </el-col>
+           </el-row>
+        </el-col>
+      </el-row>
+
+      <el-row
+        :gutter="20"
+        type="flex"
+      >
+        <el-col
+          v-for="machine in machines"
+          :key="machine.name"
+          :span="1"
         >
-          <el-col
-            :span="3"
-            v-for="legend in legends"
-            :key="legend.name"
-          >
+          <el-badge>
             <el-button
               type="text"
-              :style="statusToColor(legend)"
-              class="legend"
-              @click="legendClick(legend.status)"
+              @click="onClick(machine)"
             >
-              <font-awesome-icon
-                :icon="['fas','square']"
-              ></font-awesome-icon>
-              <span style="color: #333">{{ legend.name }}</span>
+              <el-card
+                class="item"
+                shadow="never"
+                :style="statusToColor(machine)"
+                :body-style="{ padding: '0' }"
+              >
+                <font-awesome-icon
+                  :icon="['fas','server']"
+                  size="3x"
+                ></font-awesome-icon>
+                <div style="font-size: 24px; color: #333;">{{ machine.name }}</div>
+              </el-card>
             </el-button>
-           </el-col>
-         </el-row>
-      </el-col>
-    </el-row>
-    <el-row
-      :gutter="20"
-      type="flex"
-    >
-      <el-col
-        v-for="machine in machines"
-        :key="machine.name"
-        :span="1"
+          </el-badge>
+        </el-col>
+      </el-row>
+      <el-row
+        :gutter="20"
+        type="flex"
       >
-        <el-badge>
-          <el-button
-            type="text"
-            @click="onClick(machine)"
-          >
-            <el-card
-              class="item"
-              shadow="never"
-              :style="statusToColor(machine)"
-              :body-style="{ padding: '0' }"
+        <el-col
+          v-for="machine in machinesB"
+          :key="machine.name"
+          :span="1"
+        >
+          <el-badge value="!" :hidden="!machine.show">
+            <el-button
+              type="text"
+              @click="onClick(machine)"
             >
-              <font-awesome-icon
-                :icon="['fas','server']"
-                size="3x"
-              ></font-awesome-icon>
-              <div style="font-size: 24px; color: #333;">{{ machine.name }}</div>
-            </el-card>
-          </el-button>
-        </el-badge>
-      </el-col>
-    </el-row>
-    <el-row
-      :gutter="20"
-      type="flex"
-    >
-      <el-col
-        v-for="machine in machinesB"
-        :key="machine.name"
-        :span="1"
+              <el-card
+                class="item"
+                shadow="never"
+                :style="statusToColor(machine)"
+                :body-style="{ padding: '0' }"
+              >
+                <font-awesome-icon
+                  :icon="['fas','server']"
+                  size="3x"
+                ></font-awesome-icon>
+                <div style="font-size: 24px; color: #333;">{{ machine.name }}</div>
+              </el-card>
+            </el-button>
+          </el-badge>
+        </el-col>
+      </el-row>
+      <el-row
+        :gutter="20"
+        type="flex"
       >
-        <el-badge value="!" :hidden="!machine.show">
-          <el-button
-            type="text"
-            @click="onClick(machine)"
-          >
-            <el-card
-              class="item"
-              shadow="never"
-              :style="statusToColor(machine)"
-              :body-style="{ padding: '0' }"
+        <el-col
+          v-for="machine in machinesC"
+          :key="machine.name"
+          :span="1"
+        >
+          <el-badge value="!" :hidden="!machine.show">
+            <el-button
+              type="text"
+              @click="onClick(machine)"
             >
-              <font-awesome-icon
-                :icon="['fas','server']"
-                size="3x"
-              ></font-awesome-icon>
-              <div style="font-size: 24px; color: #333;">{{ machine.name }}</div>
-            </el-card>
-          </el-button>
-        </el-badge>
-      </el-col>
-    </el-row>
-    <el-row
-      :gutter="20"
-      type="flex"
-    >
-      <el-col
-        v-for="machine in machinesC"
-        :key="machine.name"
-        :span="1"
+              <el-card
+                class="item"
+                shadow="never"
+                :style="statusToColor(machine)"
+                :body-style="{ padding: '0' }"
+              >
+                <font-awesome-icon
+                  :icon="['fas','server']"
+                  size="3x"
+                ></font-awesome-icon>
+                <div style="font-size: 24px; color: #333;">{{ machine.name }}</div>
+              </el-card>
+            </el-button>
+          </el-badge>
+        </el-col>
+      </el-row>
+      <el-row
+        :gutter="20"
+        type="flex"
+        v-if="$route.params.line == 'D10'"
       >
-        <el-badge value="!" :hidden="!machine.show">
-          <el-button
-            type="text"
-            @click="onClick(machine)"
-          >
-            <el-card
-              class="item"
-              shadow="never"
-              :style="statusToColor(machine)"
-              :body-style="{ padding: '0' }"
+        <el-col
+          v-for="machine in machinesD"
+          :key="machine.name"
+          :span="1"
+        >
+          <el-badge value="!" :hidden="!machine.show">
+            <el-button
+              type="text"
+              @click="onClick(machine)"
             >
-              <font-awesome-icon
-                :icon="['fas','server']"
-                size="3x"
-              ></font-awesome-icon>
-              <div style="font-size: 24px; color: #333;">{{ machine.name }}</div>
-            </el-card>
-          </el-button>
-        </el-badge>
-      </el-col>
-    </el-row>
-    <el-row
-      :gutter="20"
-      type="flex"
-      v-if="$route.params.line == 'D10'"
-    >
-      <el-col
-        v-for="machine in machinesD"
-        :key="machine.name"
-        :span="1"
-      >
-        <el-badge value="!" :hidden="!machine.show">
-          <el-button
-            type="text"
-            @click="onClick(machine)"
-          >
-            <el-card
-              class="item"
-              shadow="never"
-              :style="statusToColor(machine)"
-              :body-style="{ padding: '0' }"
+              <el-card
+                class="item"
+                shadow="never"
+                :style="statusToColor(machine)"
+                :body-style="{ padding: '0' }"
+              >
+                <font-awesome-icon
+                  :icon="['fas','server']"
+                  size="3x"
+                ></font-awesome-icon>
+                <div style="font-size: 24px; color: #333;">{{ machine.name }}</div>
+              </el-card>
+            </el-button>
+          </el-badge>
+        </el-col>
+      </el-row>
+    </div>
+    <div v-show="current != ''" style="height: 466px;">
+      <div class="header-row" style="margin-bottom: 8px; margin-top: 6px;">
+        {{ current }} 機台監控訊息
+      </div>
+      <div style="display: flex; text-align: center;">
+        <div style="flex-grow: 1;"></div>
+        <div>
+          <video id="videoElement" controls autoplay muted width="600" height="420"></video>
+        </div>
+        <div style="flex-grow: 1;">
+          <div v-show="odStatus.human_count" style="margin: 120px 0;">
+            <div
+              class="od_block"
+              :style="'color:'+ (!odStatus.helmet? '#F50000;': '#17ba6a;')"
             >
-              <font-awesome-icon
-                :icon="['fas','server']"
-                size="3x"
-              ></font-awesome-icon>
-              <div style="font-size: 24px; color: #333;">{{ machine.name }}</div>
-            </el-card>
+              安全帽{{ !odStatus.helmet? '未': '' }}正確配戴
+            </div>
+            <div
+              class="od_block"
+              :style="'color:'+ (!odStatus.gloves? '#F50000;': '#17ba6a;')"
+            >
+              手套{{ !odStatus.gloves? '未': '' }}正確配戴
+            </div>
+            <div
+              class="od_block"
+              :style="'color:'+ (!odStatus.glasses? '#F50000;': '#17ba6a;')"
+            >
+              護目鏡{{ !odStatus.glasses? '未': '' }}正確配戴
+            </div>
+            <div
+              class="od_block"
+              :style="'color:'+ (!odStatus.shoes? '#F50000;': '#17ba6a;')"
+            >
+              安全鞋{{ !odStatus.shoes? '未': '' }}正確配戴
+            </div>
+          </div>
+          <el-button
+            style="font-size: 20px;"
+            @click="current = ''; odStatus={}" type="text"
+          >
+            <i class="el-icon-back"></i>返回主畫面
           </el-button>
-        </el-badge>
-      </el-col>
-    </el-row>
+        </div>
+      </div>
+    </div>
     <el-divider></el-divider>
     <el-row :gutter="30">
       <el-col :span="10">
@@ -200,19 +248,26 @@
       </el-col>
       <el-col :span="14">
         <el-card shadow="never" >
-          <div slot="header" class="clearfix">
-            <span class="message-row">設備點檢看板</span>
+          <div slot="header" class="clearfix" style="display: flex;">
+            <span class="message-row">{{ current }} 點檢歷史</span>
+            <div style="flex-grow: 1"></div>
+            <el-button
+              round
+              size="mini"
+              v-show="current != ''"
+              @click="trigger()"
+            >開始點檢</el-button>
           </div>
           <div class="message" v-show="current != '' ">
             <el-table
               :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
               style="width: 100%"
-              v-loading="loading"
+              max-height="304"
             >
               <el-table-column
                 prop="timestamp"
                 label="測試時間"
-                width="180"
+                width="100"
                 align="center"
               >
               </el-table-column>
@@ -223,26 +278,65 @@
                 align="center">
               </el-table-column>
               <el-table-column
-                label="測試結果"
+                prop="type"
+                label="點檢類型"
+                align="center">
+              </el-table-column>
+              <el-table-column
+                label="點檢編號"
                 align="center"
               >
                 <template slot-scope="{row}">
-                  <el-tooltip
-                    v-for="(key) in Object.keys(row)"
+                  <div
+                    v-for="key in Object.keys(row)"
                     :key="key"
-                    class="item"
-                    effect="dark"
-                    :content="testTooltip(key)"
-                    placement="bottom"
                   >
                     <div
                       class="door_block"
-                      :style="'color:'+ (row[key] == '0'? '#F50000;': '#606266;')"
                       v-show="row[key] != '' && key[0]=='I'"
                     >
-                        {{ testName(key) }} {{ doorState(row[key]) }}
+                      {{ testTooltip(key).no }}
                     </div>
-                  </el-tooltip>
+                  </div>
+                </template>
+              </el-table-column>
+              <el-table-column
+                label="點檢內容"
+                align="center"
+                width="350"
+              >
+                <template slot-scope="{row}">
+                  <div
+                    v-for="key in Object.keys(row)"
+                    :key="key"
+                  >
+                    <div
+                      class="door_block"
+                      v-show="row[key] != '' && key[0]=='I'"
+                    >
+                      {{ testTooltip(key).content }}
+                    </div>
+                  </div>
+                </template>
+              </el-table-column>
+              <el-table-column
+                label="點檢結果"
+                align="center"
+                fixed="right"
+              >
+                <template slot-scope="{row}">
+                  <div
+                    v-for="key in Object.keys(row)"
+                    :key="key"
+                  >
+                    <div
+                      class="door_block"
+                      v-show="row[key] != '' && key[0]=='I'"
+                      :style="'color:'+ (row[key] == '0'? '#F50000;': '#17ba6a;')"
+                    >
+                      {{ doorState(row[key]) }}
+                    </div>
+                  </div>
                 </template>
               </el-table-column>
             </el-table>
@@ -343,14 +437,21 @@
   display: inline-block;
 }
 .door_block {
-  display: inline-block;
   margin: 5px;
+ /* border: 0.5px solid #555;*/
+}
+.od_block {
+  margin: 10px;
+  font-size: 18px;
  /* border: 0.5px solid #555;*/
 }
 </style>
 
 <script>
-import { overviewSecurityState, overviewSecurityInfo, overviewSecurityTest } from '../api.js'
+import { overviewSecurityState, overviewSecurityInfo, overviewSecurityManual,
+         overviewSecurityTest, overviewSecurityMachineOD } from '../api.js'
+import flvjs from 'flv.js'
+
 const legends = [
   { name:'正常', status: 1 },
   { name:'異常', status: 0 },
@@ -359,6 +460,9 @@ const legends = [
 
 export default {
   name: 'MachineBoard',
+  components: {
+
+  },
   data: () => ({
     hidden: true,
     style: "",
@@ -376,6 +480,19 @@ export default {
     loading: false,
     currentPage: 1,
     pageSize: 10,
+    playerOptions: {
+      // videojs options
+      muted: true,
+      language: 'en',
+      playbackRates: [0.7, 1.0, 1.5, 2.0],
+      height: 420,
+      sources: [{
+        type: "rtmp/flv",
+        src: "rtsp://admin:iai20202020@10.132.64.141/out.h264"
+      }],
+      poster: "/static/images/author.jpg",
+    },
+    odStatus: {}
   }),
   watch: {
     line: function() {
@@ -402,6 +519,7 @@ export default {
       // console.log(params.name)
       this.current = params.name
       this.getSecurityState(this.current);
+      this.getMachineOD(this.current)
     },
     legendClick(index){
       // eslint-disable-next-line no-console
@@ -486,19 +604,40 @@ export default {
     testTooltip: function(key) {
       switch (key) {
         case 'ID4_OK':
-          return 'ID4：三色燈是否變紅，是否有報警聲(前/後安全門開)'
+          return {
+            no: 'ID4',
+            content: '三色燈是否變紅，是否有報警聲(前/後安全門開)'
+          }
         case 'ID6_OK':
-          return 'ID6：安全門打開後是否有連鎖信號'
+          return {
+            no: 'ID6',
+            content: '安全門打開後是否有連鎖信號'
+          }
         case 'ID9_OK':
-          return 'ID9：後門安全門開，馬達是否自動關閉'
+          return {
+            no: 'ID4',
+            content: '後門安全門開，馬達是否自動關閉'
+          }
         case 'ID21_OK':
-          return 'ID21：急停信號是否正常'
+          return {
+            no: 'ID21',
+            content: '急停信號是否正常'
+          }
         case 'ID22_OK':
-          return 'ID22：射嘴防護罩是否正常'
+          return {
+            no: 'ID22',
+            content: '射嘴防護罩是否正常'
+          }
         case 'ID27_OK':
-          return 'ID27：三色燈是否正常'
+          return {
+            no: 'ID27',
+            content: '三色燈是否正常'
+          }
         default:
-          return ''
+          return {
+            no: '',
+            content: ''
+          }
       }
     },
     convertProgess() {
@@ -621,7 +760,14 @@ export default {
         // console.log(info.data)
         this.machine_state = info.data
         // console.log(test.data.data)
-        this.tableData = test.data.data
+        let test_data = test.data.data
+        test_data = test_data.map(row => {
+          return {
+            ...row,
+            type: '人工點檢'
+          }
+        })
+        this.tableData = test_data
       }
       catch (error) {
         console.log(error.response.data)
@@ -640,12 +786,50 @@ export default {
         },1000 * 10);
       }
     },
+    getMachineOD(field) {
+      overviewSecurityMachineOD(field).then(response => {
+        let data = response.data
+        // console.log(data)
+        this.odStatus = data
+      })
+    },
     handleCurrentChange: function(currentPage) {
       this.currentPage = currentPage;
     },
+    trigger() {
+      overviewSecurityManual(this.current).then(response => {
+        this.$message({
+          message: '已開始點檢',
+          type: 'success',
+          center: true,
+          duration: 2000
+        });
+      })
+      .catch(error => {
+        this.$message.error({
+          message: '發生問題，請聯繫管理員',
+          center: true,
+          duration: 2000
+        });
+      })
+    }
   },
   mounted() {
     // this.getMachineState(this.$route.params.line);
+    if (flvjs.isSupported()) {
+      let videoElement = document.getElementById('videoElement');
+      let flvPlayer = flvjs.createPlayer({
+        type: 'flv',
+        isLive: true,
+        hasAudio: false,
+        url: 'rtsp://admin:iai20202020@10.132.64.141/out.h264'
+      });
+      console.log(flvPlayer,'flv对象')
+      flvPlayer.attachMediaElement(videoElement);
+      flvPlayer.load();
+      flvPlayer.play();
+    }
+
     this.line = this.$route.params.line == 'D10'? 'D10 - 1F': 'D9 - 1F';
     this.timer();
   },
