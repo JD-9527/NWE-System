@@ -255,12 +255,15 @@
       },
       activeName: function() {
         this.currentPage = 1
-      }
+      },
+      start_end:function() {
+        if (!this.start_end) this.start_end = []
+      },
     },
     methods: {
-      date(item) {
+      date() {
         /* eslint-disable */
-        console.log(item)
+        // console.log(item)
       },
       getYearList() {
         planYearlist().then(response=>{
@@ -330,6 +333,13 @@
               let data = response.data.data
               this.reportTableData = data
             })
+            .catch(() =>{
+              this.$message.error({
+                message: '查詢失敗，請嘗試更換搜尋參數',
+                center: true,
+                duration: 2000
+              });
+            })
           }
         }
       },
@@ -360,6 +370,13 @@
               let data = response.data.data
               console.log(data)
               this.planTableData = data
+            })
+            .catch(() =>{
+              this.$message.error({
+                message: '查詢失敗，請嘗試更換搜尋參數',
+                center: true,
+                duration: 2000
+              });
             })
           }
         }
