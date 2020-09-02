@@ -241,6 +241,7 @@ export const dataImportWeekPlan = (user,file) => {
 }
 export const dataEditWeekPlan = (row, user) => {
   let formData = new FormData();
+  formData.append('week_NO', row.week_NO)
   formData.append('Part_NO', row.Part_NO)
   formData.append('plan_number', row.plan_number)
   if (typeof(row.delivery_time) == 'string') {

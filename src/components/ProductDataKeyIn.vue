@@ -169,6 +169,13 @@
             v-loading="loading"
           >
             <el-table-column
+              prop="week_NO"
+              label="周次"
+              align="center"
+              show-overflow-tooltip
+            >
+            </el-table-column>
+            <el-table-column
               prop="Part_NO"
               label="料號"
               align="center"
@@ -351,7 +358,7 @@ export default {
     async getTableData(data) {
       const day = await dataDayPlan()
       const week = await dataWeekPlan()
-      // console.log(day.data.data,week.data)
+      // console.log(week.data)
       this.tableData = day.data.data
       this.week_part_no = week.data.data
       this.week_part_no = this.week_part_no.map(row => {
