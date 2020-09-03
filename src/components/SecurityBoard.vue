@@ -175,7 +175,7 @@
         </el-col>
       </el-row>
     </div>
-    <div v-show="current != ''" style="height: 466px;">
+    <div v-show="current != ''" style="height: 606px;">
       <div class="header-row" style="margin-bottom: 8px; margin-top: 6px;">
         {{ current }} 機台監控訊息
       </div>
@@ -183,7 +183,7 @@
         <div style="flex-grow: 1;"></div>
         <div>
           <!-- <video id="videoElement" controls autoplay muted width="600" height="420"></video> -->
-          <canvas id="video-canvas" style="height: 420px; width: 560px;"></canvas>
+          <canvas id="video-canvas" style="height: 560px; width: 420px;"></canvas>
         </div>
         <div style="flex-grow: 1;">
           <div v-show="odStatus.human_count" style="margin: 120px 0;">
@@ -509,7 +509,8 @@ export default {
       // console.log(params.name)
       this.current = params.name
       this.getSecurityState(this.current);
-      this.getMachineOD(this.current)
+      // this.getMachineOD(this.current)
+      this.timer1();
     },
     legendClick(index){
       // eslint-disable-next-line no-console
@@ -749,7 +750,7 @@ export default {
         let test = await overviewSecurityTest(field)
         // console.log(info.data)
         this.machine_state = info.data
-        console.log(test.data.data)
+        // console.log(test.data.data)
         let test_data = test.data.data
         test_data = test_data.map(row => {
           return {
@@ -781,6 +782,7 @@ export default {
       if (this.$route.path.substring(0,19) == '/overview/security/') {
         if (this.current != '') {
           this.getMachineOD(this.current)
+          // console.log('test')
         }
         // this.getMachineState(this.$route.params.line)
         setTimeout(()=>{
