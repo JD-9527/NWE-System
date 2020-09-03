@@ -182,7 +182,8 @@
       <div style="display: flex; text-align: center;">
         <div style="flex-grow: 1;"></div>
         <div>
-          <video id="videoElement" controls autoplay muted width="600" height="420"></video>
+          <!-- <video id="videoElement" controls autoplay muted width="600" height="420"></video> -->
+          <canvas id="video-canvas" style="height: 420px; width: 560px;"></canvas>
         </div>
         <div style="flex-grow: 1;">
           <div v-show="odStatus.human_count" style="margin: 120px 0;">
@@ -450,7 +451,7 @@
 <script>
 import { overviewSecurityState, overviewSecurityInfo, overviewSecurityManual,
          overviewSecurityTest, overviewSecurityMachineOD } from '../api.js'
-import flvjs from 'flv.js'
+// import flvjs from 'flv.js'
 
 const legends = [
   { name:'正常', status: 1 },
@@ -480,18 +481,7 @@ export default {
     loading: false,
     currentPage: 1,
     pageSize: 10,
-    playerOptions: {
-      // videojs options
-      muted: true,
-      language: 'en',
-      playbackRates: [0.7, 1.0, 1.5, 2.0],
-      height: 420,
-      sources: [{
-        type: "rtmp/flv",
-        src: "rtsp://admin:iai20202020@10.132.64.141/out.h264"
-      }],
-      poster: "/static/images/author.jpg",
-    },
+    source: 'ws://10.132.54.108:8082',   //你拉取视频源地址
     odStatus: {}
   }),
   watch: {
@@ -759,7 +749,7 @@ export default {
         let test = await overviewSecurityTest(field)
         // console.log(info.data)
         this.machine_state = info.data
-        // console.log(test.data.data)
+        console.log(test.data.data)
         let test_data = test.data.data
         test_data = test_data.map(row => {
           return {
@@ -784,6 +774,18 @@ export default {
         setTimeout(()=>{
           this.timer()
         },1000 * 10);
+      }
+    },
+    timer1() {
+      // console.log(this.$route.path.substring(0,19))
+      if (this.$route.path.substring(0,19) == '/overview/security/') {
+        if (this.current != '') {
+          this.getMachineOD(this.current)
+        }
+        // this.getMachineState(this.$route.params.line)
+        setTimeout(()=>{
+          this.timer1()
+        },1000 * 1);
       }
     },
     getMachineOD(field) {
@@ -815,21 +817,8 @@ export default {
     }
   },
   mounted() {
-    // this.getMachineState(this.$route.params.line);
-    if (flvjs.isSupported()) {
-      let videoElement = document.getElementById('videoElement');
-      let flvPlayer = flvjs.createPlayer({
-        type: 'flv',
-        isLive: true,
-        hasAudio: false,
-        url: 'rtsp://admin:iai20202020@10.132.64.141/out.h264'
-      });
-      console.log(flvPlayer,'flv对象')
-      flvPlayer.attachMediaElement(videoElement);
-      flvPlayer.load();
-      flvPlayer.play();
-    }
-
+    let canvas = document.getElementById('video-canvas')
+    let player = new JSMpeg.Player(this.source, {canvas: canvas})
     this.line = this.$route.params.line == 'D10'? 'D10 - 1F': 'D9 - 1F';
     this.timer();
   },
