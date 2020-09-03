@@ -204,11 +204,11 @@
                 </div>
               </el-col>
               <el-col :span="16">
-                <el-row class="progress-bar-text">
+                <!-- <el-row class="progress-bar-text">
                   <el-col
                     v-for="detail in new_machine_message"
                     :key="detail.status"
-                    :style="'width: '+ detail.percent.toString() + '%;'"
+                    :style="'width: '+ detail.percent + '%;'"
                   >
                     <span>{{ detail.status }}</span>
                     <div
@@ -219,7 +219,33 @@
                     </div>
                     <div style="font-size: 9px; font-weight: bold;">{{ detail.percent + '%' }}</div>
                   </el-col>
-                </el-row>
+                </el-row> -->
+                <el-tooltip
+                  v-for="detail in new_machine_message"
+                  :key="detail.status"
+                  placement="top"
+                  effect="dark"
+                >
+                  <div slot="content">{{detail.status}}<br/>{{detail.value}}</div>
+                  <div
+                    :style="'width: '+ detail.width + '%;'"
+                    :class="'progress-bar '+ progressColor(detail.status)"
+                    style="font-weight: bold"
+                  >
+                    <span>{{ detail.value }}</span>
+                  </div>
+                </el-tooltip>
+                <div>
+                  <div
+                    v-for="detail in new_machine_message"
+                    :key="detail.status"
+                    :style="'width: '+ detail.width + '%;'"
+                    class="progress-bar"
+                    style="font-weight: bold"
+                  >
+                    <span style="font-size: 9px; font-weight: bold;">{{ detail.percent + '%' }}</span>
+                  </div>
+                </div>
               </el-col>
             </el-row>
           </div>
@@ -488,6 +514,13 @@
   border-radius: 4px;
   min-height: 18px;
 }
+.progress-bar {
+  display: inline-block;
+  border-radius: 4px;
+  min-height: 18px;
+  text-align: center;
+  font-size: 14px;
+}
 .progress-bar-text {
   display: inline;
   text-align: center;
@@ -692,8 +725,14 @@ export default {
       else if (data == '維修') {
         return 'color-red'
       }
+      else if (data == '修模') {
+        return 'color-blue'
+      }
       else if (data == '調機') {
         return 'color-orange'
+      }
+      else if (data == '換模') {
+        return 'color-purple'
       }
       else if (data == '斷線') {
         return 'color-grey'
@@ -778,64 +817,92 @@ export default {
         //   {status: '調機', value: '0.6/5', percent: 12},
         // ]
         let tmp = []
+        let math = 0
         Object.keys(data).forEach(key => {
           if (key != 'status' || key != 'owner') {
+            let val = data[key] + '/' + data.total
+            let perc = Math.round((data[key]/data.total) * 100)
+            let widths = perc>5? perc: 5
             switch (key) {
               case 'utilization':
+                widths = (math + widths > 100? 100-math: widths)
                 tmp.push({
                   status: '稼動率',
-                  value: data[key] + '/' + data.total,
-                  percent: (data[key]/data.total) * 100
+                  value: val,
+                  percent: perc,
+                  width: widths
                 })
+                math += widths
                 break
               case 'changeover':
+                widths = (math + widths > 100? 100-math: widths)
                 tmp.push({
                   status: '換模',
-                  value: data[key] + '/' + data.total,
-                  percent: (data[key]/data.total) * 100
+                  value: val,
+                  percent: perc,
+                  width: widths
                 })
+                math += widths
                 break
               case 'waiting':
+                widths = (math + widths > 100? 100-math: widths)
                 tmp.push({
                   status: '待機',
-                  value: data[key] + '/' + data.total,
-                  percent: (data[key]/data.total) * 100
+                  value: val,
+                  percent: perc,
+                  width: widths
                 })
+                math += widths
                 break
               case 'offline':
+                widths = (math + widths > 100? 100-math: widths)
                 tmp.push({
                   status: '斷線',
-                  value: data[key] + '/' + data.total,
-                  percent: (data[key]/data.total) * 100
+                  value: val,
+                  percent: perc,
+                  width: widths
                 })
+                math += widths
                 break
               case 'adj':
+                widths = (math + widths > 100? 100-math: widths)
                 tmp.push({
                   status: '調機',
-                  value: data[key] + '/' + data.total,
-                  percent: (data[key]/data.total) * 100
+                  value: val,
+                  percent: perc,
+                  width: widths
                 })
+                math += widths
                 break
               case 'repair':
+                widths = (math + widths > 100? 100-math: widths)
                 tmp.push({
                   status: '維修',
-                  value: data[key] + '/' + data.total,
-                  percent: (data[key]/data.total) * 100
+                  value: val,
+                  percent: perc,
+                  width: widths
                 })
+                math += widths
                 break
               case 'fixmode':
+                widths = (math + widths > 100? 100-math: widths)
                 tmp.push({
-                  status: '維修待機',
-                  value: data[key] + '/' + data.total,
-                  percent: (data[key]/data.total) * 100
+                  status: '修模',
+                  value: val,
+                  percent: perc,
+                  width: widths
                 })
+                math += widths
                 break
               case 'repairfixmode':
+                widths = (math + widths > 100? 100-math: widths)
                 tmp.push({
                   status: '維修+修模',
-                  value: data[key] + '/' + data.total,
-                  percent: (data[key]/data.total) * 100
+                  value: val,
+                  percent: perc,
+                  width: widths
                 })
+                math += widths
                 break
             }
           }
