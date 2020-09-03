@@ -226,11 +226,11 @@
                   placement="top"
                   effect="dark"
                 >
-                  <div slot="content">{{detail.status}}<br/>{{detail.value}}</div>
+                  <div slot="content" style="text-align: center;">{{detail.status}}<br/>{{detail.value}}</div>
                   <div
                     :style="'width: '+ detail.width + '%;'"
                     :class="'progress-bar '+ progressColor(detail.status)"
-                    style="font-weight: bold"
+                    style="font-weight: bold; margin-top: 20px;"
                   >
                     <span>{{ detail.value }}</span>
                   </div>
@@ -817,15 +817,18 @@ export default {
         //   {status: '調機', value: '0.6/5', percent: 12},
         // ]
         let tmp = []
-        let math = 0
+        let math = 0        //儲存目前寬度（進度條寬度計算）
         Object.keys(data).forEach(key => {
           if (key != 'status' || key != 'owner') {
             let val = data[key] + '/' + data.total
+            // 原利用百分比計算進度條寬度
             let perc = Math.round((data[key]/data.total) * 100)
+            // 若百分比小於一定數字進度條會變很難看，所以額外新增進度條寬度計算
+            // 百分比小於5，則用５，並加到math變數，計算目前已有的總寬度，若下次寬度計算後會超過100%，則只用100-math
             let widths = perc>5? perc: 5
+            widths = (math + widths > 100? 100-math: widths)
             switch (key) {
               case 'utilization':
-                widths = (math + widths > 100? 100-math: widths)
                 tmp.push({
                   status: '稼動率',
                   value: val,
@@ -835,7 +838,6 @@ export default {
                 math += widths
                 break
               case 'changeover':
-                widths = (math + widths > 100? 100-math: widths)
                 tmp.push({
                   status: '換模',
                   value: val,
@@ -845,7 +847,6 @@ export default {
                 math += widths
                 break
               case 'waiting':
-                widths = (math + widths > 100? 100-math: widths)
                 tmp.push({
                   status: '待機',
                   value: val,
@@ -855,7 +856,6 @@ export default {
                 math += widths
                 break
               case 'offline':
-                widths = (math + widths > 100? 100-math: widths)
                 tmp.push({
                   status: '斷線',
                   value: val,
@@ -865,7 +865,6 @@ export default {
                 math += widths
                 break
               case 'adj':
-                widths = (math + widths > 100? 100-math: widths)
                 tmp.push({
                   status: '調機',
                   value: val,
@@ -875,7 +874,6 @@ export default {
                 math += widths
                 break
               case 'repair':
-                widths = (math + widths > 100? 100-math: widths)
                 tmp.push({
                   status: '維修',
                   value: val,
@@ -885,7 +883,6 @@ export default {
                 math += widths
                 break
               case 'fixmode':
-                widths = (math + widths > 100? 100-math: widths)
                 tmp.push({
                   status: '修模',
                   value: val,
@@ -895,7 +892,6 @@ export default {
                 math += widths
                 break
               case 'repairfixmode':
-                widths = (math + widths > 100? 100-math: widths)
                 tmp.push({
                   status: '維修+修模',
                   value: val,
