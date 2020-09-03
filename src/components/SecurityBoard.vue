@@ -553,11 +553,11 @@ export default {
     infoName: function(key) {
       switch (key) {
         case 'safe_door_front_logic':
-          return '止動開關'
+          return '前門1(止動開關)'
         case 'safe_door_back_logic':
-          return '行程開關'
+          return '後門2(行程開關)'
         case 'safe_door_total_logic':
-          return '洩壓閥'
+          return '後門1(液壓閥)'
         case 'nozzle_protection_logic':
           return '射嘴防護罩'
         case 'emergency_1_logic':
@@ -570,6 +570,10 @@ export default {
           return '急停4'
         case 'emergency_5_logic':
           return '急停5'
+        case 'safe_door_block_logic':
+          return '前門檔塊'
+        case 'safe_door_ONOFF_logic':
+          return '前門2開關'
         default:
           return ''
       }
@@ -606,7 +610,7 @@ export default {
           }
         case 'ID9_OK':
           return {
-            no: 'ID4',
+            no: 'ID9',
             content: '後門安全門開，馬達是否自動關閉'
           }
         case 'ID21_OK':
