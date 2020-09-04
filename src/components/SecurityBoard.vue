@@ -190,30 +190,40 @@
           />
         </div>
         <div style="margin-left: 20px">
+          <JSMpegPlayer
+            :id="'2'"
+            :src="sourceR"
+            :height="315"
+            :width="560"
+          />
           <div style="margin: 29px 0;">
           <!-- <div style="margin: 29px 0;"> -->
             <div v-show="odStatus.human_count">
               <div
                 class="od_block"
                 :style="'color:'+ (!odStatus.helmet? '#F50000;': '#17ba6a;')"
+                v-show="odStatus.helmet != 2"
               >
                 安全帽{{ !odStatus.helmet? '未': '' }}正確配戴
               </div>
               <div
                 class="od_block"
                 :style="'color:'+ (!odStatus.gloves? '#F50000;': '#17ba6a;')"
+                v-show="odStatus.gloves != 2"
               >
                 手套{{ !odStatus.gloves? '未': '' }}正確配戴
               </div>
               <div
                 class="od_block"
                 :style="'color:'+ (!odStatus.glasses? '#F50000;': '#17ba6a;')"
+                v-show="odStatus.glasses != 2"
               >
                 護目鏡{{ !odStatus.glasses? '未': '' }}正確配戴
               </div>
               <div
                 class="od_block"
                 :style="'color:'+ (!odStatus.shoes? '#F50000;': '#17ba6a;')"
+                v-show="odStatus.shoes != 2"
               >
                 安全鞋{{ !odStatus.shoes? '未': '' }}正確配戴
               </div>
@@ -226,12 +236,6 @@
                 <i class="el-icon-back"></i>返回主畫面
               </el-button>
             </div>
-            <JSMpegPlayer
-              :id="'2'"
-              :src="sourceR"
-              :height="315"
-              :width="560"
-            />
           </div>
           <canvas id="video-canvasR" style="height: 315px; width: 560px;"></canvas>
         </div>
