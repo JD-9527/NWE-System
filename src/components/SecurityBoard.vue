@@ -230,7 +230,7 @@
           </div>
           <div class="message"  v-show="current != ''">
             <div
-              v-for="key in Object.keys(machine_state)"
+              v-for="(key) in door_sort"
               :key="key"
               class="alarm_box"
               v-show="machine_state[key] != ''"
@@ -481,6 +481,20 @@ export default {
     loading: false,
     currentPage: 1,
     pageSize: 10,
+    door_Seq: [                         //決定訊號順序
+      "safe_door_block_logic",
+      "safe_door_front_logic",
+      "safe_door_ONOFF_logic",
+      "safe_door_total_logic",
+      "safe_door_back_logic",
+      "nozzle_protection_logic",
+      "emergency_1_logic",
+      "emergency_2_logic",
+      "emergency_3_logic",
+      "emergency_4_logic",
+      "emergency_5_logic"
+    ],
+    door_sort: [],                        // 排序後的燈號順序
     source: 'ws://10.132.54.108:8082',   //你拉取视频源地址
     odStatus: {}
   }),
@@ -752,7 +766,9 @@ export default {
         // this.tableData = []
         let info = await overviewSecurityInfo(field)
         let test = await overviewSecurityTest(field)
-        // console.log(info.data)
+        this.door_sort = Object.keys(info.data).sort((a,b)=>{
+          return this.door_Seq.indexOf(a) - this.door_Seq.indexOf(b)
+        })
         this.machine_state = info.data
         // console.log(test.data.data)
         let test_data = test.data.data
