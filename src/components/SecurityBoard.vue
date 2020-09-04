@@ -182,7 +182,13 @@
       <div style="display: flex; text-align: center;">
         <div style="flex-grow: 1;"></div>
         <div>
-          <canvas id="video-canvas" style="height: 560px; width: 315px;"></canvas>
+          <!-- <canvas id="video-canvas" style="height: 560px; width: 315px;"></canvas> -->
+          <JSMpegPlayer
+            :id="'1'"
+            :src="source"
+            :height="560"
+            :width="315"
+          />
         </div>
         <div style="margin-left: 20px">
           <div style="margin: 29px 0;">
@@ -221,6 +227,12 @@
                 <i class="el-icon-back"></i>返回主畫面
               </el-button>
             </div>
+            <JSMpegPlayer
+              :id="'2'"
+              :src="sourceR"
+              :height="315"
+              :width="560"
+            />
           </div>
           <canvas id="video-canvasR" style="height: 315px; width: 560px;"></canvas>
         </div>
@@ -248,6 +260,12 @@
               >
                 {{ infoName(key) }} {{ signalStatus(machine_state[key]) }}
               </div>
+              <!-- <div
+                class="alarm_title_error"
+                :style="'color:'+ (machine_state[key] == '0'? '#F50000;': '#111;')"
+              >
+                {{ infoName(key) }} {{ signalStatus(machine_state[key]) }}
+              </div> -->
             </div>
             <img src="../assets/Vsp.png" style="width: 100%;" />
           </div>
@@ -434,7 +452,14 @@
   display: inline-block;
   min-height: 20px;
   min-width: 120px;
-  width: 30%;
+  text-align: left;
+  margin-left: 5px;
+}
+.alarm_title_error {
+  display: inline-block;
+  min-height: 20px;
+  min-width: 150px;
+  width: 50%;
   text-align: left;
   margin-left: 5px;
 }
@@ -457,7 +482,7 @@
 <script>
 import { overviewSecurityState, overviewSecurityInfo, overviewSecurityManual,
          overviewSecurityTest, overviewSecurityMachineOD } from '../api.js'
-// import flvjs from 'flv.js'
+import JSMpegPlayer from './jsmpegPlayer'
 
 const legends = [
   { name:'正常', status: 1 },
@@ -468,7 +493,7 @@ const legends = [
 export default {
   name: 'MachineBoard',
   components: {
-
+    JSMpegPlayer
   },
   data: () => ({
     hidden: true,
@@ -502,7 +527,7 @@ export default {
     ],
     door_sort: [],                        // 排序後的燈號順序
     source: 'ws://10.132.54.108:8082',   //你拉取视频源地址
-    // source: 'ws://10.132.53.2:9999',   //你拉取视频源地址
+    // sourceR: 'ws://10.132.53.2:9999',   //你拉取视频源地址
     sourceR: 'ws://10.132.53.2:9998',   //另一台攝影機
     odStatus: {}
   }),
@@ -847,10 +872,10 @@ export default {
     }
   },
   mounted() {
-    let canvas = document.getElementById('video-canvas')
-    let canvasR = document.getElementById('video-canvasR')
-    let player = new JSMpeg.Player(this.source, {canvas: canvas})
-    let playerR = new JSMpeg.Player(this.sourceR, {canvas: canvasR})
+    // let canvas = document.getElementById('video-canvas')
+    // let canvasR = document.getElementById('video-canvasR')
+    // let player = new JSMpeg.Player(this.source, {canvas: canvas})
+    // let playerR = new JSMpeg.Player(this.sourceR, {canvas: canvasR})
     this.line = this.$route.params.line == 'D10'? 'D10 - 1F': 'D9 - 1F';
     this.timer();
   },
