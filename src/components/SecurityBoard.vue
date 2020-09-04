@@ -182,7 +182,6 @@
       <div style="display: flex; text-align: center;">
         <div style="flex-grow: 1;"></div>
         <div>
-          <!-- <canvas id="video-canvas" style="height: 560px; width: 315px;"></canvas> -->
           <JSMpegPlayer
             :id="'1'"
             :src="source"
@@ -260,12 +259,6 @@
               >
                 {{ infoName(key) }} {{ signalStatus(machine_state[key]) }}
               </div>
-              <!-- <div
-                class="alarm_title_error"
-                :style="'color:'+ (machine_state[key] == '0'? '#F50000;': '#111;')"
-              >
-                {{ infoName(key) }} {{ signalStatus(machine_state[key]) }}
-              </div> -->
             </div>
             <img src="../assets/Vsp.png" style="width: 100%;" />
           </div>
@@ -430,7 +423,7 @@
   padding: 10px 20px;
 }
 .mach >>> .el-card__body {
-  padding: 13px;
+  padding: 15px;
 }
 .el-row {
   margin-bottom: 8px;
@@ -451,15 +444,7 @@
 .alarm_title {
   display: inline-block;
   min-height: 20px;
-  min-width: 120px;
-  text-align: left;
-  margin-left: 5px;
-}
-.alarm_title_error {
-  display: inline-block;
-  min-height: 20px;
   min-width: 150px;
-  width: 50%;
   text-align: left;
   margin-left: 5px;
 }
