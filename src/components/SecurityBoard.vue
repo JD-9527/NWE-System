@@ -182,47 +182,53 @@
       <div style="display: flex; text-align: center;">
         <div style="flex-grow: 1;"></div>
         <div>
-          <!-- <video id="videoElement" controls autoplay muted width="600" height="420"></video> -->
-          <canvas id="video-canvas" style="height: 560px; width: 420px;"></canvas>
+          <canvas id="video-canvas" style="height: 560px; width: 315px;"></canvas>
         </div>
-        <div style="flex-grow: 1;">
-          <div v-show="odStatus.human_count" style="margin: 120px 0;">
-            <div
-              class="od_block"
-              :style="'color:'+ (!odStatus.helmet? '#F50000;': '#17ba6a;')"
-            >
-              安全帽{{ !odStatus.helmet? '未': '' }}正確配戴
+        <div style="margin-left: 20px">
+          <div style="margin: 29px 0;">
+          <!-- <div style="margin: 29px 0;"> -->
+            <div v-show="odStatus.human_count">
+              <div
+                class="od_block"
+                :style="'color:'+ (!odStatus.helmet? '#F50000;': '#17ba6a;')"
+              >
+                安全帽{{ !odStatus.helmet? '未': '' }}正確配戴
+              </div>
+              <div
+                class="od_block"
+                :style="'color:'+ (!odStatus.gloves? '#F50000;': '#17ba6a;')"
+              >
+                手套{{ !odStatus.gloves? '未': '' }}正確配戴
+              </div>
+              <div
+                class="od_block"
+                :style="'color:'+ (!odStatus.glasses? '#F50000;': '#17ba6a;')"
+              >
+                護目鏡{{ !odStatus.glasses? '未': '' }}正確配戴
+              </div>
+              <div
+                class="od_block"
+                :style="'color:'+ (!odStatus.shoes? '#F50000;': '#17ba6a;')"
+              >
+                安全鞋{{ !odStatus.shoes? '未': '' }}正確配戴
+              </div>
             </div>
-            <div
-              class="od_block"
-              :style="'color:'+ (!odStatus.gloves? '#F50000;': '#17ba6a;')"
-            >
-              手套{{ !odStatus.gloves? '未': '' }}正確配戴
-            </div>
-            <div
-              class="od_block"
-              :style="'color:'+ (!odStatus.glasses? '#F50000;': '#17ba6a;')"
-            >
-              護目鏡{{ !odStatus.glasses? '未': '' }}正確配戴
-            </div>
-            <div
-              class="od_block"
-              :style="'color:'+ (!odStatus.shoes? '#F50000;': '#17ba6a;')"
-            >
-              安全鞋{{ !odStatus.shoes? '未': '' }}正確配戴
+            <div>
+              <el-button
+                style="font-size: 20px;"
+                @click="current = ''; odStatus={}" type="text"
+              >
+                <i class="el-icon-back"></i>返回主畫面
+              </el-button>
             </div>
           </div>
-          <el-button
-            style="font-size: 20px;"
-            @click="current = ''; odStatus={}" type="text"
-          >
-            <i class="el-icon-back"></i>返回主畫面
-          </el-button>
+          <canvas id="video-canvasR" style="height: 315px; width: 560px;"></canvas>
         </div>
+        <div style="flex-grow: 1;"></div>
       </div>
     </div>
     <el-divider></el-divider>
-    <el-row :gutter="30">
+    <el-row :gutter="30" v-show="current != '' ">
       <el-col :span="10">
         <el-card shadow="never" style="margin-bottom: 20px;" class="mach">
           <div slot="header" class="clearfix">
@@ -496,6 +502,8 @@ export default {
     ],
     door_sort: [],                        // 排序後的燈號順序
     source: 'ws://10.132.54.108:8082',   //你拉取视频源地址
+    // source: 'ws://10.132.53.2:9999',   //你拉取视频源地址
+    sourceR: 'ws://10.132.53.2:9998',   //另一台攝影機
     odStatus: {}
   }),
   watch: {
@@ -840,7 +848,9 @@ export default {
   },
   mounted() {
     let canvas = document.getElementById('video-canvas')
+    let canvasR = document.getElementById('video-canvasR')
     let player = new JSMpeg.Player(this.source, {canvas: canvas})
+    let playerR = new JSMpeg.Player(this.sourceR, {canvas: canvasR})
     this.line = this.$route.params.line == 'D10'? 'D10 - 1F': 'D9 - 1F';
     this.timer();
   },
