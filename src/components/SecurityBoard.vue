@@ -810,9 +810,9 @@ export default {
     timer() {
       // console.log(this.$route.path.substring(0,19))
       if (this.$route.path.substring(0,19) == '/overview/security/') {
-        if (this.current != '') {
-          this.getSecurityState(this.current);
-        }
+        // if (this.current != '') {
+        //   this.getSecurityState(this.current);
+        // }
         this.getMachineState(this.$route.params.line)
         setTimeout(()=>{
           this.timer()
