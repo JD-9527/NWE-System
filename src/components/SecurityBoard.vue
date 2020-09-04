@@ -824,6 +824,7 @@ export default {
       if (this.$route.path.substring(0,19) == '/overview/security/') {
         if (this.current != '') {
           this.getMachineOD(this.current)
+          this.getSecurityState(this.current);
           // console.log('test')
         }
         // this.getMachineState(this.$route.params.line)
