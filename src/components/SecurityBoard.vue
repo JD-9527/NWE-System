@@ -197,35 +197,31 @@
             :width="560"
           />
           <div style="margin: 29px 0;">
-          <!-- <div style="margin: 29px 0;"> -->
-            <div v-show="odStatus.human_count">
+            <div>
+            <!-- <div v-show="odStatus.human_count"> -->
               <div
                 class="od_block"
-                :style="'color:'+ (!odStatus.helmet? '#F50000;': '#17ba6a;')"
-                v-show="odStatus.helmet != 2"
+                :style="'color:'+ (odStatus.helmet == 0? '#F50000;': odStatus.helmet == 1? '#17ba6a;': '#000;')"
               >
-                安全帽{{ !odStatus.helmet? '未': '' }}正確配戴
+                安全帽: {{ odStatus.helmet == 0? '不合法': odStatus.helmet == 1? '合法': '未檢測' }}
               </div>
               <div
                 class="od_block"
-                :style="'color:'+ (!odStatus.gloves? '#F50000;': '#17ba6a;')"
-                v-show="odStatus.gloves != 2"
+                :style="'color:'+ (odStatus.gloves == 0? '#F50000;': odStatus.gloves == 1? '#17ba6a;': '#000;')"
               >
-                手套{{ !odStatus.gloves? '未': '' }}正確配戴
+                手套: {{ odStatus.gloves == 0? '不合法': odStatus.gloves == 1? '合法': '未檢測' }}
               </div>
               <div
                 class="od_block"
-                :style="'color:'+ (!odStatus.glasses? '#F50000;': '#17ba6a;')"
-                v-show="odStatus.glasses != 2"
+                :style="'color:'+ (odStatus.glasses == 0? '#F50000;': odStatus.glasses == 1? '#17ba6a;': '#000;')"
               >
-                護目鏡{{ !odStatus.glasses? '未': '' }}正確配戴
+                護目鏡: {{ odStatus.glasses == 0? '不合法': odStatus.glasses == 1? '合法': '未檢測' }}
               </div>
               <div
                 class="od_block"
-                :style="'color:'+ (!odStatus.shoes? '#F50000;': '#17ba6a;')"
-                v-show="odStatus.shoes != 2"
+                :style="'color:'+ (odStatus.shoes == 0? '#F50000;': odStatus.shoes == 1? '#17ba6a;': '#000;')"
               >
-                安全鞋{{ !odStatus.shoes? '未': '' }}正確配戴
+                安全鞋: {{ odStatus.shoes == 0? '不合法': odStatus.shoes == 1? '合法': '未檢測' }}
               </div>
             </div>
             <div>
@@ -830,7 +826,7 @@ export default {
         // this.getMachineState(this.$route.params.line)
         setTimeout(()=>{
           this.timer1()
-        },1000 * 1);
+        },1000 * 3);
       }
     },
     getMachineOD(field) {
