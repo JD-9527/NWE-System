@@ -274,6 +274,7 @@
               size="mini"
               v-show="current != ''"
               @click="trigger()"
+              v-if="$store.getters.roles[0] == 'website_maintainer'"
             >開始點檢</el-button>
           </div>
           <div class="message" v-show="current != '' ">
