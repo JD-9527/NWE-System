@@ -2,7 +2,7 @@
   <div>
     <div v-show="current == ''">
       <el-row
-        class="header-row"
+        class="header-row-gai"
         type="flex"
         align="middle"
       >
@@ -176,8 +176,9 @@
       </el-row>
     </div>
     <div v-show="current != ''" style="height: 606px;">
-      <div class="header-row" style="margin-bottom: 8px; margin-top: 6px;">
-        {{ current }} 機台監控訊息
+      <div class="header-row-gai">
+        <div :style="securityColor(currentStatus)"></div>
+        <div style="vertical-align: middle; margin-left: 8px;">{{ current }} 機台監控訊息</div>
       </div>
       <div style="display: flex; text-align: center;">
         <div style="flex-grow: 1;"></div>
@@ -260,6 +261,10 @@
                 {{ infoName(key) }} {{ signalStatus(machine_state[key]) }}
               </div>
             </div>
+            <div
+              style="text-align: right; margin-top: 10px; color: #F50000"
+              v-show="machine_state.operation_error == 0"
+            >操作錯誤，前門關，後門開！</div>
             <img src="../assets/Vsp.png" style="width: 100%;" />
           </div>
         </el-card>
@@ -380,6 +385,15 @@
 </template>
 
 <style scoped>
+.header-row-gai {
+  font-size: 32px;
+  font-weight:bold;
+  margin-bottom: 8px;
+  margin-top: 6px;
+  display:flex;/*Flex布局*/
+  display: -webkit-flex; /* Safari */
+  align-items:center;/*指定垂直居中*/
+}
 .item {
   /*font-size: 36px; */
   border-color: #fff;
@@ -490,6 +504,7 @@ export default {
     machinesD: [],
     legends: legends,
     current: '',
+    currentStatus: 2,
     line: '',
     lines: ['D9 - 1F','D10 - 1F'],
     machine_state: {},
@@ -515,7 +530,7 @@ export default {
     // source: 'ws://10.132.54.108:8082',   //你拉取视频源地址
     source: 'ws://10.132.53.2:9999',   //你拉取视频源地址
     sourceR: 'ws://10.132.53.2:9998',   //另一台攝影機
-    odStatus: {}
+    odStatus: {},
   }),
   watch: {
     line: function() {
@@ -537,10 +552,11 @@ export default {
   },
   methods: {
     onClick(params) {
-      // eslint-disable-next-line no-console
       // console.log(this.$route.params.line)
-      // console.log(params.name)
+      // eslint-disable-next-line no-console
+      console.log(params)
       this.current = params.name
+      this.currentStatus = params.status
       this.getSecurityState(this.current);
       // this.getMachineOD(this.current)
       this.timer1();
@@ -717,11 +733,11 @@ export default {
                 vertical-align: middle;"
       }
       else {
-        return "background: #ff7f3c;\
-                color: #ff7f3c;\
+        return "background: #909399;\
+                color: #909399;\
                 height: 20px;\
                 width: 20px;\
-                border: 1px #ff7f3c solid;\
+                border: 1px #909399 solid;\
                 border-radius: 50%;\
                 display: inline-block;\
                 vertical-align: middle;"
