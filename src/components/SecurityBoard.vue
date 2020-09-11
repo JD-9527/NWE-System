@@ -251,7 +251,7 @@
               v-for="(key) in door_sort"
               :key="key"
               class="alarm_box"
-              v-show="machine_state[key] != ''"
+              v-show="machine_state[key] != '' && key != 'operation_error'"
             >
               <div :style="securityColor(machine_state[key])"></div>
               <div
