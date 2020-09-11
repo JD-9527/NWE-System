@@ -2,7 +2,7 @@
   <div>
     <div v-show="current == ''">
       <el-row
-        class="header-row-gai"
+        class="header-row"
         type="flex"
         align="middle"
       >
@@ -528,8 +528,9 @@ export default {
     ],
     door_sort: [],                        // 排序後的燈號順序
     // source: 'ws://10.132.54.108:8082',   //你拉取视频源地址
-    source: 'ws://10.132.53.2:9999',   //你拉取视频源地址
-    sourceR: 'ws://10.132.53.2:9998',   //另一台攝影機
+    // 'ws://10.132.53.2:9999' 'ws://10.132.53.2:9998'
+    source: 'ws://10.124.131.81:8869',   //你拉取视频源地址
+    sourceR: 'ws://10.124.131.81:8870',   //另一台攝影機
     odStatus: {},
   }),
   watch: {
@@ -554,7 +555,7 @@ export default {
     onClick(params) {
       // console.log(this.$route.params.line)
       // eslint-disable-next-line no-console
-      console.log(params)
+      // console.log(params)
       this.current = params.name
       this.currentStatus = params.status
       this.getSecurityState(this.current);
@@ -792,6 +793,14 @@ export default {
               status: data[i].status,
             })
           }
+        }
+        if (this.current != '') {
+          let curField = this.current[0]
+          let curLine = parseInt(this.current.substring(1,3))
+          if (curField == 'A' || curField == 'E') this.currentStatus =this.machines[curLine-1].status
+          if (curField == 'B' || curField == 'F') this.currentStatus =this.machinesB[curLine-1].status
+          if (curField == 'C' || curField == 'G') this.currentStatus =this.machinesC[curLine-1].status
+          if (curField == 'D' ) this.currentStatus =this.machinesD[curLine-1].status
         }
       })
     },
