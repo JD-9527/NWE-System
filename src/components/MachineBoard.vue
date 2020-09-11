@@ -737,9 +737,16 @@ export default {
       else if (data == '斷線') {
         return 'color-grey'
       }
+      else if (data == '待機') {
+        return 'color-yellow'
+      }
     },
     getMachineState(line) {
       overviewMachineBoard(line).then((response)=>{
+        this.machines = []
+        this.machinesB = []
+        this.machinesC = []
+        this.machinesD = []
         let data=response.data.data
         for (let i=0;i<data.length;i++) {
           let line_cate=data[i].name.slice(0,1)
@@ -935,11 +942,24 @@ export default {
           duration: 2000
         });
       })
-    }
+    },
+    timer() {
+      // console.log(this.$route.path.substring(0,19))
+      if (this.$route.path.substring(0,18) == '/overview/machine/') {
+        // if (this.current != '') {
+        //   this.getSecurityState(this.current);
+        // }
+        this.getMachineState(this.$route.params.line)
+        setTimeout(()=>{
+          this.timer()
+        },1000 * 10);
+      }
+    },
   },
   mounted() {
     // this.getMachineState(this.$route.params.line)
     this.line = this.$route.params.line == 'D10'? 'D10 - 1F': 'D9 - 1F';
+    this.timer();
     // this.getMachineInfo();
     // this.getMachineWorkList();
     // this.getMachineProduceInfo();
