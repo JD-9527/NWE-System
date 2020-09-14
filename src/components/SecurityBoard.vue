@@ -198,7 +198,7 @@
             :width="560"
           />
           <div style="margin: 29px 0;">
-            <div>
+            <div v-show="odError == 0">
             <!-- <div v-show="odStatus.human_count"> -->
               <div
                 class="od_block"
@@ -224,6 +224,9 @@
               >
                 安全鞋: {{ odStatus.shoes == 0? '不合法': odStatus.shoes == 1? '合法': '未檢測' }}
               </div>
+            </div>
+            <div v-show="odError!=0" style="color: #F50000; line-height: 130px;">
+              {{ odError==1? '與數據庫連線失敗': '智能識別未啟動'}}
             </div>
             <div>
               <el-button
@@ -532,6 +535,7 @@ export default {
     source: 'ws://10.124.131.81:8869',   //你拉取视频源地址
     sourceR: 'ws://10.124.131.81:8870',   //另一台攝影機
     odStatus: {},
+    odError: 1,                           // 0:正常, 1:連線異常, 2:智能識別異常
   }),
   watch: {
     line: function() {
@@ -857,9 +861,15 @@ export default {
     },
     getMachineOD(field) {
       overviewSecurityMachineOD(field).then(response => {
+        this.odError = false
         let data = response.data
         // console.log(data)
         this.odStatus = data
+        if (data.status == 0) this.odError = 2    // 異常
+        else this.odError = 0
+      })
+      .catch(error=>{
+        this.odError = 1
       })
     },
     handleCurrentChange: function(currentPage) {
