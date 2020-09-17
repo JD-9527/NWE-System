@@ -50,7 +50,7 @@
             :icon="['fas','square']"
             class="legend-green"
           ></font-awesome-icon>
-          正常生產
+          生產中
         </div>
       </div>
       <el-tab-pane

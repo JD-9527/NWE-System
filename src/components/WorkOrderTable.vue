@@ -1,9 +1,10 @@
 <template>
   <div>
     <el-table
-      :data="tableData.filter(data => !ton || data.machine_ton.toString() == ton)"
+      :data="tableData.filter(data => !ton || data.machine_ton.toString() == ton).slice((currentPage-1)*pageSize,currentPage*pageSize)"
       style="width: 100%"
-      height="578"
+      height="425"
+      highlight-current-row
       :row-class-name="tableRowClassName"
       @row-click="onClick"
     >
@@ -43,8 +44,22 @@
       >
       </el-table-column>
       <el-table-column
+        prop="real_s_time"
+        :label="'實際\n結束時間'"
+        width="100"
+        align="center"
+      >
+      </el-table-column>
+      <el-table-column
+        prop="real_s_time"
+        :label="'計畫\n開始時間'"
+        width="100"
+        align="center"
+      >
+      </el-table-column>
+      <el-table-column
         prop="plan_e_time"
-        :label="'預計\n結束時間'"
+        :label="'計畫\n結束時間'"
         width="100"
         align="center"
       >
@@ -186,7 +201,7 @@
         :current-page="currentPage"
         :page-size="pageSize"
         layout="prev, pager, next"
-        :total="tableData.length"
+        :total="tableData.filter(data => !ton || data.machine_ton.toString() == ton).length"
         prev-text="Prev"
         next-text="Next"
         class='dark-btn'
