@@ -2,32 +2,33 @@ import axios from 'axios';
 import store from '@/store';
 
 // http://192.168.0.160:8880
-// http://10.124.131.87:8880
+// http://10.132.53.202:8880
+// http://10.132.53.202:8880
 
 // 總覽
 const NWEOverview = axios.create({
-  baseURL: 'http://10.124.131.87:8880/overview/'
+  baseURL: 'http://10.132.53.202:8880/overview/'
 });
 
 // 生產排程
 const NWEPlan = axios.create({
-  baseURL: 'http://10.124.131.87:8880/plan/'
+  baseURL: 'http://10.132.53.202:8880/plan/'
 });
 // const NWEPlanGET = axios.create({
-//   baseURL: 'http://10.124.131.87:8880/plan/get/'
+//   baseURL: 'http://10.132.53.202:8880/plan/get/'
 // });
 
 // 資料輸入、維護
 const NWEData = axios.create({
-  baseURL: 'http://10.124.131.87:8880/data/'
+  baseURL: 'http://10.132.53.202:8880/data/'
 });
 // const NWEDataGET = axios.create({
-//   baseURL: 'http://10.124.131.87:8880/data/get/'
+//   baseURL: 'http://10.132.53.202:8880/data/get/'
 // });
 
 
 const Token = axios.create({
-  baseURL: 'http://10.124.131.87:8880/token/'
+  baseURL: 'http://10.132.53.202:8880/token/'
 })
 
 export const login = (username,passwd) => {
