@@ -188,6 +188,16 @@
             :src="source"
             :height="560"
             :width="315"
+            key="source1"
+            v-if="chsource"
+          />
+          <JSMpegPlayer
+            :id="'1'"
+            :src="source2"
+            :height="560"
+            :width="315"
+            key="source2"
+            v-else
           />
         </div>
         <div style="margin-left: 20px">
@@ -196,7 +206,20 @@
             :src="sourceR"
             :height="315"
             :width="560"
+            key="source2"
+            v-if="chsource"
           />
+          <JSMpegPlayer
+            :id="'2'"
+            :src="source2R"
+            :height="315"
+            :width="560"
+            key="source2R"
+            v-else
+          />
+          <div>
+            <el-button size="mini" @click="chsource = !chsource">切換到線路{{ chsource?'2':'1'}}</el-button>
+          </div>
           <div style="margin: 29px 0;">
             <div v-show="odError == 0">
             <!-- <div v-show="odStatus.human_count"> -->
@@ -534,8 +557,11 @@ export default {
     // 'ws://10.132.53.2:9999' 'ws://10.132.53.2:9998'
     source: 'ws://10.124.131.81:8869',   //你拉取视频源地址
     sourceR: 'ws://10.124.131.81:8870',   //另一台攝影機
+    source2: 'ws://10.132.53.2:9999',   //你拉取视频源地址
+    source2R: 'ws://10.132.53.2:9998',   //另一台攝影機
     odStatus: {},
     odError: 1,                           // 0:正常, 1:連線異常, 2:智能識別異常
+    chsource: true,
   }),
   watch: {
     line: function() {
@@ -891,6 +917,19 @@ export default {
           duration: 2000
         });
       })
+    },
+    changeSource() {
+      this.chsource = !this.chsource
+      if (this.chsource) {
+        this.source = 'ws://10.124.131.81:8869'
+        this.sourceR = 'ws://10.124.131.81:8870'
+      }
+      else {
+        // this.source = 'ws://10.132.53.2:9999'
+        // this.sourceR = 'ws://10.132.53.2:9998'
+        this.source = 'ws://10.132.53.2:9999'
+        this.sourceR = 'ws://10.132.53.2:9998'
+      }
     }
   },
   mounted() {
