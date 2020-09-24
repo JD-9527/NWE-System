@@ -21,7 +21,7 @@
             <el-col :span="8" class="row-top">
               <el-row>總達成率</el-row>
               <el-row>
-                <el-progress :text-inside="true" :stroke-width="20" :percentage="D9Rate[1].value" color="#17ba6a"></el-progress>
+                <el-progress :text-inside="true" :stroke-width="20" :percentage="0" color="#17ba6a"></el-progress>
               </el-row>
               <el-row>總稼動率</el-row>
               <el-row>
@@ -57,7 +57,7 @@
             <el-col :span="8" class="row-top">
               <el-row>總達成率</el-row>
               <el-row>
-                <el-progress :text-inside="true" :stroke-width="20" :percentage="D10Rate[1].value" color="#17ba6a"></el-progress>
+                <el-progress :text-inside="true" :stroke-width="20" :percentage="0" color="#17ba6a"></el-progress>
               </el-row>
               <el-row>總稼動率</el-row>
               <el-row>
