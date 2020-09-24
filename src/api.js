@@ -63,6 +63,7 @@ NWEPlan.interceptors.request.use(config => {
 // 生產狀態
 export const overviewMachineStateCount = (field) => NWEOverview.get('/machine/statecount/?field='+field)
 export const overviewMachineAbnormal = (field) => NWEOverview.get('/machine/abnormalacc/?field='+field)
+export const overviewMachineRate = (field) => NWEOverview.get('/machine/rate/?field='+field)
 export const overviewMachineFailureRate = (field) => NWEOverview.get('/machine/failurerate/?field='+field)
 export const overviewMachineStartRate = (field) => NWEOverview.get('/machine/state/?field='+field)
 export const overviewMachineBoard = (field) => NWEOverview.get('/machine/board/?field='+field)

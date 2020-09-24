@@ -21,11 +21,11 @@
             <el-col :span="8" class="row-top">
               <el-row>總達成率</el-row>
               <el-row>
-                <el-progress :text-inside="true" :stroke-width="20" :percentage="70" color="#17ba6a"></el-progress>
+                <el-progress :text-inside="true" :stroke-width="20" :percentage="D9Rate[1].value" color="#17ba6a"></el-progress>
               </el-row>
               <el-row>總稼動率</el-row>
               <el-row>
-                <el-progress :text-inside="true" :stroke-width="20" :percentage="70" color="#17ba6a"></el-progress>
+                <el-progress :text-inside="true" :stroke-width="20" :percentage="D9Rate[0].value" color="#17ba6a"></el-progress>
               </el-row>
               <el-row style="display: inline;text-align: right;">
                 <div style="padding: 20px 10px">
@@ -57,11 +57,11 @@
             <el-col :span="8" class="row-top">
               <el-row>總達成率</el-row>
               <el-row>
-                <el-progress :text-inside="true" :stroke-width="20" :percentage="70" color="#17ba6a"></el-progress>
+                <el-progress :text-inside="true" :stroke-width="20" :percentage="D10Rate[1].value" color="#17ba6a"></el-progress>
               </el-row>
               <el-row>總稼動率</el-row>
               <el-row>
-                <el-progress :text-inside="true" :stroke-width="20" :percentage="70" color="#17ba6a"></el-progress>
+                <el-progress :text-inside="true" :stroke-width="20" :percentage="D10Rate[0].value" color="#17ba6a"></el-progress>
               </el-row>
               <el-row style="display: inline;text-align: right;">
                 <div style="padding: 20px 10px">
@@ -175,7 +175,8 @@
 import radar from './radar'
 import barLine from './bar_line'
 import bar from './bar'
-import { overviewMachineStartRate, overviewMachineStateCount, overviewMachineAbnormal, overviewMachineFailureRate } from '../api.js'
+import { overviewMachineStartRate, overviewMachineStateCount, overviewMachineAbnormal,
+         overviewMachineFailureRate, overviewMachineRate } from '../api.js'
 
 let datasetA={
   'E線' : 0,
@@ -361,7 +362,15 @@ export default {
     bar: bar(changeBarColor(datasetD)),
     bar2: bar(changeBarColor2(datasetE)),
     isSelect: 'D10',
-    selectStyle: 'border-color: #409EFF; border-width: 2px'
+    selectStyle: 'border-color: #409EFF; border-width: 2px',
+    D9Rate: [
+      { name: 'utilization', value: 0 },
+      { name: 'achievement', value: 0 }
+    ],
+    D10Rate: [
+      { name: 'utilization', value: 0 },
+      { name: 'achievement', value: 0 }
+    ]
     // test: this.getRadarData()
   }),
   methods: {
@@ -389,6 +398,13 @@ export default {
           this.Radar2.series[0].data[0].value = values
         }
       });
+    },
+    getRate(field) {
+      overviewMachineRate(field).then(response => {
+        let data = response.data.data
+        if (field == 'D9') this.D9Rate = data
+        else this.D10Rate = data
+      })
     },
     getMachineState(location) {
       overviewMachineStateCount(location).then((response) => {
@@ -446,6 +462,8 @@ export default {
   mounted() {
     this.getRadarData('D9');
     this.getRadarData('D10');
+    this.getRate('D9');
+    this.getRate('D10');
     this.getMachineState('D10');
     this.getAbnormal('D10');
     this.getFailureRate('D10');
