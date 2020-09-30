@@ -77,6 +77,7 @@ export const overviewMachineStop = (machine_NO) => {
         'Content-Type': 'multipart/form-data'
       }});
 }
+export const overviewMachineInfoDetail = (machine_NO) => NWEOverview.get('/machine/infodetail/?machine_NO='+machine_NO)
 
 
 // 安全模塊

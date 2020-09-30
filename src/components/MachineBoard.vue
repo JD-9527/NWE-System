@@ -173,7 +173,7 @@
       </el-col>
     </el-row>
     <el-divider></el-divider>
-    <el-row :gutter="30">
+    <el-row :gutter="30" v-show="!machineDetail">
       <el-col :span="12">
         <el-card shadow="never" style="margin-bottom: 20px;">
           <div slot="header" class="clearfix" style="display: flex;">
@@ -204,22 +204,6 @@
                 </div>
               </el-col>
               <el-col :span="16">
-                <!-- <el-row class="progress-bar-text">
-                  <el-col
-                    v-for="detail in new_machine_message"
-                    :key="detail.status"
-                    :style="'width: '+ detail.percent + '%;'"
-                  >
-                    <span>{{ detail.status }}</span>
-                    <div
-                      :class="'grid-content '+ progressColor(detail.status)"
-                      style="font-weight: bold"
-                    >
-                      <span>{{ detail.value }}</span>
-                    </div>
-                    <div style="font-size: 9px; font-weight: bold;">{{ detail.percent + '%' }}</div>
-                  </el-col>
-                </el-row> -->
                 <el-tooltip
                   v-for="detail in new_machine_message"
                   :key="detail.status"
@@ -230,7 +214,8 @@
                   <div
                     :style="'width: '+ detail.width + '%;'"
                     :class="'progress-bar '+ progressColor(detail.status)"
-                    style="font-weight: bold; margin-top: 20px;"
+                    style="font-weight: bold; margin-top: 20px; cursor: pointer;"
+                    @click="machineDetail = !machineDetail"
                   >
                     <span>{{ detail.value }}</span>
                   </div>
@@ -487,6 +472,42 @@
         </el-card>
       </el-col>
     </el-row>
+
+    <el-row :gutter="30" v-show="machineDetail">
+      <el-col>
+        <el-card shadow="never" style="margin-bottom: 20px;">
+          <div slot="header" class="clearfix" style="display: flex;">
+            <span class="message-row">{{ current }} 生產紀錄</span>
+            <div style="flex-grow: 1"></div>
+            <el-button
+              v-show="machineDetail"
+              @click="machineDetail = !machineDetail"
+              size="mini"
+              type="text"
+            >返回</el-button>
+          </div>
+          <div class="message">
+            <div style="padding: 15px 10px; ">
+              <div class="boarder">
+                <div style=" background: #ddd; height: 18px; border-radius: 5px;">
+                  <el-tooltip
+                    placement="top"
+                    v-for="(item,index) in machineDetailTime"
+                    :key="index"
+                  >
+                    <div slot="content">{{item.name}}<br/>{{item.time + ' s'}}</div>
+                    <div
+                      :class="color(item.status)"
+                      :style="'width:' + item.width + '%'"
+                    ></div>
+                  </el-tooltip>
+                </div>
+              </div>
+            </div>
+          </div>
+        </el-card>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
@@ -546,11 +567,17 @@
 .legend {
   font-size: 16px;
 }
+.boarder {
+  border-left: 1px solid #333;
+  border-bottom: 1px solid #333;
+  padding-top:5px;
+  height: 25px;
+}
 </style>
 
 <script>
 import { overviewMachineBoard, overviewMachineInfo, overviewMachineStop,
-         overviewMachineWorkList, overviewMachineProduceInfo } from '../api.js'
+         overviewMachineWorkList, overviewMachineProduceInfo, overviewMachineInfoDetail } from '../api.js'
 const legends = [
   { name:'正常', status: 0 },
   { name:'換模', status: 1 },
@@ -619,7 +646,9 @@ export default {
     current: '',
     currentStatus: 3,
     statusCode: [5,6],
-    machineInfo: {}
+    machineInfo: {},
+    machineDetail: false,
+    machineDetailTime: []
   }),
   watch: {
     line: function() {
@@ -654,6 +683,7 @@ export default {
       this.getMachineInfo(this.current);
       this.getMachineWorkList(this.current);
       this.getMachineProduceInfo(this.current);
+      this.getMachineDetailTime(this.current)
     },
     legendClick(index){
       // eslint-disable-next-line no-console
@@ -739,6 +769,26 @@ export default {
       }
       else if (data == '待機') {
         return 'color-yellow'
+      }
+    },
+    color: function(data) {
+      switch (data) {
+        case 0:
+          return 'progress-bar color-green'
+        case 1:
+          return 'progress-bar color-purple'
+        case 2:
+          return 'progress-bar color-yellow'
+        case 3:
+          return 'progress-bar color-grey'
+        case 4:
+          return 'progress-bar color-orange'
+        case 5:
+          return 'progress-bar color-red'
+        case 6:
+          return 'progress-bar color-blue'
+        default:
+          return 'progress-bar color-grey'
       }
     },
     getMachineState(line) {
@@ -923,6 +973,87 @@ export default {
       overviewMachineProduceInfo(machine).then(response => {
         let data = response.data
         this.produce_message = data
+      })
+    },
+    getMachineDetailTime(machine) {
+      overviewMachineInfoDetail(machine).then(response => {
+        let data = response.data.data
+        let tmp = []
+        let math = 0        //儲存目前寬度（進度條寬度計算）
+        data.forEach(item => {
+          // 原利用百分比計算進度條寬度
+          let perc = Math.round((item.time/86400) * 100)
+          // 若百分比小於一定數字進度條會變很難看，所以額外新增進度條寬度計算
+          // 百分比小於5，則用５，並加到math變數，計算目前已有的總寬度，若下次寬度計算後會超過100%，則只用100-math
+          let widths = perc>5? perc: 5
+          widths = (math + widths > 100? 100-math: widths)
+          switch (item.status) {
+            case 0:
+              tmp.push({
+                name: '正常',
+                status: item.status,
+                time: item.time,
+                width: widths
+              })
+              math += widths
+              break
+            case 1:
+              tmp.push({
+                name: '換模',
+                status: item.status,
+                time: item.time,
+                width: widths
+              })
+              math += widths
+              break
+            case 2:
+              tmp.push({
+                name: '待機',
+                status: item.status,
+                time: item.time,
+                width: widths
+              })
+              math += widths
+              break
+            case 3:
+              tmp.push({
+                name: '斷線',
+                status: item.status,
+                time: item.time,
+                width: widths
+              })
+              math += widths
+              break
+            case 4:
+              tmp.push({
+                name: '調機',
+                status: item.status,
+                time: item.time,
+                width: widths
+              })
+              math += widths
+              break
+            case 5:
+              tmp.push({
+                name: '維修',
+                status: item.status,
+                time: item.time,
+                width: widths
+              })
+              math += widths
+              break
+            case 6:
+              tmp.push({
+                name: '修模',
+                status: item.status,
+                time: item.time,
+                width: widths
+              })
+              math += widths
+              break
+          }
+        })
+        this.machineDetailTime = tmp
       })
     },
     trigger() {
