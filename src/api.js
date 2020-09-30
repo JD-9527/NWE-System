@@ -366,3 +366,14 @@ export const planArrangementHis = (field, line, ton, Part_NO, start_end) => {
   params['end_time'] = start_end[1]
   return NWEPlan.get('/his/arrangementhis/',{params})
 }
+
+// 提交計畫工單
+export const submitarrangement = (field,line,ton) => {
+  let formData = new FormData();
+  formData.append('field', field)
+  formData.append('line', line)
+  formData.append('ton', ton)
+  return NWEPlan.post('/submit/arrangement/', formData, { headers: {
+        'Content-Type': 'multipart/form-data'
+      }});
+}
