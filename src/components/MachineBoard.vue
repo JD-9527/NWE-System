@@ -210,7 +210,9 @@
                   placement="top"
                   effect="dark"
                 >
-                  <div slot="content" style="text-align: center;">{{detail.status}}<br/>{{detail.value}}</div>
+                  <div slot="content" style="text-align: center;">
+                    {{detail.status}}<br/>{{detail.value + ' (min)'}}
+                  </div>
                   <div
                     :style="'width: '+ detail.width + '%;'"
                     :class="'progress-bar '+ progressColor(detail.status)"
@@ -495,7 +497,9 @@
                     v-for="(item,index) in machineDetailTime"
                     :key="index"
                   >
-                    <div slot="content">{{item.name}}<br/>{{item.time + ' s'}}</div>
+                    <div slot="content" style="text-align: center;">
+                      {{item.name}}<br/>{{item.time + ' min'}}
+                    </div>
                     <div
                       :class="color(item.status)"
                       :style="'width:' + item.width + '%'"
@@ -982,7 +986,7 @@ export default {
         let math = 0        //儲存目前寬度（進度條寬度計算）
         data.forEach(item => {
           // 原利用百分比計算進度條寬度
-          let perc = Math.round((item.time/86400) * 100)
+          let perc = Math.round((item.time/1440) * 100)
           // 若百分比小於一定數字進度條會變很難看，所以額外新增進度條寬度計算
           // 百分比小於5，則用５，並加到math變數，計算目前已有的總寬度，若下次寬度計算後會超過100%，則只用100-math
           let widths = perc>5? perc: 5
