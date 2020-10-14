@@ -14,7 +14,7 @@
           <el-col :span="12">
             <el-card shadow="always">
               <span>
-                <div slot="header" class="login-header">Smart Modling Management System</div>
+                <div slot="header" class="login-header">Smart Molding Management System</div>
                 <div class="sub-title">Welcome Back! Please login to your account.</div>
               </span>
               <el-row >
