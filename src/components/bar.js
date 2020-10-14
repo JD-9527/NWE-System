@@ -1,4 +1,4 @@
-export default function bar(data) {
+export default function bar(data,name) {
   let data_keys = Object.keys(data);
   let data_values = Object.values(data);
 
@@ -7,9 +7,9 @@ export default function bar(data) {
 
     },
     grid:{
-      top: '20',
+      top: '35',
       bottom: '8%',
-      left: '25',
+      left: '30',
       right: '3%',
     },
     xAxis: {
@@ -20,6 +20,7 @@ export default function bar(data) {
       }
     },
     yAxis: {
+      name: name,
       type: 'value',
     },
     series: [{

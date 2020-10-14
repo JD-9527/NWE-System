@@ -359,8 +359,8 @@ export default {
     Radar: radar('D9 開動率',datasetA),
     Radar2: radar('D10 開動率',datasetB),
     barLine: barLine(datasetC),
-    bar: bar(changeBarColor(datasetD)),
-    bar2: bar(changeBarColor2(datasetE)),
+    bar: bar(changeBarColor(datasetD),'台'),
+    bar2: bar(changeBarColor2(datasetE),'天'),
     isSelect: 'D10',
     selectStyle: 'border-color: #409EFF; border-width: 2px',
     D9Rate: [
