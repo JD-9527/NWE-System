@@ -11,6 +11,19 @@
     <el-tabs v-model="activeLine" type="card">
       <div style="display: flex;">
         <div style="flex-grow: 1;"></div>
+        <div class="sub-title select" style="margin-top: 5px;">機台</div>
+        <el-select
+          size='mini'
+          v-model="mach"
+          clearable
+        >
+          <el-option
+            v-for="item in machs"
+            :key="item"
+            :label="item"
+            :value="item">
+          </el-option>
+        </el-select>
         <div class="sub-title select" style="margin-top: 5px;">噸位</div>
         <el-select
           size='mini'
@@ -62,6 +75,7 @@
         <WOTable
           :name="line"
           :ton='ton'
+          :mach="mach"
           @row-click="rowClick"
         />
         <el-card style="width: 100%; margin: 10px 0;">
@@ -175,7 +189,7 @@
 <script>
 // import Table from './Table'
 import WOTable from './WorkOrderTable.vue'
-import { planTonList, planWorlistDetail } from '../api.js'
+import { planWorkTonlist, planWorlistDetail } from '../api.js'
 import { String2Date, Date2String } from '@/utils/common.js'
 
 
@@ -192,6 +206,8 @@ export default {
       line: 'All',
       tons: ['50','80','100','130'],
       ton: '',
+      machs: [],
+      mach: '',
       tableData: [],
       data_detail: {
         pruduct_total: 0,
@@ -227,14 +243,36 @@ export default {
   },
   watch: {
     activeLine: function(){
-      if (this.activeLine == '1') this.getTonList('A')
-      else if  (this.activeLine == '2') this.getTonList('B')
-      else if  (this.activeLine == '3') this.getTonList('C')
-      else if  (this.activeLine == '4') this.getTonList('D')
-      else if  (this.activeLine == '5') this.getTonList('E')
-      else if  (this.activeLine == '6') this.getTonList('F')
-      else if  (this.activeLine == '7') this.getTonList('G')
+      if (this.activeLine == '1') {
+        this.getTonList('A')
+        this.getMachs('A')
+      }
+      else if  (this.activeLine == '2') {
+        this.getTonList('B')
+        this.getMachs('B')
+      }
+      else if  (this.activeLine == '3') {
+        this.getTonList('C')
+        this.getMachs('C')
+      }
+      else if  (this.activeLine == '4') {
+        this.getTonList('D')
+        this.getMachs('D')
+      }
+      else if  (this.activeLine == '5') {
+        this.getTonList('E')
+        this.getMachs('E')
+      }
+      else if  (this.activeLine == '6') {
+        this.getTonList('F')
+        this.getMachs('F')
+      }
+      else if  (this.activeLine == '7') {
+        this.getTonList('G')
+        this.getMachs('G')
+      }
       this.ton = null
+      this.mach = null
     }
     },
   methods: {
@@ -255,10 +293,69 @@ export default {
       return '';
     },
     getTonList(line) {
-      planTonList(line).then((response)=>{
+      planWorkTonlist(line).then((response)=>{
         let data = response.data.data
         this.tons = data
       })
+    },
+    getMachs(line) {
+      // this.mach1 = 'All'
+      if (line == 'A') {
+        let mach = []
+        for (let i=0;i<15;i++) {
+          let num = (i+1)<10? '0'+(i+1): (i+1)
+          mach.push('A'+num)
+        }
+        this.machs = mach
+      }
+      else if (line == 'B') {
+        let mach = []
+        for (let i=0;i<14;i++) {
+          let num = (i+1)<10? '0'+(i+1): (i+1)
+          mach.push('B'+num)
+        }
+        this.machs = mach
+      }
+      else if (line == 'C') {
+        let mach = []
+        for (let i=0;i<12;i++) {
+          let num = (i+1)<10? '0'+(i+1): (i+1)
+          mach.push('C'+num)
+        }
+        this.machs = mach
+      }
+      else if (line == 'D') {
+        let mach = []
+        for (let i=0;i<19;i++) {
+          let num = (i+1)<10? '0'+(i+1): (i+1)
+          mach.push('D'+num)
+        }
+        this.machs = mach
+      }
+      else if (line == 'E') {
+        let mach = []
+        for (let i=0;i<21;i++) {
+          let num = (i+1)<10? '0'+(i+1): (i+1)
+          mach.push('E'+num)
+        }
+        this.machs = mach
+      }
+      else if (line == 'F') {
+        let mach = []
+        for (let i=0;i<17;i++) {
+          let num = (i+1)<10? '0'+(i+1): (i+1)
+          mach.push('F'+num)
+        }
+        this.machs = mach
+      }
+      else if (line == 'G') {
+        let mach = []
+        for (let i=0;i<9;i++) {
+          let num = (i+1)<10? '0'+(i+1): (i+1)
+          mach.push('G'+num)
+        }
+        this.machs = mach
+      }
     },
     rowClick() {
       let row = arguments[0]
@@ -298,6 +395,7 @@ export default {
   },
   mounted() {
     this.getTonList('A');
+    this.getMachs('A');
   }
 };
 </script>

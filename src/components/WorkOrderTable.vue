@@ -1,9 +1,9 @@
 <template>
   <div>
     <el-table
-      :data="tableData.filter(data => !ton || data.machine_ton.toString() == ton).slice((currentPage-1)*pageSize,currentPage*pageSize)"
+      :data="filterTable.slice((currentPage-1)*pageSize,currentPage*pageSize)"
       style="width: 100%"
-      height="425"
+      height="781"
       highlight-current-row
       :row-class-name="tableRowClassName"
       @row-click="onClick"
@@ -51,7 +51,7 @@
       >
       </el-table-column>
       <el-table-column
-        prop="real_s_time"
+        prop="plan_s_time"
         :label="'計畫\n開始時間'"
         width="100"
         align="center"
@@ -244,6 +244,10 @@ export default {
       type: String,
       default: null
     },
+    mach: {
+      type: String,
+      default: null
+    },
     // line: String,
   },
   computed: {
@@ -256,6 +260,11 @@ export default {
       else if (this.name == 'F線') return 'F'
       else if (this.name == 'G線') return 'G'
       else return 'A'
+    },
+    filterTable: function() {
+      return this.tableData
+             .filter(data => !this.ton || data.machine_ton.toString() == this.ton)
+             .filter(data => !this.mach || data.machine_NO == this.mach)
     }
   },
   watch: {
