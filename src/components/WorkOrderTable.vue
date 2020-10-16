@@ -201,7 +201,7 @@
         :current-page="currentPage"
         :page-size="pageSize"
         layout="prev, pager, next"
-        :total="tableData.filter(data => !ton || data.machine_ton.toString() == ton).length"
+        :total="filterTable.length"
         prev-text="Prev"
         next-text="Next"
         class='dark-btn'
