@@ -274,7 +274,7 @@ export default {
       this.ton = null
       this.mach = null
     }
-    },
+  },
   methods: {
     handleClick(tab, event) {
       // eslint-disable-next-line no-console
