@@ -1117,7 +1117,8 @@ export default {
     isShowStopButton: function() {
       return this.current != '' &&
              ( this.$store.getters.roles[0] == 'website_maintainer' ||
-               this.$store.getters.roles[0] == 'product_manager' )
+               this.$store.getters.roles[0] == 'product_manager' ||
+               this.$store.getters.roles[0] == 'dispatcher' )
     }
   }
 };
