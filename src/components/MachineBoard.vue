@@ -179,7 +179,13 @@
           <div slot="header" class="clearfix" style="display: flex;">
             <span class="message-row">{{ current }} 機台訊息</span>
             <div style="flex-grow: 1"></div>
-            <el-button round size="mini" v-show="current != ''" @click="trigger()">停止機台</el-button>
+            <el-button
+              round size="mini"
+              v-show="isShowStopButton"
+              @click="trigger()"
+            >
+              停止機台
+            </el-button>
           </div>
           <div class="message" v-show="current != ''">
             <el-row
@@ -1108,6 +1114,11 @@ export default {
     machineStatus: function() {
       return this.currentStatus == 5? '維修': '修模'
     },
+    isShowStopButton: function() {
+      return this.current != '' &&
+             ( this.$store.getters.roles[0] == 'website_maintainer' ||
+               this.$store.getters.roles[0] == 'product_manager' )
+    }
   }
 };
 </script>
