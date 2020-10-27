@@ -21,7 +21,6 @@
     "js-cookie": "^2.2.1",
     "mint-ui": "^2.2.13",
     "mockjs": "^1.1.0",
-    "node-sass": "^4.14.1",
     "sass-loader": "^8.0.2",
     "vue": "^2.6.10",
     "vue-echarts": "^4.1.0",
@@ -36,7 +35,7 @@
     "babel-eslint": "^10.0.3",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
-    "node-sass": "^4.14.0",
+    "node-sass": "^4.14.1",
     "sass-loader": "^8.0.2",
     "vue-template-compiler": "^2.6.10",
     "webpack-cli": "^3.3.11"
