@@ -132,14 +132,14 @@ export default {
     site: function() {
       this.line = 'All'
       this.lines = this.loadLine(this.site)
-      this.$emit('lineSelected','')
+      this.$emit('lineSelected',this.line)
 
       this.mach = 'All'
       this.machs = this.loadMach(this.line)
 
       this.ton = 'All'
       this.tons = this.loadTons(this.line)
-      this.$emit('tonSelected','')
+      this.$emit('tonSelected',this.ton)
     },
     line: function() {
       this.mach = 'All'
@@ -147,7 +147,7 @@ export default {
 
       this.ton = 'All'
       this.tons = this.loadTons(this.line)
-      this.$emit('tonSelected','')
+      this.$emit('tonSelected',this.ton)
     },
   },
   methods: {

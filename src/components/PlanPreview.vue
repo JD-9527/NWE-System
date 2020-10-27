@@ -9,8 +9,8 @@
         @siteSelected="siteSelect"
         @tonSelected="tonSelect"
       />
-      <el-button size='mini' 
-        style="margin-left: 10px;" 
+      <el-button size='mini'
+        style="margin-left: 10px;"
         @click="submit_plan">提交</el-button>
 
       <el-tab-pane label="推薦報表" name="first">
@@ -59,9 +59,9 @@
     },
     computed:{
       field: function() {
-        if (this.site == 'D9 - 1F') 
+        if (this.site == 'D9 - 1F')
           return 'D9'
-        else if (this.site == 'D10 - 1F') 
+        else if (this.site == 'D10 - 1F')
           return 'D10'
         else
           return 'All'
@@ -90,8 +90,7 @@
           console.log(error)
         })
       },
-      submit_plan(){ //call submitarrangement api
-        let Submit = new Object()
+      submit_plan(){ //call submitarrangement api        let Submit = new Object()
         Submit = submitarrangement
         Submit(this.field,this.line,this.ton).then((response)=>{
           if (response.status == 200) {
