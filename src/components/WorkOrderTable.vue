@@ -79,7 +79,7 @@
       >
       </el-table-column>
       <el-table-column
-        prop="Ver"
+        prop="VER"
         label="版次"
         width="100"
         align="center"

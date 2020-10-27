@@ -213,7 +213,7 @@
           { prop: 'machine_NO', label: '機台號', width: '80'},
           { prop: 'mold_NO', label: '模號', width: '100'},
           { prop: 'Part_NO', label: '料號', width: '200'},
-          { prop: 'Ver', label: '版次', width: '100'},
+          { prop: 'VER', label: '版次', width: '100'},
           { prop: 'real_mold_changerover_time', label: '上下模時間', width: '100'},
           { prop: 'real_s_time', label: '開始時間', width: '100'},
           { prop: 'real_e_time', label: '結束時間', width: '100'},
@@ -225,7 +225,7 @@
         reportTableData: [],
         planTableInfo: [
           { prop: 'Part_NO', label: '料號', width: '200'},
-          { prop: 'Ver', label: '版次', width: '100'},
+          { prop: 'VER', label: '版次', width: '100'},
           { prop: 'machine_ton', label: '噸位', width: '80'},
           { prop: 'machine_NO', label: '機台號', width: '80'},
           { prop: 'plastic_color', label: '當前顏色', width: '100'},
