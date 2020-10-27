@@ -79,6 +79,13 @@
       >
       </el-table-column>
       <el-table-column
+        prop="Ver"
+        label="版次"
+        width="100"
+        align="center"
+      >
+      </el-table-column>
+      <el-table-column
         prop="work_list"
         label="工令號"
         width="100"

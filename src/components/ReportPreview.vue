@@ -34,6 +34,13 @@
         </editable-cell>
       </el-table-column>
       <el-table-column
+        prop="Ver"
+        label="版次"
+        width="100"
+        align="center"
+      >
+      </el-table-column>
+      <el-table-column
         prop="machine_ton"
         label="噸位"
         width="80"
@@ -194,9 +201,9 @@
         </el-button>
        </template>
       </el-table-column> -->
-     
+
     </el-table>
-   
+
   </div>
 </template>
 
@@ -292,7 +299,7 @@ export default {
     handleCurrentChange: function(currentPage) {
       this.currentPage = currentPage
     },
-    
+
     handleSizeChange: function(size) {
       this.pageSize = size;
     },

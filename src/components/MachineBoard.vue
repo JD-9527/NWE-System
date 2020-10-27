@@ -184,7 +184,7 @@
               v-show="isShowStopButton"
               @click="trigger()"
             >
-              停止機台
+              停止工單
             </el-button>
           </div>
           <div class="message" v-show="current != ''">
