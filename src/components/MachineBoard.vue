@@ -504,16 +504,31 @@
                     :key="index"
                   >
                     <div slot="content" style="text-align: center;">
-                      {{item.name}}<br/>{{item.time + ' min'}}
+                      {{item.name}}<br/>
+                      {{item.time + ' min'}}<br/><br/>
+                      {{item.start_time}} ~
+                      {{item.end_time}}
                     </div>
                     <div
                       :class="color(item.status)"
                       :style="'width:' + item.width + '%'"
                     ></div>
                   </el-tooltip>
+                  <span :class="total_width>30?'time-pointer':'time-pointer-right'">{{now}}</span>
+                  <span class="time-pointer-bar"></span>
                 </div>
               </div>
             </div>
+          </div>
+          <div style="display: inline-block; width: 50%;">
+            <div class="message-subtitle">開始時間</div>
+            <div class="message">{{lastDate}} 19:30:00</div>
+          </div>
+          <div style="display: inline-block; width: 50%; text-align: right">
+            <div class="message-subtitle">
+              結束時間
+            </div>
+            <div class="message">{{todayDate}} 19:30:00</div>
           </div>
         </el-card>
       </el-col>
@@ -579,9 +594,26 @@
 }
 .boarder {
   border-left: 1px solid #333;
+  border-right: 1px solid #333;
   border-bottom: 1px solid #333;
   padding-top:5px;
   height: 25px;
+}
+.time-pointer {
+  position: relative;
+  bottom: 25px;
+  right: 75px;
+  border-right: 2px solid red;
+}
+.time-pointer-right {
+  position: relative;
+  bottom: 25px;
+  border-left: 2px solid red;
+}
+.time-pointer-bar {
+  position: relative;
+  right: 77px;
+  border-left: 2px solid red;
 }
 </style>
 
@@ -658,7 +690,9 @@ export default {
     statusCode: [5,6],
     machineInfo: {},
     machineDetail: false,
-    machineDetailTime: []
+    machineDetailTime: [],
+    total_width: 0,
+    click: true,
   }),
   watch: {
     line: function() {
@@ -1003,6 +1037,8 @@ export default {
                 name: '正常',
                 status: item.status,
                 time: item.time,
+                start_time: item.start_time.substring(5,19).replace('T',' '),
+                end_time: item.end_time.substring(5,19).replace('T',' '),
                 width: widths
               })
               math += widths
@@ -1012,6 +1048,8 @@ export default {
                 name: '換模',
                 status: item.status,
                 time: item.time,
+                start_time: item.start_time.substring(5,19).replace('T',' '),
+                end_time: item.end_time.substring(5,19).replace('T',' '),
                 width: widths
               })
               math += widths
@@ -1021,6 +1059,8 @@ export default {
                 name: '待機',
                 status: item.status,
                 time: item.time,
+                start_time: item.start_time.substring(5,19).replace('T',' '),
+                end_time: item.end_time.substring(5,19).replace('T',' '),
                 width: widths
               })
               math += widths
@@ -1030,6 +1070,8 @@ export default {
                 name: '斷線',
                 status: item.status,
                 time: item.time,
+                start_time: item.start_time.substring(5,19).replace('T',' '),
+                end_time: item.end_time.substring(5,19).replace('T',' '),
                 width: widths
               })
               math += widths
@@ -1039,6 +1081,8 @@ export default {
                 name: '調機',
                 status: item.status,
                 time: item.time,
+                start_time: item.start_time.substring(5,19).replace('T',' '),
+                end_time: item.end_time.substring(5,19).replace('T',' '),
                 width: widths
               })
               math += widths
@@ -1048,6 +1092,8 @@ export default {
                 name: '維修',
                 status: item.status,
                 time: item.time,
+                start_time: item.start_time.substring(5,19),
+                end_time: item.end_time.substring(5,19),
                 width: widths
               })
               math += widths
@@ -1057,12 +1103,15 @@ export default {
                 name: '修模',
                 status: item.status,
                 time: item.time,
+                start_time: item.start_time.substring(5,19),
+                end_time: item.end_time.substring(5,19),
                 width: widths
               })
               math += widths
               break
           }
         })
+        this.total_width = math
         this.machineDetailTime = tmp
       })
     },
@@ -1087,13 +1136,27 @@ export default {
     timer() {
       // console.log(this.$route.path.substring(0,19))
       if (this.$route.path.substring(0,18) == '/overview/machine/') {
-        // if (this.current != '') {
-        //   this.getSecurityState(this.current);
-        // }
+        if (this.current != '') {
+          this.getMachineInfo(this.current);
+          this.getMachineWorkList(this.current);
+          this.getMachineProduceInfo(this.current);
+        }
         this.getMachineState(this.$route.params.line)
         setTimeout(()=>{
           this.timer()
-        },1000 * 10);
+        },1000 * 60);
+      }
+    },
+    timer2() {
+      // console.log(this.$route.path.substring(0,19))
+      if (this.$route.path.substring(0,18) == '/overview/machine/') {
+        if (this.current != '') {
+          this.getMachineDetailTime(this.current)
+        }
+        setTimeout(()=>{
+          this.timer2()
+          this.click = !this.click
+        },1000 * 1);
       }
     },
   },
@@ -1101,6 +1164,7 @@ export default {
     // this.getMachineState(this.$route.params.line)
     this.line = this.$route.params.line == 'D10'? 'D10 - 1F': 'D9 - 1F';
     this.timer();
+    this.timer2();
     // this.getMachineInfo();
     // this.getMachineWorkList();
     // this.getMachineProduceInfo();
@@ -1119,6 +1183,33 @@ export default {
              ( this.$store.getters.roles[0] == 'website_maintainer' ||
                this.$store.getters.roles[0] == 'product_manager' ||
                this.$store.getters.roles[0] == 'dispatcher' )
+    },
+    lastDate: function() {
+      let today = new Date();
+      let month = today.getMonth();
+      let date = today.getDate();
+      return (month+1) + '/' + (date-1)
+    },
+    todayDate: function() {
+      let today = new Date();
+      let month = today.getMonth();
+      let date = today.getDate();
+      return (month+1) + '/' + date
+    },
+    now: function() {
+      let today = new Date();
+      let hour = today.getHours();
+      let min = today.getMinutes();
+      let sec = today.getSeconds();
+      hour=hour<10? '0'+hour: hour
+      min=min<10? '0'+min: min
+      sec=sec<10? '0'+sec: sec
+      if (this.click){
+        return `${hour}:${min}:${sec}`
+      }
+      else {
+        return `${hour}:${min}:${sec}`
+      }
     }
   }
 };

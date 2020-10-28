@@ -223,6 +223,12 @@
   width: 40px;
   display: inline-block;
 }
+.row >>> tr:hover>td {
+  background-color: #222;
+}
+.row >>> tr.hover-row>td {
+  background-color: #222;
+}
 </style>
 
 <script>

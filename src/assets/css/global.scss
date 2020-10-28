@@ -1,6 +1,25 @@
 .el-table .cell {
   white-space: pre-line;/*保留换行符*/
 }
+// 選中行高亮顏色
+.el-table--striped .el-table__body tr.el-table__row--striped.current-row td,
+.el-table__body tr.current-row > td {
+  background-color: #eee;
+}
+.el-table .warning-row {
+  background: #ffc8ca;
+}
+// .el-table .warning-row:hover {
+//   background: #eeb7b9 !important;
+// }
+
+.el-table .success-row {
+  background: #bcffc6;
+}
+
+.el-table .safe-row {
+  background: #cbd2ff;
+}
 
 .header-row {
   font-size: 32px;
@@ -51,18 +70,6 @@
   background-color: #fff;
   color: #000;
   font-size: 14px;
-}
-
-.el-table .warning-row {
-  background: #ffc8ca;
-}
-
-.el-table .success-row {
-  background: #bcffc6;
-}
-
-.el-table .safe-row {
-  background: #cbd2ff;
 }
 
 .sub-title {

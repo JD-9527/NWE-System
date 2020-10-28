@@ -42,7 +42,7 @@
           :icon="['fas','square']"
           class="legend-blue"
         ></font-awesome-icon>
-        已完成
+          已完成
         </div>
         <div style="padding: 5px; display: inline-block;">
           <font-awesome-icon
