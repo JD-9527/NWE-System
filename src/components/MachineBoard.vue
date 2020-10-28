@@ -1024,13 +1024,21 @@ export default {
         let data = response.data.data
         let tmp = []
         let math = 0        //儲存目前寬度（進度條寬度計算）
+        // 計算總共花了多少時間，用來計算在堆疊進度條上最多可以顯示到幾%
+        let total_time = 0
+        data.forEach(item => {
+          total_time = total_time + item.time
+        })
+        // 最大寬度 = 累計時間 / 1440（分鐘）
+        let max_width = Math.round((total_time/1440) * 100)
+        max_width = max_width > 100? 100: max_width
         data.forEach(item => {
           // 原利用百分比計算進度條寬度
           let perc = Math.round((item.time/1440) * 100)
           // 若百分比小於一定數字進度條會變很難看，所以額外新增進度條寬度計算
           // 百分比小於5，則用５，並加到math變數，計算目前已有的總寬度，若下次寬度計算後會超過100%，則只用100-math
           let widths = perc>5? perc: 5
-          widths = (math + widths > 100? 100-math: widths)
+          widths = (math + widths > max_width? max_width-math: widths)
           switch (item.status) {
             case 0:
               tmp.push({
