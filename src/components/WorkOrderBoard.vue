@@ -133,7 +133,7 @@
                 <div class="message-subtitle">
                   {{currentStatus}}
                 </div>
-                <div class="message">{{ data_detail.end_time }}</div>
+                <div class="message">{{ currentRowStatus==1? data_detail.end_time: now }}</div>
               </div>
             </el-col>
           </el-row>
@@ -219,7 +219,9 @@ export default {
         end_time: '',
         product_record: []
       },
-      currentRowStatus: 0
+      currentRowStatus: 0,
+      currentRowWorklist: 0,
+      click: true,
     };
   },
   computed: {
@@ -239,6 +241,24 @@ export default {
             (this.data_detail.pruduct_now > this.data_detail.pruduct_total)?
             100:
             this.data_detail.pruduct_now/this.data_detail.pruduct_total*100
+    },
+    now: function() {
+      let today = new Date();
+      let year = today.getFullYear();
+      let mon = today.getMonth();
+      let date = today.getDate();
+      let hour = today.getHours();
+      let min = today.getMinutes();
+      let sec = today.getSeconds();
+      hour=hour<10? '0'+hour: hour
+      min=min<10? '0'+min: min
+      sec=sec<10? '0'+sec: sec
+      if (this.click){
+        return `${year}-${mon+1}-${date} ${hour}:${min}:${sec}`
+      }
+      else {
+        return `${year}-${mon+1}-${date} ${hour}:${min}:${sec}`
+      }
     }
   },
   watch: {
@@ -360,16 +380,36 @@ export default {
     rowClick() {
       let row = arguments[0]
       this.currentRowStatus = row.status
+      this.currentRowWorklist = row.work_list
       // console.log(arguments[0])
-      planWorlistDetail(row.status, row.work_list).then(response => {
-        let data = response.data
-        this.data_detail = data
-        let s_time = String2Date(data.start_time)
-        data.pruduct_now = data.pruduct_now? data.pruduct_now: 0
-        let end_time = s_time.setSeconds( s_time.getSeconds() + this.total_time ) ;
-        data.end_time = data.start_time == ''? '': Date2String(end_time)
-        // console.log(data)
-      })
+      // planWorlistDetail(row.status, row.work_list).then(response => {
+      //   let data = response.data
+      //   this.data_detail = data
+      //   let s_time = String2Date(data.start_time)
+      //   data.pruduct_now = data.pruduct_now? data.pruduct_now: 0
+      //   let end_time = s_time.setSeconds( s_time.getSeconds() + this.total_time ) ;
+      //   data.end_time = data.start_time == ''? '': Date2String(end_time)
+      //   // console.log(data)
+      // })
+    },
+    timer() {
+      if (this.$route.path.substring(0,21) == '/overview/work_order') {
+        if (this.currentRowStatus != 0) {
+          planWorlistDetail(this.currentRowStatus, this.currentRowWorklist).then(response => {
+            let data = response.data
+            this.data_detail = data
+            let s_time = String2Date(data.start_time)
+            data.pruduct_now = data.pruduct_now? data.pruduct_now: 0
+            let end_time = s_time.setSeconds( s_time.getSeconds() + this.total_time ) ;
+            data.end_time = data.start_time == ''? '': Date2String(end_time)
+            // console.log(data)
+          })
+        }
+        setTimeout(()=>{
+          this.timer();
+          this.click = !this.click
+        },1000 * 1);
+      }
     },
     color: function(data) {
       switch (data) {
@@ -396,6 +436,7 @@ export default {
   mounted() {
     this.getTonList('A');
     this.getMachs('A');
+    this.timer();
   }
 };
 </script>

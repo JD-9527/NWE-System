@@ -70,9 +70,10 @@ export const overviewMachineBoard = (field) => NWEOverview.get('/machine/board/?
 export const overviewMachineInfo = (machine_NO) => NWEOverview.get('/machine/info/?machine_NO='+machine_NO)
 export const overviewMachineWorkList = (machine_NO) => NWEOverview.get('/machine/worklist/?machine_NO='+machine_NO)
 export const overviewMachineProduceInfo = (machine_NO) => NWEOverview.get('/machine/produceinfo/?machine_NO='+machine_NO)
-export const overviewMachineStop = (machine_NO) => {
+export const overviewMachineStop = (machine_NO, user) => {
   let formData = new FormData();
   formData.append('machine_NO', machine_NO)
+  formData.append('user', user)
   return NWEOverview.post('/machine/stopsignal/', formData, { headers: {
         'Content-Type': 'multipart/form-data'
       }});

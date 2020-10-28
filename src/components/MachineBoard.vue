@@ -497,7 +497,7 @@
           <div class="message">
             <div style="padding: 15px 10px; ">
               <div class="boarder">
-                <div style=" background: #ddd; height: 18px; border-radius: 5px;">
+                <div style=" background: #ddd; height: 18px; border-radius: 5px;white-space: nowrap;">
                   <el-tooltip
                     placement="top"
                     v-for="(item,index) in machineDetailTime"
@@ -1117,7 +1117,7 @@ export default {
     },
     trigger() {
       /* eslint-disable */
-      overviewMachineStop(this.current).then(response => {
+      overviewMachineStop(this.current,this.$store.getters.name).then(response => {
         this.$message({
           message: '送出停機訊號',
           type: 'success',

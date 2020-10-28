@@ -591,6 +591,7 @@ export default {
       this.getSecurityState(this.current);
       // this.getMachineOD(this.current)
       this.timer1();
+      this.timer2();
     },
     legendClick(index){
       // eslint-disable-next-line no-console
@@ -834,18 +835,24 @@ export default {
         }
       })
     },
-    async getSecurityState(field) {
-      try {
-        this.loading = true
-        // this.tableData = []
-        let info = await overviewSecurityInfo(field)
-        let test = await overviewSecurityTest(field)
-        this.door_sort = Object.keys(info.data).sort((a,b)=>{
+    getSecurityState(field) {
+      overviewSecurityInfo(field).then(response=>{
+        let info = response.data
+        // console.log(info)
+        this.door_sort = Object.keys(info).sort((a,b)=>{
           return this.door_Seq.indexOf(a) - this.door_Seq.indexOf(b)
         })
-        this.machine_state = info.data
-        // console.log(test.data.data)
-        let test_data = test.data.data
+        this.machine_state = info
+      })
+      .catch (error => {
+        console.log(error.response.data)
+      })
+    },
+    getSecurityHistory(field) {
+      this.loading = true
+      overviewSecurityTest(field).then(response=>{
+        // console.log(response.data.data)
+        let test_data = response.data.data
         test_data = test_data.map(row => {
           return {
             ...row,
@@ -853,18 +860,14 @@ export default {
           }
         })
         this.tableData = test_data
-      }
-      catch (error) {
+        this.loading = false
+      })
+      .catch (error=> {
         console.log(error.response.data)
-      }
-      this.loading = false
+      })
     },
     timer() {
-      // console.log(this.$route.path.substring(0,19))
       if (this.$route.path.substring(0,19) == '/overview/security/') {
-        // if (this.current != '') {
-        //   this.getSecurityState(this.current);
-        // }
         this.getMachineState(this.$route.params.line)
         setTimeout(()=>{
           this.timer()
@@ -872,17 +875,24 @@ export default {
       }
     },
     timer1() {
-      // console.log(this.$route.path.substring(0,19))
+      if (this.$route.path.substring(0,19) == '/overview/security/') {
+        if (this.current != '') {
+          this.getSecurityHistory(this.current)
+        }
+        setTimeout(()=>{
+          this.timer1()
+        },1000 * 3);
+      }
+    },
+    timer2() {
       if (this.$route.path.substring(0,19) == '/overview/security/') {
         if (this.current != '') {
           this.getMachineOD(this.current)
           this.getSecurityState(this.current);
-          // console.log('test')
         }
-        // this.getMachineState(this.$route.params.line)
         setTimeout(()=>{
-          this.timer1()
-        },1000 * 3);
+          this.timer2()
+        },1000 * 1);
       }
     },
     getMachineOD(field) {
