@@ -44,7 +44,7 @@
       >
       </el-table-column>
       <el-table-column
-        prop="real_s_time"
+        prop="real_e_time"
         :label="'實際\n結束時間'"
         width="100"
         align="center"
