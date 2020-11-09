@@ -327,7 +327,10 @@
           else {
             // console.log(this.current_site, this.current_line, this.current_ton, this.part, this.start_end )
             let s = undefined,l = undefined,t = undefined,p = undefined
-            if (this.current_site && this.current_site != 'All') s = this.current_site.substring(0,2)
+            if (this.current_site && this.current_site != 'All') {
+              if (this.current_site == 'D9 - 1F') s = this.current_site.substring(0,2)
+              else s = this.current_site.substring(0,3)
+            }
             if (this.current_line) l = this.current_line.substring(0,1)
             if (this.current_ton) t = this.current_ton
             if (this.part) p = this.part
