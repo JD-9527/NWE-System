@@ -407,6 +407,84 @@
         </el-card>
       </el-col>
     </el-row>
+    <el-divider></el-divider>
+    <el-card shadow="never">
+      <div slot="header" style="display: flex;">
+        <span class="message-row">{{ current }} 邏輯異常報表</span>
+        <div style="flex-grow: 1;"></div>
+        <el-date-picker
+          v-model="start_end"
+          style="width: 300px; margin-right: 10px;"
+          type="daterange"
+          size="small"
+          value-format="yyyy-MM-dd"
+        ></el-date-picker>
+        <el-button
+          icon="el-icon-search"
+          @click="searchData()"
+          plain
+          size="mini"
+        ></el-button>
+        <div style="flex-grow: 1;"></div>
+        <el-button
+          icon="el-icon-download"
+          @click="downloadData()"
+          type="primary"
+          round
+          plain
+          size="small"
+        ></el-button>
+      </div>
+      <el-table
+        style="width: 100%"
+        max-height="400"
+      >
+        <el-table-column
+          v-for="col in statisticsTableInfo"
+          :key="col.prop"
+          :prop="col.prop"
+          :label="col.label"
+          width="100"
+          align="center"
+        ></el-table-column>
+        <el-table-column
+          prop="remark"
+          label="備註"
+          width="100"
+          align="center"
+        >
+        </el-table-column>
+        <el-table-column
+          label="操作"
+          align="center"
+          fixed="right"
+          width="180"
+        >
+         <template slot-scope="{row, index}">
+          <el-button
+            size="mini"
+            icon="el-icon-edit"
+            @click="setEditMode(row, index)">
+          </el-button>
+          <el-button
+            type="success"
+            icon="el-icon-check"
+            size="mini"
+            v-show="row.editMode"
+            @click="saveRow(row, index)">
+          </el-button>
+          <el-button
+            type="danger"
+            icon="el-icon-delete"
+            size="mini"
+            :disabled="row.status == 1"
+            v-show="!row.editMode"
+          >
+          </el-button>
+         </template>
+        </el-table-column>
+      </el-table>
+    </el-card>
   </div>
 </template>
 
@@ -562,6 +640,22 @@ export default {
     odStatus: {},
     odError: 1,                           // 0:正常, 1:連線異常, 2:智能識別異常
     chsource: true,
+    statisticsTableInfo: [
+      { label: '序號', prop: 'index' },
+      { label: '開始時間', prop: 's_time' },
+      { label: '結束時間', prop: 'e_time' },
+      { label: '生產線別', prop: 'line' },
+      { label: '機台號', prop: 'machine' },
+      { label: '異常項目', prop: 'err_item' },
+      { label: '異常分鐘', prop: 'err_mins' },
+      { label: '異常I/O', prop: 'err1' },
+      { label: '異常I/O', prop: 'err2' },
+      { label: '異常I/O', prop: 'err3' },
+      { label: '異常I/O', prop: 'err4' },
+      { label: '異常I/O', prop: 'err5' },
+      { label: '異常類型', prop: 'err_type' },
+    ],
+    start_end: []
   }),
   watch: {
     line: function() {
@@ -940,7 +1034,24 @@ export default {
         this.source = 'ws://10.132.53.2:9999'
         this.sourceR = 'ws://10.132.53.2:9998'
       }
-    }
+    },
+    downloadData() {},
+    searchData() {},
+    convertDate(time) {
+      let new_time = new Date(time)
+      var yyyy = new_time.getFullYear();
+      var MM = (new_time.getMonth() + 1) >= 10 ? (new_time.getMonth() + 1) : ("0" + (new_time.getMonth() + 1));
+      var dd = new_time.getDate() < 10 ? ("0"+new_time.getDate()) : new_time.getDate();
+      return yyyy + "-" + MM + "-" + dd
+    },
+    //抓取今天和7天前時間
+    getLast7Days() {
+      var fullDate = new Date();
+      var today = this.convertDate(fullDate);
+      var last_week = fullDate.setDate(fullDate.getDate() - 6)
+      var last = this.convertDate(last_week);
+      return [last,today];
+    },
   },
   mounted() {
     // let canvas = document.getElementById('video-canvas')
@@ -948,6 +1059,7 @@ export default {
     // let player = new JSMpeg.Player(this.source, {canvas: canvas})
     // let playerR = new JSMpeg.Player(this.sourceR, {canvas: canvasR})
     this.line = this.$route.params.line == 'D10'? 'D10 - 1F': 'D9 - 1F';
+    this.start_end = this.getLast7Days()
     this.timer();
   },
   computed: {
