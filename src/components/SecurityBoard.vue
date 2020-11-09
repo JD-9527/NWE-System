@@ -436,6 +436,7 @@
         ></el-button>
       </div>
       <el-table
+        :data="statisticsTable"
         style="width: 100%"
         max-height="400"
       >
@@ -587,6 +588,7 @@
 import { overviewSecurityState, overviewSecurityInfo, overviewSecurityManual,
          overviewSecurityTest, overviewSecurityMachineOD } from '../api.js'
 import JSMpegPlayer from './jsmpegPlayer'
+import { workbook2blob, openDownloadDialog } from '../utils/excel.js'
 
 const legends = [
   { name:'正常', status: 1 },
@@ -640,6 +642,7 @@ export default {
     odStatus: {},
     odError: 1,                           // 0:正常, 1:連線異常, 2:智能識別異常
     chsource: true,
+    statisticsTable: [],
     statisticsTableInfo: [
       { label: '序號', prop: 'index' },
       { label: '開始時間', prop: 's_time' },
@@ -1006,7 +1009,7 @@ export default {
       this.currentPage = currentPage;
     },
     trigger() {
-      overviewSecurityManual(this.current).then(response => {
+      overviewSecurityManual(this.current, this.$store.getters.name).then(response => {
         this.$message({
           message: '已開始點檢',
           type: 'success',
@@ -1035,7 +1038,28 @@ export default {
         this.sourceR = 'ws://10.132.53.2:9998'
       }
     },
-    downloadData() {},
+    downloadData() {
+      // /* generate workbook object from table */
+      // var wb = this.$xlsx.utils.table_to_book(document.querySelector('.el-table'))
+      // /* get binary string as output */
+      // var wbout = this.$xlsx.write(wb, { bookType: 'xlsx', bookSST: true, type: 'array' })
+      // try {
+      //   this.$filesaver.saveAs(new Blob([wbout], { type: 'application/octet-stream' }), 'ECN.xlsx')
+      // }
+      // catch (e) {
+      //   if (typeof console !== 'undefined') console.log(e, wbout)
+      // }
+      // return wbout
+      let wb = this.$xlsx.utils.book_new()
+      let sheet = this.$xlsx.utils.json_to_sheet(this.statisticsTable)
+
+      this.$xlsx.utils.book_append_sheet(wb, sheet, '監控統計報表')
+      // 创建工作薄blob
+      const workbookBlob = workbook2blob(wb)
+      // 导出工作薄
+      openDownloadDialog(workbookBlob, '監控統計報表.xlsx')
+
+    },
     searchData() {},
     convertDate(time) {
       let new_time = new Date(time)

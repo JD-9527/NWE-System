@@ -7,6 +7,8 @@ import echarts from 'echarts'
 import ECharts from 'vue-echarts'
 import 'element-ui/lib/theme-chalk/index.css';
 import '@/assets/css/global.scss'
+// import FileSaver from 'file-saver'
+import XLSX from 'xlsx'
 import App from './App.vue'
 import store from './store'
 import { library } from '@fortawesome/fontawesome-svg-core'
@@ -18,6 +20,8 @@ import axios from 'axios'
 library.add(faDesktop,faSquare,faServer,faAlignCenter)
 
 Vue.prototype.$http = axios;
+Vue.prototype.$xlsx = XLSX;
+// Vue.prototype.$filesaver = FileSaver;
 // const token = localStorage.getItem('token')
 // if (token) {
 //   Vue.prototype.$http.defaults.headers.common['Authorization'] = token

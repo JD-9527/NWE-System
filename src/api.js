@@ -86,9 +86,10 @@ export const overviewSecurityInfo = (machine_NO) => NWEOverview.get('/security/i
 export const overviewSecurityTest = (machine_NO) => NWEOverview.get('/security/test/?machine_NO='+machine_NO)
 export const overviewSecurityState = (field) => NWEOverview.get('/security/state/?field='+field)
 export const overviewSecurityMachineOD = (machine_NO) => NWEOverview.get('/security/machineOD/?machine_NO='+machine_NO)
-export const overviewSecurityManual = (machine_NO) => {
+export const overviewSecurityManual = (machine_NO, user) => {
   let formData = new FormData();
   formData.append('machine_NO', machine_NO)
+  formData.append('user', user)
   return NWEOverview.post('/security/test/', formData, { headers: {
         'Content-Type': 'multipart/form-data'
       }});
