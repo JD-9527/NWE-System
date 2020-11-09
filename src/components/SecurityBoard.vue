@@ -414,7 +414,7 @@
         <div style="flex-grow: 1;"></div>
         <el-date-picker
           v-model="start_end"
-          style="width: 300px; margin-right: 10px;"
+          style="width: 300px;"
           type="daterange"
           size="small"
           value-format="yyyy-MM-dd"
