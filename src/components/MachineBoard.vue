@@ -1126,12 +1126,19 @@ export default {
     trigger() {
       /* eslint-disable */
       overviewMachineStop(this.current,this.$store.getters.name).then(response => {
-        this.$message({
-          message: '送出停機訊號',
-          type: 'success',
-          center: true,
-          duration: 2000
-        });
+        if (response.data.Message) {
+          this.$alert(response.data.Message, '溫馨提示', {
+            confirmButtonText: '確定',
+          });
+        }
+        else {
+          this.$message({
+            message: '送出停機訊號',
+            type: 'success',
+            center: true,
+            duration: 2000
+          });
+        }
       })
       .catch(error => {
         this.$message.error({
