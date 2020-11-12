@@ -272,7 +272,7 @@
           <div slot="header" class="clearfix">
             <span class="message-row">{{ current }} 設備邏輯監控</span>
           </div>
-          <div class="message"  v-show="current != ''">
+          <div class="message"  v-show="current != ''" style="height: 400px;">
             <div
               v-for="(key) in door_sort"
               :key="key"
@@ -291,7 +291,7 @@
               style="text-align: right; margin-top: 10px; color: #F50000"
               v-show="machine_state.operation_error == 0"
             >操作錯誤，前門關，後門開！</div>
-            <img src="../assets/Vsp.png" style="width: 100%;" />
+            <img src="../assets/Vsp.png" style="width: 90%;" />
           </div>
         </el-card>
       </el-col>
@@ -308,11 +308,11 @@
               v-if="$store.getters.roles[0] == 'website_maintainer'"
             >開始點檢</el-button>
           </div>
-          <div class="message" v-show="current != '' ">
+          <div class="message" v-show="current != '' " style="height: 390px;">
             <el-table
               :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
               style="width: 100%"
-              max-height="304"
+              max-height="400"
             >
               <el-table-column
                 prop="timestamp"
