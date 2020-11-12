@@ -447,7 +447,20 @@
           :label="col.label"
           min-width="100"
           align="center"
-        ></el-table-column>
+        >
+          <template
+            slot-scope="{row}"
+          >
+            <span
+              v-if="col.prop == 'abnormal_type'"
+              :style="abnormalColor(row.abnormal_type)"
+            >
+              {{row.abnormal_type}}
+            </span>
+            <span v-else>{{row[col.prop]}}</span>
+          </template>
+
+        </el-table-column>
         <el-table-column
           prop="remark"
           label="備註"
@@ -1052,6 +1065,20 @@ export default {
         this.sourceR = 'ws://10.132.53.2:9998'
       }
     },
+    abnormalColor: function(data) {
+      switch (data) {
+        case '人工點檢':
+          return 'color: #4e4eff'
+        case '設備異常':
+          return 'color: #ea5d5d'
+        case '未按時點檢':
+          return 'color: #a379c1'
+        case '超時未操作':
+          return 'color: #63ce93'
+        default:
+          return ''
+      }
+    },
     downloadData() {
       let excelData = []
       this.filterTable.forEach(row => {
@@ -1146,7 +1173,7 @@ export default {
     filterTable: function() {
       return this.statisticsTable
              .filter(data => !this.current || data.machine_NO.toString() == this.current)
-    }
+    },
   }
 };
 </script>
