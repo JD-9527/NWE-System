@@ -94,7 +94,22 @@ export const overviewSecurityManual = (machine_NO, user) => {
         'Content-Type': 'multipart/form-data'
       }});
 }
-
+export const overviewSecurityAbnormal = (start, end) => {
+  let params = {
+    start: start,
+    end: end
+  }
+  return NWEOverview.get('/security/abnormal/', {params: params} );
+}
+export const overviewSecurityAddRemark = (seq, remark, user) => {
+  let formData = new FormData();
+  formData.append('Seq', seq)
+  formData.append('remark', remark)
+  formData.append('user', user)
+  return NWEOverview.post('/security/abnormal/', formData, { headers: {
+        'Content-Type': 'multipart/form-data'
+      }});
+}
 
 // 模具維護
 export const dataMoldSearch = (moldno) => NWEData.get('/mold/',{ params: { moldno: moldno } })

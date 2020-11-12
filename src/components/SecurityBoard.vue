@@ -436,7 +436,7 @@
         ></el-button>
       </div>
       <el-table
-        :data="statisticsTable"
+        :data="filterTable.slice((currentPage-1)*pageSize,currentPage*pageSize)"
         style="width: 100%"
         max-height="400"
       >
@@ -445,15 +445,22 @@
           :key="col.prop"
           :prop="col.prop"
           :label="col.label"
-          width="100"
+          min-width="100"
           align="center"
         ></el-table-column>
         <el-table-column
           prop="remark"
           label="備註"
-          width="100"
+          width="200"
           align="center"
         >
+          <template slot-scope="{row}">
+            <span v-show="!row.editMode">{{row.remark}}</span>
+            <el-input
+              v-show="row.editMode"
+              v-model="row.remark"
+            ></el-input>
+          </template>
         </el-table-column>
         <el-table-column
           label="操作"
@@ -461,30 +468,40 @@
           fixed="right"
           width="180"
         >
-         <template slot-scope="{row, index}">
+         <template slot-scope="{row}">
           <el-button
             size="mini"
             icon="el-icon-edit"
-            @click="setEditMode(row, index)">
+            @click="row.editMode = true">
           </el-button>
           <el-button
             type="success"
             icon="el-icon-check"
             size="mini"
             v-show="row.editMode"
-            @click="saveRow(row, index)">
+            @click="saveRow(row)">
           </el-button>
           <el-button
-            type="danger"
-            icon="el-icon-delete"
+            type="info"
+            icon="el-icon-close"
             size="mini"
-            :disabled="row.status == 1"
-            v-show="!row.editMode"
-          >
+            v-show="row.editMode"
+            @click="row.editMode = false">
           </el-button>
          </template>
         </el-table-column>
       </el-table>
+      <div style="text-align: center;">
+        <el-pagination
+          @current-change="handleCurrentChange"
+          :current-page="currentPage"
+          :page-size="pageSize"
+          layout="total, prev, pager, next"
+          :total="filterTable.length"
+          prev-text="上一頁"
+          next-text="下一頁">
+        </el-pagination>
+      </div>
     </el-card>
   </div>
 </template>
@@ -586,7 +603,8 @@
 
 <script>
 import { overviewSecurityState, overviewSecurityInfo, overviewSecurityManual,
-         overviewSecurityTest, overviewSecurityMachineOD } from '../api.js'
+         overviewSecurityTest, overviewSecurityMachineOD, overviewSecurityAbnormal,
+         overviewSecurityAddRemark } from '../api.js'
 import JSMpegPlayer from './jsmpegPlayer'
 import { workbook2blob, openDownloadDialog } from '../utils/excel.js'
 
@@ -645,18 +663,14 @@ export default {
     statisticsTable: [],
     statisticsTableInfo: [
       { label: '序號', prop: 'index' },
-      { label: '開始時間', prop: 's_time' },
-      { label: '結束時間', prop: 'e_time' },
+      { label: '開始時間', prop: 'start' },
+      { label: '結束時間', prop: 'end' },
       { label: '生產線別', prop: 'line' },
-      { label: '機台號', prop: 'machine' },
-      { label: '異常項目', prop: 'err_item' },
-      { label: '異常分鐘', prop: 'err_mins' },
-      { label: '異常I/O', prop: 'err1' },
-      { label: '異常I/O', prop: 'err2' },
-      { label: '異常I/O', prop: 'err3' },
-      { label: '異常I/O', prop: 'err4' },
-      { label: '異常I/O', prop: 'err5' },
-      { label: '異常類型', prop: 'err_type' },
+      { label: '機台號', prop: 'machine_NO' },
+      { label: '異常項目', prop: 'abnormal_item' },
+      { label: '異常分鐘', prop: 'abnormal_time' },
+      { label: '異常I/O', prop: 'abnormal_io' },
+      { label: '異常類型', prop: 'abnormal_type' },
     ],
     start_end: []
   }),
@@ -1039,19 +1053,23 @@ export default {
       }
     },
     downloadData() {
-      // /* generate workbook object from table */
-      // var wb = this.$xlsx.utils.table_to_book(document.querySelector('.el-table'))
-      // /* get binary string as output */
-      // var wbout = this.$xlsx.write(wb, { bookType: 'xlsx', bookSST: true, type: 'array' })
-      // try {
-      //   this.$filesaver.saveAs(new Blob([wbout], { type: 'application/octet-stream' }), 'ECN.xlsx')
-      // }
-      // catch (e) {
-      //   if (typeof console !== 'undefined') console.log(e, wbout)
-      // }
-      // return wbout
+      let excelData = []
+      this.filterTable.forEach(row => {
+        excelData.push({
+          '開始時間': row.start,
+          '結束時間': row.end,
+          '生產線別': row.line,
+          '機台號': row.machine_NO,
+          '異常項目': row.abnormal_item,
+          '異常分鐘': row.abnormal_time,
+          '異常I/O': row.abnormal_io,
+          '異常類型': row.abnormal_type,
+          '備註': row.remark,
+        })
+      })
+
       let wb = this.$xlsx.utils.book_new()
-      let sheet = this.$xlsx.utils.json_to_sheet(this.statisticsTable)
+      let sheet = this.$xlsx.utils.json_to_sheet(excelData)
 
       this.$xlsx.utils.book_append_sheet(wb, sheet, '監控統計報表')
       // 创建工作薄blob
@@ -1060,7 +1078,16 @@ export default {
       openDownloadDialog(workbookBlob, '監控統計報表.xlsx')
 
     },
-    searchData() {},
+    searchData() {
+      if (this.start_end.length < 2) {
+        this.$alert('請輸入正確時間範圍', '溫馨提示', {
+          confirmButtonText: '好的',
+        });
+      }
+      else {
+        this.getAbnormalData()
+      }
+    },
     convertDate(time) {
       let new_time = new Date(time)
       var yyyy = new_time.getFullYear();
@@ -1076,6 +1103,34 @@ export default {
       var last = this.convertDate(last_week);
       return [last,today];
     },
+    getAbnormalData() {
+      overviewSecurityAbnormal(this.start_end[0],this.start_end[1]).then(response => {
+        let data = response.data.data
+        let index = 0
+        data = data.map(row => {
+          index++
+          return {
+            index,
+            ...row,
+            editMode: false
+          }
+        })
+
+        this.statisticsTable = data
+      })
+    },
+    saveRow(row) {
+      overviewSecurityAddRemark(row.Seq,row.remark,this.$store.getters.name).then(()=>{
+        this.$message({
+          message: '修改成功',
+          type: 'success'
+        });
+        row.editMode = false
+      })
+      .catch(()=>{
+        this.$message.error('出錯了');
+      })
+    }
   },
   mounted() {
     // let canvas = document.getElementById('video-canvas')
@@ -1084,9 +1139,14 @@ export default {
     // let playerR = new JSMpeg.Player(this.sourceR, {canvas: canvasR})
     this.line = this.$route.params.line == 'D10'? 'D10 - 1F': 'D9 - 1F';
     this.start_end = this.getLast7Days()
+    this.getAbnormalData()
     this.timer();
   },
   computed: {
+    filterTable: function() {
+      return this.statisticsTable
+             .filter(data => !this.current || data.machine_NO.toString() == this.current)
+    }
   }
 };
 </script>
