@@ -1,13 +1,11 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-// import VueRouter from 'vue-router'
 import router from './router'
 import ElementUI from 'element-ui';
 import echarts from 'echarts'
 import ECharts from 'vue-echarts'
 import 'element-ui/lib/theme-chalk/index.css';
 import '@/assets/css/global.scss'
-// import FileSaver from 'file-saver'
 import XLSX from 'xlsx'
 import App from './App.vue'
 import store from './store'
@@ -21,11 +19,6 @@ library.add(faDesktop,faSquare,faServer,faAlignCenter)
 
 Vue.prototype.$http = axios;
 Vue.prototype.$xlsx = XLSX;
-// Vue.prototype.$filesaver = FileSaver;
-// const token = localStorage.getItem('token')
-// if (token) {
-//   Vue.prototype.$http.defaults.headers.common['Authorization'] = token
-// }
 
 Vue.config.productionTip = false;
 Vue.use(Vuex)

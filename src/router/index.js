@@ -1,23 +1,5 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Login from './components/Login'
-import Layout from './components/Layout'
-import Dashboard from './components/overview/Dashboard'
-import DefectRate from './components/defectRate'
-import MachineBoard from './components/MachineBoard'
-import WorkOrderBoard from './components/WorkOrderBoard'
-import PlanBoard from './components/PlanBoard'
-import MoldMaintain from './components/MoldMaintain'
-import MachineMaintain from './components/MachineMaintain'
-import PartNoMaintain from './components/PartNoMaintain'
-import page404 from './components/404page'
-import MachinePerformance from './components/MachinePerformance'
-import ElectricSavingMachine from './components/ElectricSavingMachine'
-import PlanPreview from './components/PlanPreview'
-import WorkOrderPlan from './components/WorkOrderPlan'
-import DataKeyIn from './components/ProductDataKeyIn'
-import History from './components/History'
-import Security from './components/SecurityBoard'
 
 Vue.use(VueRouter);
 
@@ -26,25 +8,15 @@ export const asyncRoutes = [
   {
     path: '/',
     redirect: '/overview/dashboard',
-    // meta: {
-    //   role: [
-    //     'website_maintainer', 'site_manager', 'product_manager', 'machine_maintainer',
-    //     'mold_repairer', 'dispatcher', 'quality_assurance', 'process_engineer', 'visitor'
-    //   ]
-    // },
   },
   {
+    name: 'Login',
     path: '/login',
-    component: Login,
-    // meta: {
-    //   role: [
-    //     'website_maintainer', 'site_manager', 'product_manager', 'machine_maintainer',
-    //     'mold_repairer', 'dispatcher', 'quality_assurance', 'process_engineer', 'visitor'
-    //   ]
-    // },
+    component: () => import('@/components/Login'),
   },
   {
-    path: '/overview', component: Layout,
+    path: '/overview',
+    component: () => import('@/components/Layout'),
     redirect: '/overview/dashboard',
     meta: {
       role: [
@@ -54,8 +26,9 @@ export const asyncRoutes = [
     },
     children: [
       {
+        name: 'Dashboard',
         path: '/overview/dashboard',
-        component: Dashboard,
+        component: () => import('@/components/overview/Dashboard'),
         meta: {
           role: [
             'website_maintainer', 'site_manager', 'product_manager', 'machine_maintainer',
@@ -64,8 +37,9 @@ export const asyncRoutes = [
         },
       },
       {
+        name: 'DefectRate',
         path: '/overview/dashboard/defectrate',
-        component: DefectRate,
+        component: () => import('@/components/defectRate'),
         meta: {
           role: [
             'website_maintainer', 'site_manager', 'product_manager', 'machine_maintainer',
@@ -74,8 +48,9 @@ export const asyncRoutes = [
         },
       },
       {
+        name: 'WorkOrderBoard',
         path: '/overview/work_order',
-        component: WorkOrderBoard,
+        component: () => import('@/components/WorkOrderBoard'),
         meta: {
           role: [
             'website_maintainer', 'site_manager', 'product_manager', 'machine_maintainer',
@@ -84,8 +59,9 @@ export const asyncRoutes = [
         },
       },
       {
+        name: 'MachineBoard',
         path: '/overview/machine/:line',
-        component: MachineBoard,
+        component: () => import('@/components/MachineBoard'),
         meta: {
           role: [
             'website_maintainer', 'site_manager', 'product_manager', 'machine_maintainer',
@@ -94,8 +70,9 @@ export const asyncRoutes = [
         },
       },
       {
+        name: 'PlanBoard',
         path: '/overview/plan',
-        component: PlanBoard,
+        component: () => import('@/components/PlanBoard'),
         meta: {
           role: [
             'website_maintainer', 'site_manager', 'product_manager', 'machine_maintainer',
@@ -104,8 +81,9 @@ export const asyncRoutes = [
         },
       },
       {
+        name: 'SecurityBoard',
         path: '/overview/security/:line',
-        component: Security,
+        component: () => import('@/components/SecurityBoard'),
         meta: {
           role: [
             'website_maintainer', 'site_manager', 'product_manager', 'machine_maintainer',
@@ -117,7 +95,8 @@ export const asyncRoutes = [
     ],
   },
   {
-    path: '/productStatic', component: Layout,
+    path: '/productStatic',
+    component: () => import('@/components/Layout'),
     meta: {
       role: [
         'website_maintainer', 'site_manager', 'product_manager', 'machine_maintainer',
@@ -126,8 +105,9 @@ export const asyncRoutes = [
     },
     children: [
       {
+        name: 'MachinePerformance',
         path: '/productStatic/machinePerform' ,
-        component: MachinePerformance ,
+        component: () => import('@/components/MachinePerformance') ,
         meta: {
           role: [
             'website_maintainer', 'site_manager', 'product_manager', 'machine_maintainer',
@@ -139,29 +119,34 @@ export const asyncRoutes = [
     ],
   },
   {
-    path: '/productSchedule', component: Layout,
+    path: '/productSchedule',
+    component: () => import('@/components/Layout'),
     meta: {
       role: ['website_maintainer', 'site_manager', 'product_manager']
     },
     children: [
       {
+        name: 'ProductDataKeyIn',
         path: '/productSchedule/data_key_in' ,
-        component: DataKeyIn,
+        component: () => import('@/components/ProductDataKeyIn'),
         meta: { role: ['website_maintainer', 'product_manager'] },
       },
       {
+        name: 'PlanPreview',
         path: '/productSchedule/plan_preview' ,
-        component: PlanPreview,
+        component: () => import('@/components/PlanPreview'),
         meta: { role: ['website_maintainer', 'product_manager'] },
       },
       {
+        name: 'WorkOrderPlan',
         path: '/productSchedule/work_order_plan' ,
-        component: WorkOrderPlan,
+        component: () => import('@/components/WorkOrderPlan'),
         meta: { role: ['website_maintainer', 'product_manager'] },
       },
       {
+        name: 'History',
         path: '/productSchedule/history' ,
-        component: History,
+        component: () => import('@/components/History'),
         meta: { role: ['website_maintainer', 'site_manager', 'product_manager'] },
       },
       {
@@ -171,7 +156,8 @@ export const asyncRoutes = [
     ],
   },
   {
-    path: '/maintain', component: Layout,
+    path: '/maintain',
+    component: () => import('@/components/Layout'),
     meta: {
       role: [
         'website_maintainer', 'site_manager', 'product_manager', 'machine_maintainer',
@@ -180,8 +166,9 @@ export const asyncRoutes = [
     },
     children: [
       {
+        name: 'MoldMaintain',
         path: '/maintain/mold',
-        component: MoldMaintain,
+        component: () => import('@/components/MoldMaintain'),
         meta: {
           role: [
             'website_maintainer', 'site_manager', 'product_manager', 'machine_maintainer',
@@ -190,13 +177,15 @@ export const asyncRoutes = [
         },
       },
       {
+        name: 'MachineMaintain',
         path: '/maintain/machine',
-        component: MachineMaintain,
+        component: () => import('@/components/MachineMaintain'),
         meta: { role: ['website_maintainer', 'process_engineer'] },
       },
       {
+        name: 'PartNoMaintain',
         path: '/maintain/partno',
-        component: PartNoMaintain,
+        component: () => import('@/components/PartNoMaintain'),
         meta: { role: ['website_maintainer', 'product_manager'] },
       },
       {
@@ -205,18 +194,21 @@ export const asyncRoutes = [
       },
     ],
   },
-  { path: '/saving', component: Layout,
+  { path: '/saving',
+    component: () => import('@/components/Layout'),
     children: [
       {
+        name: 'ElectricSavingMachine',
         path: '/saving/machine',
-        component: ElectricSavingMachine,
+        component: () => import('@/components/ElectricSavingMachine'),
         meta: { role: ['website_maintainer','visitor'] },
       },
       {
         path: '/saving/*' , redirect: '/error/404' },
     ],
   },
-  { path: '/error' , component: Layout,
+  { path: '/error' ,
+    component: () => import('@/components/Layout'),
     redirect: '/error/404',
     meta: {
       role: [
@@ -226,8 +218,9 @@ export const asyncRoutes = [
     },
     children: [
       {
+        name: '404page',
         path: '/error/404',
-        component: page404,
+        component: () => import('@/components/404page'),
         meta: {
           role: [
             'website_maintainer', 'site_manager', 'product_manager', 'machine_maintainer',
@@ -245,20 +238,3 @@ export default new VueRouter({
   routes: asyncRoutes,
   base: '/nwe',
 })
-
-// const createRouter = () => new VueRouter({
-//   mode: 'history', // require service support
-//   scrollBehavior: () => ({ y: 0 }),
-//   routes: asyncRoutes,
-//   base: '/nwe',
-// })
-
-// const router = createRouter()
-
-// Detail see: https://github.com/vuejs/vue-router/issues/1234#issuecomment-357941465
-// export function resetRouter() {
-//   const newRouter = createRouter()
-//   router.matcher = newRouter.matcher // reset router
-// }
-
-// export default router
