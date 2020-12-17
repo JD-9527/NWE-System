@@ -297,8 +297,8 @@
 
 <script>
 import EditableCell from "./EditableCell.vue";
-import DownloadButton from "./DownloadButton.vue";
-import NewRowButton from "./NewRowButton.vue";
+import DownloadButton from "./base/DownloadButton.vue";
+import NewRowButton from "./base/NewRowButton.vue";
 import { dataDayPlan, dataWeekPlan, dataImportDayPlan, dataImportWeekPlan,
          dataEditDayPlan, dataEditWeekPlan } from '../api.js'
 

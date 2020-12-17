@@ -34,7 +34,7 @@
 <script>
   import Report from './ReportPreview.vue'
   import Gantt from './Gantt_chart.vue'
-  import FactorySelection from './FactorySelection.vue'
+  import FactorySelection from './base/FactorySelection.vue'
   import { planPreview,submitarrangement } from '../api.js'
 
   export default {

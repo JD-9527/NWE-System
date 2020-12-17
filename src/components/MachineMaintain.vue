@@ -290,8 +290,8 @@
 
 <script>
 import EditableCell from "./EditableCell.vue";
-import DownloadButton from "./DownloadButton.vue";
-import NewRowButton from './NewRowButton.vue'
+import DownloadButton from "./base/DownloadButton.vue";
+import NewRowButton from './base/NewRowButton.vue'
 import { dataMachineColor, dataEditMachineColor, dataCtTime, dataEditCtTime, dataDelCtTime,
          dataColorList, dataTonList, dataImportCtTime, dataImportMachine } from "../api.js"
 

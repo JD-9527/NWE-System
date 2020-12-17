@@ -176,7 +176,7 @@
 </template>
 
 <script>
-  import FactorySelection from './FactorySelection'
+  import FactorySelection from './base/FactorySelection'
   import { planYearlist, planWeeklist, planWeekPlanHis, planWorkListHis, planArrangementHis } from '@/api.js'
   import { String2Date } from '@/utils/common.js'
   export default {

@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import {dataFileDownload} from '../api.js'
+import {dataFileDownload} from '@/api.js'
 export default {
   props: {
     file_type: {

@@ -87,7 +87,7 @@
 </template>
 
 <script>
-import { planTonList } from '../api.js'
+import { planTonList } from '@/api.js'
 export default {
   data() {
     return {

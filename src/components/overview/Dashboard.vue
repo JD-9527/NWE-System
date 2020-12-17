@@ -172,11 +172,11 @@
 
 <script>
 // import axios from 'axios'
-import radar from './radar'
-import barLine from './bar_line'
-import bar from './bar'
+import radar from '../radar'
+import barLine from '../bar_line'
+import bar from '../bar'
 import { overviewMachineStartRate, overviewMachineStateCount, overviewMachineAbnormal,
-         overviewMachineFailureRate, overviewMachineRate } from '../api.js'
+         overviewMachineFailureRate, overviewMachineRate } from '@/api.js'
 
 let datasetA={
   'E線' : 0,

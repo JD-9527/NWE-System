@@ -66,7 +66,7 @@
 <script>
 import { dataEditWeekPlan, dataEditDayPlan, dataEditCtTime,
          dataEditPlasticColor,dataColorList, dataSpecPartnoNew,
-         dataEditMachineColor } from '../api.js'
+         dataEditMachineColor } from '@/api.js'
 
   /* eslint-disable */
 export default {
