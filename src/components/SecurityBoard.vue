@@ -343,9 +343,15 @@
                   >
                     <div
                       class="door_block"
-                      v-show="row[key] != '' && key[0]=='I'"
+                      v-show="row[key] != '' && test_keys.includes(key)"
                     >
                       {{ testTooltip(key).no }}
+                    </div>
+                    <div
+                      v-show="row[key] != '' && test_keys.includes(key) && key == 'nozzle_OK'"
+                      class="door_block"
+                    >
+                      蜂鳴器
                     </div>
                   </div>
                 </template>
@@ -362,9 +368,15 @@
                   >
                     <div
                       class="door_block"
-                      v-show="row[key] != '' && key[0]=='I'"
+                      v-show="row[key] != '' && test_keys.includes(key)"
                     >
                       {{ testTooltip(key).content }}
+                    </div>
+                    <div
+                      v-show="row[key] != '' && test_keys.includes(key) && key == 'nozzle_OK'"
+                      class="door_block"
+                    >
+                      蜂鳴器測試-打開射膠防護罩-手動射膠觸發警報聲
                     </div>
                   </div>
                 </template>
@@ -381,7 +393,7 @@
                   >
                     <div
                       class="door_block"
-                      v-show="row[key] != '' && key[0]=='I'"
+                      v-show="row[key] != '' && test_keys.includes(key)"
                       :style="'color:'+ (row[key] == '0'? '#F50000;': '#17ba6a;')"
                     >
                       {{ doorState(row[key]) }}
@@ -685,7 +697,8 @@ export default {
       { label: '異常I/O', prop: 'abnormal_io' },
       { label: '異常類型', prop: 'abnormal_type' },
     ],
-    start_end: []
+    start_end: [],
+    test_keys: ['front_OK', 'back_OK', 'chain_OK', 'total_OK', 'emergency_OK', 'nozzle_OK', 'lamp_OK']
   }),
   watch: {
     line: function() {
@@ -758,11 +771,11 @@ export default {
     infoName: function(key) {
       switch (key) {
         case 'safe_door_front_logic':
-          return '前門1(止動開關)'
+          return '前門行程開關'
         case 'safe_door_back_logic':
-          return '後門2(行程開關)'
+          return '後門行程開關'
         case 'safe_door_total_logic':
-          return '後門1(液壓閥)'
+          return '後門液壓閥'
         case 'nozzle_protection_logic':
           return '射嘴防護罩'
         case 'emergency_1_logic':
@@ -776,62 +789,69 @@ export default {
         case 'emergency_5_logic':
           return '急停5'
         case 'safe_door_block_logic':
-          return '前門檔塊'
+          return '前門擋塊'
         case 'safe_door_ONOFF_logic':
-          return '前門2開關'
+          return '前門液壓閥'
         default:
           return ''
       }
     },
     testName: function(key) {
       switch (key) {
-        case 'ID4_OK':
-          return 'ID4'
-        case 'ID6_OK':
-          return 'ID6'
-        case 'ID9_OK':
-          return 'ID9'
-        case 'ID21_OK':
-          return 'ID21'
-        case 'ID22_OK':
-          return 'ID22'
-        case 'ID27_OK':
-          return 'ID27'
+        case 'front_OK':
+          return '前門'
+        case 'back_OK':
+          return '後門'
+        case 'chain_OK':
+          return '安全連鎖'
+        case 'total_OK':
+          return '後門液壓閥'
+        case 'emergency_OK':
+          return '急停'
+        case 'nozzle_OK':
+          return '射嘴保護'
+        case 'lamp_OK':
+          return '三色燈'
         default:
           return ''
       }
     },
     testTooltip: function(key) {
       switch (key) {
-        case 'ID4_OK':
+        case 'front_OK':
           return {
-            no: 'ID4',
-            content: '三色燈是否變紅，是否有報警聲(前/後安全門開)'
+            no: '前門',
+            content: '前安全門開，顯示幕顯示"前安全門開警報"'
           }
-        case 'ID6_OK':
+        case 'back_OK':
           return {
-            no: 'ID6',
-            content: '安全門打開後是否有連鎖信號'
+            no: '後門',
+            content: '後安全門開，馬達自動關閉'
           }
-        case 'ID9_OK':
+        case 'chain_OK':
           return {
-            no: 'ID9',
-            content: '後門安全門開，馬達是否自動關閉'
+            no: '安全連鎖',
+            content: '安全測試聯鎖正常'
           }
-        case 'ID21_OK':
+        case 'total_OK':
           return {
-            no: 'ID21',
-            content: '急停信號是否正常'
+            no: '後門液壓閥',
+            content: '後安全門右下方觀察液壓裝置表面無異物/無此項默認ok'
           }
-        case 'ID22_OK':
+        case 'emergency_OK':
           return {
-            no: 'ID22',
-            content: '射嘴防護罩是否正常'
+            no: '急停',
+            content: '急停按鈕完整無破損，急停功能有效'
           }
-        case 'ID27_OK':
+        case 'nozzle_OK':
           return {
-            no: 'ID27',
-            content: '三色燈是否正常'
+            no: '射嘴保護',
+            content: '射嘴防護罩是否完整、有感應裝置，並有效'
+          }
+        case 'lamp_OK':
+          return {
+            no: '三色燈',
+            content: '確認三色燈能正常顯示'
           }
         default:
           return {
