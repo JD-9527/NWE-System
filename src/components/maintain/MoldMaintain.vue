@@ -52,8 +52,7 @@
 </template>
 
 <script>
-  // import axios from 'axios'
-  import { dataMoldSearch } from '../api.js'
+  import { dataMoldSearch } from '@/api.js'
   export default {
     data() {
       return {

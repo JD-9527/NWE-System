@@ -200,11 +200,11 @@
 </style>
 
 <script>
-  import WOTable from './WorkOrderTable.vue'
-  import FactorySelection from './base/FactorySelection.vue'
-  import Gantt from './Gantt_chart.vue'
-  import NewRowButton from './base/NewRowButton.vue'
-  import { planWorkTonlist, planWorlistDetail } from '../api.js'
+  import WOTable from '../WorkOrderTable.vue'
+  import FactorySelection from '../base/FactorySelection.vue'
+  import Gantt from '../Gantt_chart.vue'
+  import NewRowButton from '../base/NewRowButton.vue'
+  import { planWorkTonlist, planWorlistDetail } from '@/api.js'
   import { String2Date, Date2String } from '@/utils/common.js'
 
   export default {

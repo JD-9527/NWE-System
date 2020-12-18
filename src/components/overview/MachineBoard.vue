@@ -619,7 +619,7 @@
 
 <script>
 import { overviewMachineBoard, overviewMachineInfo, overviewMachineStop,
-         overviewMachineWorkList, overviewMachineProduceInfo, overviewMachineInfoDetail } from '../api.js'
+         overviewMachineWorkList, overviewMachineProduceInfo, overviewMachineInfoDetail } from '@/api.js'
 const legends = [
   { name:'正常', status: 0 },
   { name:'換模', status: 1 },

@@ -291,7 +291,7 @@
               style="text-align: right; margin-top: 10px; color: #F50000"
               v-show="machine_state.operation_error == 0"
             >操作錯誤，前門關，後門開！</div>
-            <img src="../assets/Vsp.png" style="width: 90%;" />
+            <img src="../../assets/Vsp.png" style="width: 90%;" />
           </div>
         </el-card>
       </el-col>
@@ -333,6 +333,7 @@
                 align="center">
               </el-table-column>
               <el-table-column
+                width="120"
                 label="點檢編號"
                 align="center"
               >
@@ -359,7 +360,7 @@
               <el-table-column
                 label="點檢內容"
                 align="center"
-                width="350"
+                width="400"
               >
                 <template slot-scope="{row}">
                   <div
@@ -392,8 +393,15 @@
                     :key="key"
                   >
                     <div
-                      class="door_block"
                       v-show="row[key] != '' && test_keys.includes(key)"
+                      class="door_block"
+                      :style="'color:'+ (row[key] == '0'? '#F50000;': '#17ba6a;')"
+                    >
+                      {{ doorState(row[key]) }}
+                    </div>
+                    <div
+                      v-show="row[key] != '' && test_keys.includes(key) && key == 'nozzle_OK'"
+                      class="door_block"
                       :style="'color:'+ (row[key] == '0'? '#F50000;': '#17ba6a;')"
                     >
                       {{ doorState(row[key]) }}
@@ -629,9 +637,9 @@
 <script>
 import { overviewSecurityState, overviewSecurityInfo, overviewSecurityManual,
          overviewSecurityTest, overviewSecurityMachineOD, overviewSecurityAbnormal,
-         overviewSecurityAddRemark } from '../api.js'
-import JSMpegPlayer from './jsmpegPlayer'
-import { workbook2blob, openDownloadDialog } from '../utils/excel.js'
+         overviewSecurityAddRemark } from '@/api.js'
+import JSMpegPlayer from '../jsmpegPlayer'
+import { workbook2blob, openDownloadDialog } from '../../utils/excel.js'
 
 const legends = [
   { name:'正常', status: 1 },

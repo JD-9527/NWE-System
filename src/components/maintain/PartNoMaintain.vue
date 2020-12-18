@@ -272,11 +272,11 @@
 </style>
 
 <script>
-import EditableCell from "./EditableCell.vue";
-import DownloadButton from "./base/DownloadButton.vue";
-import NewRowButton from './base/NewRowButton.vue'
+import EditableCell from "../base/EditableCell.vue";
+import DownloadButton from "../base/DownloadButton.vue";
+import NewRowButton from '../base/NewRowButton.vue'
 import { dataPlasticColor, dataImportPlasticColor, dataEditPlasticColor,
-         dataColorList, dataSpecPartno, dataSpecPartnoEdit } from '../api.js'
+         dataColorList, dataSpecPartno, dataSpecPartnoEdit } from '@/api.js'
 
 export default {
   components: {

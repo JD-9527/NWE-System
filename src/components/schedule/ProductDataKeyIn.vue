@@ -296,11 +296,11 @@
 </style>
 
 <script>
-import EditableCell from "./EditableCell.vue";
-import DownloadButton from "./base/DownloadButton.vue";
-import NewRowButton from "./base/NewRowButton.vue";
+import EditableCell from "../base/EditableCell.vue";
+import DownloadButton from "../base/DownloadButton.vue";
+import NewRowButton from "../base/NewRowButton.vue";
 import { dataDayPlan, dataWeekPlan, dataImportDayPlan, dataImportWeekPlan,
-         dataEditDayPlan, dataEditWeekPlan } from '../api.js'
+         dataEditDayPlan, dataEditWeekPlan } from '@/api.js'
 
 export default {
   components: {

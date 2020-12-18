@@ -178,7 +178,7 @@
 <script>
 import mpchart from './machPerformChart.vue'
 import abchart from './analyseBarChart.vue'
-import FactorySelection from './base/FactorySelection.vue'
+import FactorySelection from '../base/FactorySelection.vue'
 
 export default {
   components: {

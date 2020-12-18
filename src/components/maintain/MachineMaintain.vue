@@ -239,11 +239,9 @@
           center
         >
           <div slot="title">是否確認刪除這筆資料？</div>
-          <!-- <div style="display: inline-block; text-align: center;"> -->
             <!-- <span>是否確認刪除這筆資料？<br/></span> -->
             <span>噸位：{{ dialogMessage.machine_ton }}<br/></span>
             <span>前置作業時間：{{ dialogMessage.mold_cttime }}<br/></span>
-          <!-- </div> -->
           <span slot="footer" class="dialog-footer">
             <el-button @click="dialogVisible = false" size="small">取 消</el-button>
             <el-button type="danger" @click="deleteRow(dialogMessage,dialogMessageRow)" size="small">確認刪除</el-button>
@@ -289,11 +287,11 @@
 </style>
 
 <script>
-import EditableCell from "./EditableCell.vue";
-import DownloadButton from "./base/DownloadButton.vue";
-import NewRowButton from './base/NewRowButton.vue'
+import EditableCell from "../base/EditableCell.vue";
+import DownloadButton from "../base/DownloadButton.vue";
+import NewRowButton from '../base/NewRowButton.vue'
 import { dataMachineColor, dataEditMachineColor, dataCtTime, dataEditCtTime, dataDelCtTime,
-         dataColorList, dataTonList, dataImportCtTime, dataImportMachine } from "../api.js"
+         dataColorList, dataTonList, dataImportCtTime, dataImportMachine } from "@/api.js"
 
 export default {
   components: {

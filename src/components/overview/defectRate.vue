@@ -28,7 +28,7 @@
 
 <style scoped>
   .charts-box{
-    width: 100%; 
+    width: 100%;
     height: 75vh;
     text-align: center;
   }

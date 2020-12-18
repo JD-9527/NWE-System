@@ -208,8 +208,8 @@
 </template>
 
 <script>
-import EditableCell from "./EditableCell.vue";
-import { PlanOrder, planEditPreview } from '../api.js'
+import EditableCell from "../base/EditableCell.vue";
+import { PlanOrder, planEditPreview } from '@/api.js'
 
 export default {
   components: {

@@ -1,15 +1,15 @@
 <template>
     <div>
-        <el-table 
-        :data="tableData" 
+        <el-table
+        :data="tableData"
         v-show="holding & table_show"
         style="width: 100%"
         >
-        <el-table-column 
-            label="縮小" 
-            width="70" 
+        <el-table-column
+            label="縮小"
+            width="70"
             align="center">
-            <el-button 
+            <el-button
             @click="close_table"
             size='small'
             >▲</el-button>
@@ -122,7 +122,7 @@
               <span slot="content">{{row.note}}</span>
             </editable-cell>
         </el-table-column>
-        <el-table-column 
+        <el-table-column
             abel="操作"
             align="center"
             fixed="right"
@@ -155,7 +155,7 @@
     </div>
 </template>
 <script>
-import EditableCell from "./EditableCell.vue";
+import EditableCell from "./base/EditableCell.vue";
 export default {
   components: {
     EditableCell
@@ -188,9 +188,9 @@ export default {
       this.$emit("update:temptableData",temp)
     //   this.$emit("update:tableData",this.tableData)
     },
-      
 
-    
+
+
   },
   mounted(){
     // this.saved()

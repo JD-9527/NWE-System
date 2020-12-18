@@ -805,7 +805,7 @@ import ItemMovement from "gantt-schedule-timeline-calendar/dist/ItemMovement.plu
 import ItemHold from 'gantt-schedule-timeline-calendar/dist/ItemHold.plugin.js'
 import { isNull } from 'util'
 import { PlanOrder,WorkOrder,PartNoInfo,WeeksPlan,MachineData,Export_NWE_Planning} from '../api.js'
-import EditableCell from "./EditableCell.vue";
+import EditableCell from "./base/EditableCell.vue";
 
 let subs = [];
 /* eslint-disable */
@@ -1807,7 +1807,7 @@ export default {
       alert('更新完成');
 
     },
-    export_plan:function(val){   // 匯出報表      
+    export_plan:function(val){   // 匯出報表
       let start_date = 'all'
       let end_date = 'all'
       let filename = '計畫預覽'
@@ -1815,7 +1815,7 @@ export default {
         filename = '工單計畫'
       let time_check = true
 
-      if(val != 'all'){        
+      if(val != 'all'){
         let st = this.ObjectToNewDate(this.export_starttime)
         let et = this.ObjectToNewDate(this.export_endtime)
         if(st >= et){
@@ -1824,7 +1824,7 @@ export default {
         }
         start_date = this.ObjectToString(this.export_starttime)
         end_date = this.ObjectToString(this.export_endtime)
-          
+
         if(this.dataType=='workorder')
           filename = '工單計畫('+ start_date + '~'+ end_date + ')'
         else
@@ -1833,7 +1833,7 @@ export default {
 
       if(time_check){
         Export_NWE_Planning(start_date,end_date,this.dataType).then((response)=>{
-          
+
           let JSONData = response.data
           var arrData = typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData;
           console.log(arrData)

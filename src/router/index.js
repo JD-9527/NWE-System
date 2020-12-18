@@ -39,7 +39,7 @@ export const asyncRoutes = [
       {
         name: 'DefectRate',
         path: '/overview/dashboard/defectrate',
-        component: () => import('@/components/defectRate'),
+        component: () => import('@/components/overview/defectRate'),
         meta: {
           role: [
             'website_maintainer', 'site_manager', 'product_manager', 'machine_maintainer',
@@ -50,7 +50,7 @@ export const asyncRoutes = [
       {
         name: 'WorkOrderBoard',
         path: '/overview/work_order',
-        component: () => import('@/components/WorkOrderBoard'),
+        component: () => import('@/components/overview/WorkOrderBoard'),
         meta: {
           role: [
             'website_maintainer', 'site_manager', 'product_manager', 'machine_maintainer',
@@ -61,18 +61,7 @@ export const asyncRoutes = [
       {
         name: 'MachineBoard',
         path: '/overview/machine/:line',
-        component: () => import('@/components/MachineBoard'),
-        meta: {
-          role: [
-            'website_maintainer', 'site_manager', 'product_manager', 'machine_maintainer',
-            'mold_repairer', 'dispatcher', 'quality_assurance', 'process_engineer', 'visitor'
-          ]
-        },
-      },
-      {
-        name: 'PlanBoard',
-        path: '/overview/plan',
-        component: () => import('@/components/PlanBoard'),
+        component: () => import('@/components/overview/MachineBoard'),
         meta: {
           role: [
             'website_maintainer', 'site_manager', 'product_manager', 'machine_maintainer',
@@ -83,7 +72,7 @@ export const asyncRoutes = [
       {
         name: 'SecurityBoard',
         path: '/overview/security/:line',
-        component: () => import('@/components/SecurityBoard'),
+        component: () => import('@/components/overview/SecurityBoard'),
         meta: {
           role: [
             'website_maintainer', 'site_manager', 'product_manager', 'machine_maintainer',
@@ -107,7 +96,7 @@ export const asyncRoutes = [
       {
         name: 'MachinePerformance',
         path: '/productStatic/machinePerform' ,
-        component: () => import('@/components/MachinePerformance') ,
+        component: () => import('@/components/statistic/MachinePerformance') ,
         meta: {
           role: [
             'website_maintainer', 'site_manager', 'product_manager', 'machine_maintainer',
@@ -128,25 +117,25 @@ export const asyncRoutes = [
       {
         name: 'ProductDataKeyIn',
         path: '/productSchedule/data_key_in' ,
-        component: () => import('@/components/ProductDataKeyIn'),
+        component: () => import('@/components/schedule/ProductDataKeyIn'),
         meta: { role: ['website_maintainer', 'product_manager'] },
       },
       {
         name: 'PlanPreview',
         path: '/productSchedule/plan_preview' ,
-        component: () => import('@/components/PlanPreview'),
+        component: () => import('@/components/schedule/PlanPreview'),
         meta: { role: ['website_maintainer', 'product_manager'] },
       },
       {
         name: 'WorkOrderPlan',
         path: '/productSchedule/work_order_plan' ,
-        component: () => import('@/components/WorkOrderPlan'),
+        component: () => import('@/components/schedule/WorkOrderPlan'),
         meta: { role: ['website_maintainer', 'product_manager'] },
       },
       {
         name: 'History',
         path: '/productSchedule/history' ,
-        component: () => import('@/components/History'),
+        component: () => import('@/components/schedule/History'),
         meta: { role: ['website_maintainer', 'site_manager', 'product_manager'] },
       },
       {
@@ -168,7 +157,7 @@ export const asyncRoutes = [
       {
         name: 'MoldMaintain',
         path: '/maintain/mold',
-        component: () => import('@/components/MoldMaintain'),
+        component: () => import('@/components/maintain/MoldMaintain'),
         meta: {
           role: [
             'website_maintainer', 'site_manager', 'product_manager', 'machine_maintainer',
@@ -179,13 +168,13 @@ export const asyncRoutes = [
       {
         name: 'MachineMaintain',
         path: '/maintain/machine',
-        component: () => import('@/components/MachineMaintain'),
+        component: () => import('@/components/maintain/MachineMaintain'),
         meta: { role: ['website_maintainer', 'process_engineer'] },
       },
       {
         name: 'PartNoMaintain',
         path: '/maintain/partno',
-        component: () => import('@/components/PartNoMaintain'),
+        component: () => import('@/components/maintain/PartNoMaintain'),
         meta: { role: ['website_maintainer', 'product_manager'] },
       },
       {
