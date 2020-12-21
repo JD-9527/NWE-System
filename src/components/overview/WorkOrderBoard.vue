@@ -187,7 +187,6 @@
 </style>
 
 <script>
-// import Table from './Table'
 import WOTable from '../WorkOrderTable.vue'
 import { planWorkTonlist, planWorlistDetail } from '@/api.js'
 import { String2Date, Date2String } from '@/utils/common.js'
