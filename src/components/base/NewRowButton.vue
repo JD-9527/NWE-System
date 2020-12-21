@@ -23,8 +23,8 @@
           placeholder="請選擇"
           filterable
           clearable
-          :multiple="column.prop == 'machine_NO'"
-          v-if="select_list.indexOf(column.prop) > -1 && column.type == 'select'"
+          :multiple="column.prop == 'machine_NO' && column.type == 'select-multi'"
+          v-if="select_list.indexOf(column.prop) > -1 && selection.includes(column.type)"
           size='small'
           style="width: 100%"
           @focus="getLists(column.prop)"
@@ -79,7 +79,8 @@ export default {
       colorlist: [],
       select_list: ['require_source', 'plastic_color', 'machine_NO'],
       machinelist: [],
-      Alists: []
+      Alists: [],
+      selection: ['select', 'select-multi']
     }
   },
   props: {

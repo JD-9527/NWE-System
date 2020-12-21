@@ -309,7 +309,7 @@ export default {
       ],
       tableInfo_s: [
         { prop: 'Part_NO', label: '料號', type: 'input' },
-        { prop: 'machine_NO', label: '指定機台', type: 'select'},
+        { prop: 'machine_NO', label: '指定機台', type: 'select-multi'},
       ],
       machinelist: []
     }

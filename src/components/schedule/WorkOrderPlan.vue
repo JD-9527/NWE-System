@@ -228,7 +228,7 @@
         dataType:'workorder',
         tableInfo: [
           {prop: 'machine_ton',label: '噸位', type: 'input'},
-          {prop: 'machine_NO',label: '機台號', type: 'input'},
+          {prop: 'machine_NO',label: '機台號', type: 'select'},
           {prop: 'plastic_color',label: '當前顏色', type: 'input'},
           {prop: 'real_mold_changerover_time',label: '上下模時間', type: 'input'},
           {prop: 'real_s_time',label: '實際開始時間', type: 'input'},
