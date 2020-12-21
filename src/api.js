@@ -130,6 +130,9 @@ export const dataEditMachineColor = (row, user) => {
   formData.append('machine_ton', row.machine_ton)
   formData.append('product_color', row.product_color)
   formData.append('owner', row.owner)
+
+  const stateList = ['正常', '換模', '待機', '斷線', '調機', '維修', '修模待機']
+  formData.append('state', stateList.indexOf(row.state))
   formData.append('user', user)
   return NWEData.post('/machinecolor/', formData, { headers: {
         'Content-Type': 'multipart/form-data'

@@ -97,8 +97,34 @@
             </editable-cell>
           </el-table-column>
           <el-table-column
+            prop="state"
+            label="機台當前狀態"
+            align="center"
+            show-overflow-tooltip
+          >
+            <editable-cell
+              :show-input="row.editMode"
+              slot-scope="{row}"
+              editable-component="el-select"
+              v-model="row['state']"
+              placeholder=""
+              no-data-text="Empty"
+            >
+              <span slot="content">{{row['state']}}</span>
+              <template slot="edit-component-slot">
+                <el-option
+                  v-for="(state,index) in stateList"
+                  :key="index"
+                  :label="state"
+                  :value="state"
+                ></el-option>
+              </template>
+            </editable-cell>
+          </el-table-column>
+          <el-table-column
             label="操作"
             align="center"
+            width="200"
           >
            <template slot-scope="{row, index}">
             <el-button
@@ -239,7 +265,6 @@
           center
         >
           <div slot="title">是否確認刪除這筆資料？</div>
-            <!-- <span>是否確認刪除這筆資料？<br/></span> -->
             <span>噸位：{{ dialogMessage.machine_ton }}<br/></span>
             <span>前置作業時間：{{ dialogMessage.mold_cttime }}<br/></span>
           <span slot="footer" class="dialog-footer">
@@ -320,7 +345,8 @@ export default {
       dialogVisible: false,
       dialogMessage: '',
       dialogMessageRow: 0,
-      file: undefined
+      file: undefined,
+      stateList: ['正常', '換模', '待機', '斷線', '調機', '維修', '修模待機'],
     }
   },
   methods: {
