@@ -9,12 +9,35 @@
         @siteSelected="siteSelect"
         @tonSelected="tonSelect"
       />
-      <el-button size='mini'
+      <el-button
+        size='mini'
         style="margin-left: 10px;"
-        @click="submit_plan">提交</el-button>
+        @click="submit_plan"
+      >
+        提交
+      </el-button>
 
       <el-tab-pane label="推薦報表" name="first">
-        <Report :key="renderComponent" :field='field' :line='line' :ton='ton'/>
+        <report
+          :key="renderComponent"
+          :field='field'
+          :line='line'
+          :ton='ton'
+        >
+          <template #head>
+            <el-table-column
+              prop="select"
+              label=""
+              width="40"
+              align="center"
+              fixed="left"
+            >
+              <template slot-scope="{row}">
+                <el-checkbox v-model="row.select"></el-checkbox>
+              </template>
+            </el-table-column>
+          </template>
+        </report>
       </el-tab-pane>
       <el-tab-pane label="推薦甘特圖" name="second">
 
@@ -32,15 +55,13 @@
 </template>
 
 <script>
-  import Report from './ReportPreview.vue'
-  import Gantt from '../Gantt_chart.vue'
   import FactorySelection from '../base/FactorySelection.vue'
   import { planPreview,submitarrangement } from '@/api.js'
 
   export default {
     components:{
-      Report,
-      Gantt,
+      Report: () => import('./ReportPreview.vue'),
+      Gantt: () => import('../Gantt_chart.vue'),
       FactorySelection
     },
     data() {
@@ -90,7 +111,8 @@
           console.log(error)
         })
       },
-      submit_plan(){ //call submitarrangement api        let Submit = new Object()
+      submit_plan(){ //call submitarrangement api
+        let Submit = new Object()
         Submit = submitarrangement
         Submit(this.field,this.line,this.ton).then((response)=>{
           if (response.status == 200) {

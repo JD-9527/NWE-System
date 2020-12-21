@@ -18,7 +18,8 @@
       :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
       style="width: 100%"
     >
-       <el-table-column
+      <slot name="head"></slot>
+      <el-table-column
         prop="Part_NO"
         label="料號"
         width="200"
@@ -269,7 +270,8 @@ export default {
           this.tableData = this.tableData.map(row => {
             return {
               ...row,
-              editMode: false
+              editMode: false,
+              select: false,
             }
           })
           this.tableData_o = this.tableData
