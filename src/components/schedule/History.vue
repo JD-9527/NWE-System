@@ -178,7 +178,7 @@
 <script>
   import FactorySelection from '../base/FactorySelection'
   import { planYearlist, planWeeklist, planWeekPlanHis, planWorkListHis, planArrangementHis } from '@/api.js'
-  import { String2Date } from '@/utils/common.js'
+  import { String2Date, getLast7Days } from '@/utils/common.js'
   export default {
     components: {
       FactorySelection
@@ -398,6 +398,8 @@
       this.getYearList();
       this.getWeekList();
       this.getWeekPlanHis();
+      this.start_end = getLast7Days()
+      this.WorkListSearch()
     }
   };
 </script>
