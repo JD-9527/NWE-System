@@ -347,6 +347,17 @@ export const Export_NWE_Planning = (start_date,end_date,data_type) => {
 export const planWorklist = (line) => {
   return NWEPlan.get('/worklist/',{params: { line: line }})
 }
+export const planEditWorklist = (row) => {
+  let formData = new FormData();
+  formData.append('worklistNO', row.work_list)
+  formData.append('mold_hole', row.mold_hole)
+  formData.append('machine_CT', row.machine_CT)
+  formData.append('product_number', row.product_number)
+  formData.append('work_list_number', row.work_list_number)
+  return NWEPlan.post('/worklist/', formData, { headers: {
+    'Content-Type': 'multipart/form-data'
+  }})
+}
 export const planWorkTonlist = (line) => {
   return NWEPlan.get('/worktonlist/',{params: { line: line }})
 }

@@ -163,6 +163,35 @@
         </template>
       </el-table-column>
       <el-table-column
+        prop="product_number"
+        label="完成數量"
+        width="100"
+        align="center"
+      >
+        <template slot-scope="{row}">
+          <el-input
+            v-if="row.editMode"
+            v-model="row.product_number"
+            type="number"
+          ></el-input>
+          <span v-else>{{ row.product_number }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="select"
+        label="已完成"
+        width="80"
+        align="center"
+      >
+        <template slot-scope="{row}">
+          <el-checkbox
+            v-model="row.select"
+            :disabled="row.machine_NO == 'D17' || !row.editMode"
+            @change="setCount(row)"
+          ></el-checkbox>
+        </template>
+      </el-table-column>
+      <el-table-column
         label="操作"
         align="center"
         fixed="right"
@@ -233,7 +262,7 @@
 
 <script>
 // import EditableCell from "./EditableCell.vue";
-import { planWorklist } from '../api.js'
+import { planWorklist, planEditWorklist } from '../api.js'
 
 export default {
   components: {
@@ -296,7 +325,9 @@ export default {
         this.tableData = this.tableData.map(row => {
           return {
             ...row,
-            editMode: false
+            editMode: false,
+            select: false,
+            product_number: 0,
           };
         });
       })
@@ -306,10 +337,13 @@ export default {
     },
     saveRow(row, index) {
       row.editMode = false;
+      planEditWorklist(row).then(response => {
+        console.log(response)
+      })
     },
     cancelEditMode(row, index) {
       row.editMode = false;
-      // this.getTableData();
+      this.getTableData();
     },
     setEditMode(row, index) {
       row.editMode = true;
@@ -341,6 +375,14 @@ export default {
       // console.log(row);
       this.$emit('row-click',row)
     },
+    setCount(row) {
+      if (row.select) {
+        row.product_number = row.work_list_number
+      }
+      else {
+        row.product_number = 0
+      }
+    }
     /* eslint-enable */
   },
   mounted() {
