@@ -172,6 +172,7 @@
           <el-input
             v-if="row.editMode"
             v-model="row.product_number"
+            :disabled="row.machine_NO == 'D17'"
             type="number"
           ></el-input>
           <span v-else>{{ row.product_number }}</span>
@@ -336,9 +337,15 @@ export default {
       console.log(data)
     },
     saveRow(row, index) {
-      row.editMode = false;
-      planEditWorklist(row).then(response => {
-        console.log(response)
+      this.$confirm(`已完成數量：${row.product_number}, 確定提交該工單？`, '溫馨提示', {
+        confirmButtonText: '確認',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        row.editMode = false;
+        planEditWorklist(row).then(response => {
+          console.log(response)
+        })
       })
     },
     cancelEditMode(row, index) {
