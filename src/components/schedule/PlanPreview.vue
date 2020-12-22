@@ -23,21 +23,7 @@
           :field='field'
           :line='line'
           :ton='ton'
-        >
-          <template #head>
-            <el-table-column
-              prop="select"
-              label=""
-              width="40"
-              align="center"
-              fixed="left"
-            >
-              <template slot-scope="{row}">
-                <el-checkbox v-model="row.select"></el-checkbox>
-              </template>
-            </el-table-column>
-          </template>
-        </report>
+        ></report>
       </el-tab-pane>
       <el-tab-pane label="推薦甘特圖" name="second">
 
