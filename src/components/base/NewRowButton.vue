@@ -8,53 +8,63 @@
       新增
     </el-button>
     <el-dialog
-      title="新增資料"
+      :title="`${title} 新增資料`"
       :visible.sync="dialog"
-      width="50%"
+      :width="$attrs.width"
     >
-      <div
-        style="padding: 5px; width: 45%; display: inline-block;"
-        v-for="(column,index) in tableInfo"
-        :key="index"
-      >
-        <div>{{column.label}}</div>
-        <el-select
-          v-model="new_row[column.prop]"
-          placeholder="請選擇"
-          filterable
-          clearable
-          :multiple="column.prop == 'machine_NO' && column.type == 'select-multi'"
-          v-if="select_list.indexOf(column.prop) > -1 && selection.includes(column.type)"
-          size='small'
-          style="width: 100%"
-          @focus="getLists(column.prop)"
-        >
-          <el-option
-            v-for="(item,index) in Alists"
+      <el-row>
+        <el-col :span="new_row['machine_NO']&& type=='workorder'? 12: 24">
+          <div
+            style="padding: 5px; width: 45%; display: inline-block;"
+            v-for="(column,index) in tableInfo"
             :key="index"
-            :label="item"
-            :value="item"
-          ></el-option>
-        </el-select>
-        <el-input
-          :placeholder="column.label"
-          size='small'
-          style='width: 100%;'
-          v-model="new_row[column.prop]"
-          v-else-if="column.type == 'input'"
-        ></el-input>
-        <el-date-picker
-          v-model="new_row[column.prop]"
-          type="date"
-          size='small'
-          :placeholder="column.label"
-          editable-component="el-date-picker"
-          format="yyyy/MM/dd"
-          value-format="yyyy/MM/dd"
-          v-else-if="column.type == 'date'"
+          >
+            <div>{{column.label}}</div>
+            <el-select
+              v-model="new_row[column.prop]"
+              placeholder="請選擇"
+              filterable
+              clearable
+              :multiple="column.prop == 'machine_NO' && column.type == 'select-multi'"
+              v-if="select_list.indexOf(column.prop) > -1 && selection.includes(column.type)"
+              size='small'
+              style="width: 100%"
+              @focus="getLists(column.prop)"
+            >
+              <el-option
+                v-for="(item,index) in Alists"
+                :key="index"
+                :label="item"
+                :value="item"
+              ></el-option>
+            </el-select>
+            <el-input
+              :placeholder="column.label"
+              size='small'
+              style='width: 100%;'
+              v-model="new_row[column.prop]"
+              v-else-if="column.type == 'input'"
+            ></el-input>
+            <el-date-picker
+              v-model="new_row[column.prop]"
+              type="date"
+              size='small'
+              :placeholder="column.label"
+              editable-component="el-date-picker"
+              format="yyyy/MM/dd"
+              value-format="yyyy/MM/dd"
+              v-else-if="column.type == 'date'"
+            >
+            </el-date-picker>
+          </div>
+        </el-col>
+        <el-col
+          v-if="new_row['machine_NO'] && type=='workorder'"
+          :span="12"
         >
-        </el-date-picker>
-      </div>
+          <slot :machs="new_row['machine_NO']"></slot>
+        </el-col>
+      </el-row>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="comfirmEdit">新 增</el-button>
         <el-button @click="dialog = false">取 消</el-button>
@@ -90,6 +100,10 @@ export default {
       default: () => []
     },
     type: String,
+    title: {
+      type: String,
+      default: '',
+    }
   },
   methods: {
     addRow() {

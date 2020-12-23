@@ -7,7 +7,20 @@
       <el-tab-pane label="工單報表" name="first">
         <el-tabs v-model="activeLine" type="card">
           <div style="position: relative; display: flex">
-            <NewRowButton :tableInfo="tableInfo"/>
+            <new-row-button
+              :tableInfo="tableInfo"
+              type="workorder"
+              width="70%"
+            >
+              <template #default={machs}>
+                <WOTable
+                  :key="machs[0]+'線'"
+                  :name="machs[0]+'線'"
+                  :ton="ton"
+                  :mach="machs"
+                />
+              </template>
+            </new-row-button>
             <div style="flex-grow: 1;"></div>
             <div class="sub-title select" style="margin-top: 5px;">機台</div>
             <el-select
@@ -74,6 +87,7 @@
               :name="line"
               :ton="ton"
               :mach="mach"
+              :height="781"
               editable
               @row-click="rowClick"
             />

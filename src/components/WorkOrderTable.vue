@@ -3,7 +3,7 @@
     <el-table
       :data="filterTable.slice((currentPage-1)*pageSize,currentPage*pageSize)"
       style="width: 100%"
-      height="781"
+      :height="$attrs.height"
       highlight-current-row
       :row-class-name="tableRowClassName"
       @row-click="onClick"

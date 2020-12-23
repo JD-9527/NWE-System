@@ -23,6 +23,7 @@
           :field='field'
           :line='line'
           :ton='ton'
+          @select="handleSelect"
         ></report>
       </el-tab-pane>
       <el-tab-pane label="推薦甘特圖" name="second">
@@ -61,7 +62,8 @@
         site: 'All',
         dataType:'planorder',
         datas: [],
-        renderComponent:0
+        renderComponent:0,
+        selection: [],
       };
     },
     computed:{
@@ -111,7 +113,9 @@
         .catch(error => console.log(error.response));
         this.renderComponent +=1 //refresh component
       },
-
+      handleSelect(selection) {
+        this.selection = selection
+      }
       /* eslint-enable */
     },
     mounted() {
