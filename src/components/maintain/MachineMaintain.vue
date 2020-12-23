@@ -106,11 +106,13 @@
               :show-input="row.editMode"
               slot-scope="{row}"
               editable-component="el-select"
-              v-model="row['state']"
+              v-model="row['machine_state']"
               placeholder=""
               no-data-text="Empty"
             >
-              <span slot="content">{{row['state']}}</span>
+              <span slot="content">
+                {{ row['machine_state'] }}
+              </span>
               <template slot="edit-component-slot">
                 <el-option
                   v-for="(state,index) in stateList"
@@ -356,6 +358,10 @@ export default {
       dataMachineColor().then((response)=>{
         this.loading=false
         this.tableData = response.data.data
+        this.tableData.forEach(row => {
+          const index = row.machine_state
+          row.machine_state = this.stateList[index]
+        })
         this.tableData = this.tableData.map(row => {
           return {
             ...row,
