@@ -19,10 +19,15 @@
           >上傳
           </el-button>
           <div style="flex-grow: 1;"></div>
-          <DownloadButton file_type="machineton"/>
+          <table-filter
+            size="small"
+            width="180px"
+            @change="getFilterText"
+          />
+          <download-button file_type="machineton"/>
         </div>
         <el-table
-          :data="tableData.slice((currentPage-1)*pagesize,currentPage*pagesize)"
+          :data="filterTable.slice((currentPage-1)*pagesize,currentPage*pagesize)"
           style="width: 100%"
           :max-height="650"
           v-loading="loading"
@@ -160,7 +165,7 @@
             :page-sizes="[10,20,50]"
             :page-size="pagesize"
             layout="total, sizes,prev, pager, next"
-            :total="tableData.length"
+            :total="filterTable.length"
             prev-text="上一頁"
             next-text="下一頁">
           </el-pagination>
@@ -314,17 +319,18 @@
 </style>
 
 <script>
-import EditableCell from "../base/EditableCell.vue";
 import DownloadButton from "../base/DownloadButton.vue";
+import EditableCell from "../base/EditableCell.vue";
 import NewRowButton from '../base/NewRowButton.vue'
 import { dataMachineColor, dataEditMachineColor, dataCtTime, dataEditCtTime, dataDelCtTime,
          dataColorList, dataTonList, dataImportCtTime, dataImportMachine } from "@/api.js"
 
 export default {
   components: {
-      EditableCell,
       DownloadButton,
-      NewRowButton
+      EditableCell,
+      NewRowButton,
+      TableFilter: () => import('../base/Filter.vue')
   },
   data() {
     return {
@@ -349,10 +355,21 @@ export default {
       dialogMessageRow: 0,
       file: undefined,
       stateList: ['正常', '換模', '待機', '斷線', '調機', '維修', '修模待機'],
+      filterText: '',
+    }
+  },
+  computed : {
+    filterTable() {
+      return this.tableData.filter(data => {
+        return !this.filterText || data.machine_NO.toLowerCase().includes(this.filterText.toLowerCase())
+      })
     }
   },
   methods: {
     /* eslint-disable */
+    getFilterText(text) {
+      this.filterText = text
+    },
     getTableData() {
       this.loading=true
       dataMachineColor().then((response)=>{
@@ -406,10 +423,16 @@ export default {
     },
     saveRow(row, index) {
       dataEditMachineColor(row,this.$store.getters.name).then((response) => {
-        this.$message.success('修改成功！');
-        // 修改成功之後 刷新表格
-        this.getTableData();
-        // console.log(response);
+        let data = response.data
+        if (data.Message) {
+          this.$message.error(data.Message);
+        }
+        else {
+          this.$message.success('修改成功！');
+          // 修改成功之後 刷新表格
+          this.getTableData();
+          // console.log(response);
+        }
       })
       .catch((error) => {
         let error_code = error.response.status
@@ -419,12 +442,15 @@ export default {
     },
     deleteRow(row, index) {
       dataDelCtTime(row.machine_ton).then((response) => {
-        this.$message.success('刪除成功！');
-        // 刪除成功之後 刷新表格
-        this.getTableDataCT();
-        // console.log(response);
-        // this.tableDataCT.splice(index, 1)
-        this.dialogVisible = false
+        if (data.Message) {
+          this.$message.error(data.Message);
+        }
+        else {
+          this.$message.success('刪除成功！');
+          // 刪除成功之後 刷新表格
+          this.getTableDataCT();
+          this.dialogVisible = false
+        }
       })
       .catch((error) => {
         let error_code = error.response.status
@@ -433,10 +459,14 @@ export default {
     },
     saveRowCT(row, index) {
       dataEditCtTime(row,this.$store.getters.name).then((response) => {
-        this.$message.success('修改成功！');
-        // 修改成功之後 刷新表格
-        this.getTableDataCT();
-        // console.log(response);
+        if (data.Message) {
+          this.$message.error(data.Message);
+        }
+        else {
+          this.$message.success('修改成功！');
+          // 修改成功之後 刷新表格
+          this.getTableDataCT();
+        }
       })
       .catch((error) => {
         console.log(error.response.status);
@@ -475,7 +505,7 @@ export default {
     submitForm(){
       if (this.activeName == '1') {
         dataImportMachine('import',this.file).then((response) => {
-          console.log(response.data);
+          // console.log(response.data);
           if (response.status == 200) {
             console.log(response)
             this.$message.success('上傳成功！')
