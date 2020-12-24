@@ -92,7 +92,7 @@
       },
       getData() {
         planPreview('D10',undefined).then((response)=>{
-          console.log(response.data.data)
+          // console.log(response.data.data)
           this.datas = response.data.data
         })
         .catch((error)=>{
