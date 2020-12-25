@@ -14,7 +14,7 @@
             >
               <template #default={machs}>
                 <arrangement-table
-                  :key="machs"
+                  :key="machs.charAt(0)"
                   :mach="machs"
                 />
               </template>

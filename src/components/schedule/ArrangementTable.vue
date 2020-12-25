@@ -1,6 +1,5 @@
 <template>
   <div>
-
     <el-table
       :data="filterTable.slice((currentPage-1)*pageSize,currentPage*pageSize)"
       style="width: 100%"
@@ -115,8 +114,6 @@ export default {
     },
   },
   mounted() {
-    // eslint-disable-next-line no-console
-    console.log(this.mach)
     this.loadTable()
   }
 }
