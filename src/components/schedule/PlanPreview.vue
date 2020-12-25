@@ -23,7 +23,7 @@
           :field='field'
           :line='line'
           :ton='ton'
-          @select="handleSelect"
+          @select="tableSelect"
         ></report>
       </el-tab-pane>
       <el-tab-pane label="推薦甘特圖" name="second">
@@ -102,19 +102,23 @@
       submit_plan(){ //call submitarrangement api
         let Submit = new Object()
         Submit = submitarrangement
-        Submit(this.field,this.line,this.ton).then((response)=>{
+        Submit(this.selection).then((response)=>{
           if (response.status == 200) {
             this.$message.success('提交成功！')
           }
           else {
-            this.$message.error(error.response)
+            this.$message.error(response.Message)
           }
         })
         .catch(error => console.log(error.response));
         this.renderComponent +=1 //refresh component
       },
-      handleSelect(selection) {
-        this.selection = selection
+      tableSelect(selection) {
+        let seqList = []
+        selection.forEach(row => {
+          seqList.push(row.Seq)
+        })
+        this.selection = seqList
       }
       /* eslint-enable */
     },

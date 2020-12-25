@@ -18,6 +18,7 @@
       :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
       style="width: 100%"
       @select="handleSelect"
+      @select-all="handleSelect"
     >
       <el-table-column
         width="50"
@@ -308,7 +309,7 @@ export default {
       this.pageSize = size;
     },
     handleSelect(selection) {
-      this.$emit('selecte', selection)
+      this.$emit('select', selection)
     }
     /* eslint-enable */
   },

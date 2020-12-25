@@ -408,12 +408,8 @@ export const planArrangementHis = (field, line, ton, Part_NO, start_end) => {
 }
 
 // 提交計畫工單
-export const submitarrangement = (field,line,ton) => {
-  let formData = new FormData();
-  formData.append('field', field)
-  formData.append('line', line)
-  formData.append('ton', ton)
-  return NWEPlan.post('/submit/arrangement/', formData, { headers: {
+export const submitarrangement = (seqList) => {
+  return NWEPlan.post('/submit/arrangement/', seqList, { headers: {
         'Content-Type': 'multipart/form-data'
       }});
 }
