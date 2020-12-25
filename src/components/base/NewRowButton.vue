@@ -57,6 +57,7 @@
               v-model="new_row[column.prop]"
               type="date"
               size='small'
+              style="width: 100%"
               :placeholder="column.label"
               editable-component="el-date-picker"
               format="yyyy/MM/dd"
@@ -68,6 +69,7 @@
               v-model="new_row[column.prop]"
               type="date"
               size='small'
+              style="width: 100%"
               :placeholder="column.label"
               editable-component="el-date-picker"
               format="yyyy-MM-dd"
@@ -80,6 +82,7 @@
               value-format="HH:mm:ss"
               type="time"
               size='small'
+              style="width: 100%"
               :placeholder="column.label"
               editable-component="el-time-picker"
               v-else-if="column.type == 'time'">
@@ -165,7 +168,7 @@ export default {
       }
     },
     comfirmEdit() {
-    
+
       let pass_key = true
 
       // 工單計畫新增 資料過濾與補空值
@@ -189,7 +192,7 @@ export default {
               this.$message.error('預計開始時間需小於結束')
               pass_key = false
             }
-            else{ 
+            else{
               this.new_row['plan_s_time']=(this.new_row.plan_s_date+' '+this.new_row.plan_s_time)
               this.new_row['plan_e_time']=(this.new_row.plan_e_date+' '+this.new_row.plan_e_time)
             }
@@ -210,7 +213,7 @@ export default {
           console.log(error)
         })
       }
-     
+
     },
     getColorList() {
       dataColorList().then((response)=>{
