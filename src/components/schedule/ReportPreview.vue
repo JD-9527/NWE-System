@@ -33,13 +33,6 @@
         align="center"
         fixed="left"
       >
-        <editable-cell
-          :show-input="row.editMode"
-          slot-scope="{row}"
-          v-model="row.Part_NO"
-        >
-          <span slot="content">{{row.Part_NO}}</span>
-        </editable-cell>
       </el-table-column>
       <el-table-column
         prop="VER"
@@ -110,13 +103,10 @@
         width="100"
         align="center"
       >
-        <!-- <editable-cell
-          :show-input="row.editMode"
-          slot-scope="{row}"
-          v-model="row.plan_number"
-        >
-          <span slot="content">{{row.plan_number}}</span>
-        </editable-cell> -->
+        <template slot-scope="{ row }">
+          <el-input v-if="row.editMode" v-model="row.plan_number"></el-input>
+          <span v-else>{{ row.plan_number }}</span>
+        </template>
       </el-table-column>
       <el-table-column
         prop="mold_NO"
@@ -181,48 +171,54 @@
         align="center"
       >
       </el-table-column>
-      <!-- <el-table-column
+      <el-table-column
         label="操作"
         align="center"
         fixed="right"
-        width="180"
-      >
-       <template slot-scope="{row, index}">
-        <el-button
-          size="mini"
-          icon="el-icon-edit"
-          @click="setEditMode(row, index)">
-        </el-button>
-        <el-button
-          type="success"
-          icon="el-icon-check"
-          size="mini"
-          v-show="row.editMode"
-          @click="saveRow(row, index)">
-        </el-button>
-        <el-button
-          type="info"
-          icon="el-icon-close"
-          size="mini"
-          v-show="row.editMode"
-          @click="cancelEditMode(row, index)">
-        </el-button>
-       </template>
-      </el-table-column> -->
-
+        width="180">
+        <template slot-scope="{ row, index }">
+          <el-button
+            size="mini"
+            icon="el-icon-edit"
+            :disabled="row.status == 1"
+            @click="setEditMode(row, index)"
+          >
+          </el-button>
+          <el-button
+            type="success"
+            icon="el-icon-check"
+            size="mini"
+            v-show="row.editMode"
+            @click="saveRow(row, index)"
+          >
+          </el-button>
+          <el-button
+            type="info"
+            icon="el-icon-close"
+            size="mini"
+            v-show="row.editMode"
+            @click="cancelEditMode(row, index)"
+          >
+          </el-button>
+          <!-- <el-button
+            type="danger"
+            icon="el-icon-delete"
+            size="mini"
+            :disabled="row.status == 1"
+            v-show="!row.editMode"
+          >
+          </el-button> -->
+        </template>
+      </el-table-column>
     </el-table>
 
   </div>
 </template>
 
 <script>
-import EditableCell from "../base/EditableCell.vue";
 import { PlanOrder, planEditPreview } from '@/api.js'
 
 export default {
-  components: {
-      EditableCell,
-  },
   data(){
     return{
       tableData: [],
@@ -301,8 +297,8 @@ export default {
       this.loadTable();
     },
     setEditMode(row, index) {
-      // row.editMode = true;
-      row.editMode = false;
+      row.editMode = true;
+      // row.editMode = false;
     },
     handleCurrentChange: function(currentPage) {
       this.currentPage = currentPage

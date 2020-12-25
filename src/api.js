@@ -340,6 +340,13 @@ export const planEditPreview = (row) => {
       }});
 }
 
+// 工單計畫新增單筆資料
+export const dataAddWorkOrder = (row) => {
+  return NWEPlan.post('/insert_workorder/', row, { headers: {
+        'Content-Type': 'multipart/form-data'
+      }});
+}
+
 //料號資訊
 export const Export_NWE_Planning = (start_date,end_date,data_type) => {
   return NWEPlan.get('/export/?',{params: { start_date : start_date,end_date:end_date,data_type:data_type}})

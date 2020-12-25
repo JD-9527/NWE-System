@@ -45,6 +45,14 @@
               v-model="new_row[column.prop]"
               v-else-if="column.type == 'input'"
             ></el-input>
+            <el-input
+              :placeholder="column.label"
+              size='small'
+              style='width: 100%;'
+              type="number"
+              v-model="new_row[column.prop]"
+              v-else-if="column.type == 'input_number'"
+            ></el-input>
             <el-date-picker
               v-model="new_row[column.prop]"
               type="date"
@@ -56,6 +64,26 @@
               v-else-if="column.type == 'date'"
             >
             </el-date-picker>
+            <el-date-picker
+              v-model="new_row[column.prop]"
+              type="date"
+              size='small'
+              :placeholder="column.label"
+              editable-component="el-date-picker"
+              format="yyyy-MM-dd"
+              value-format="yyyy-MM-dd"
+              v-else-if="column.type == 'date2'"
+            >
+            </el-date-picker>
+            <el-time-picker
+              v-model="new_row[column.prop]"
+              value-format="HH:mm:ss"
+              type="time"
+              size='small'
+              :placeholder="column.label"
+              editable-component="el-time-picker"
+              v-else-if="column.type == 'time'">
+            </el-time-picker>
           </div>
         </el-col>
         <el-col
@@ -75,8 +103,8 @@
 
 <script>
 import { dataEditWeekPlan, dataEditDayPlan, dataEditCtTime,
-         dataEditPlasticColor,dataColorList, dataSpecPartnoNew,
-         dataEditMachineColor } from '@/api.js'
+         dataEditPlasticColor, dataColorList, dataSpecPartnoNew,
+         dataEditMachineColor, dataAddWorkOrder } from '@/api.js'
 
   /* eslint-disable */
 export default {
@@ -132,19 +160,57 @@ export default {
       else if (this.type == 'machinecolor') {
         this.Edit = dataEditMachineColor
       }
+      else if (this.type == 'workorder') {
+        this.Edit = dataAddWorkOrder
+      }
     },
     comfirmEdit() {
-      // console.log(this.new_row)
-      this.Edit(this.new_row,this.$store.getters.name).then((response)=>{
-        this.$message.success('新增成功！')
-        this.$emit('update')
-        this.dialog = false
-        this.new_row = {}
-      })
-      .catch((error)=>{
-        this.$message.error('新增失敗！')
-        console.log(error)
-      })
+    
+      let pass_key = true
+
+      // 工單計畫新增 資料過濾與補空值
+      if (this.type=='workorder'){
+        let check_list = ['work_list_NO','machine_NO','plan_s_date','plan_s_time',
+                          'plan_e_date','plan_e_time','Part_NO','plan_number']
+        let check_list_name = ['工令號','機台號','預計開始日期','預計開始時間',
+                              '預計結束日期','預計結束時間','料號','數量']
+
+        for(let i=0;i<check_list.length;i++){
+          if((this.new_row[check_list[i]]==null)&(pass_key)){
+            this.$message.error('請輸入'+check_list_name[i])
+            pass_key = false
+          }
+        }
+
+        if (pass_key){
+          let stert_date_time= new Date(this.new_row.plan_s_date+' '+this.new_row.plan_s_time)
+          let end_date_time= new Date(this.new_row.plan_e_date+' '+this.new_row.plan_e_time)
+            if (stert_date_time>end_date_time){
+              this.$message.error('預計開始時間需小於結束')
+              pass_key = false
+            }
+            else{ 
+              this.new_row['plan_s_time']=(this.new_row.plan_s_date+' '+this.new_row.plan_s_time)
+              this.new_row['plan_e_time']=(this.new_row.plan_e_date+' '+this.new_row.plan_e_time)
+            }
+        }
+
+      }
+
+      // 提交
+      if (pass_key){
+          this.Edit(this.new_row,this.$store.getters.name).then((response)=>{
+          this.$message.success('新增成功！')
+          this.$emit('update')
+          this.dialog = false
+          this.new_row = {}
+        })
+        .catch((error)=>{
+          this.$message.error('新增失敗！')
+          console.log(error)
+        })
+      }
+     
     },
     getColorList() {
       dataColorList().then((response)=>{
