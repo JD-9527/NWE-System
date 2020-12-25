@@ -13,10 +13,8 @@
               width="70%"
             >
               <template #default={machs}>
-                <WOTable
-                  :key="machs[0]+'線'"
-                  :name="machs[0]+'線'"
-                  :ton="ton"
+                <arrangement-table
+                  :key="machs"
                   :mach="machs"
                 />
               </template>
@@ -216,17 +214,17 @@
 <script>
   import WOTable from '../WorkOrderTable.vue'
   import FactorySelection from '../base/FactorySelection.vue'
-  import Gantt from '../Gantt_chart.vue'
   import NewRowButton from '../base/NewRowButton.vue'
   import { planWorkTonlist, planWorlistDetail } from '@/api.js'
   import { String2Date, Date2String } from '@/utils/common.js'
 
   export default {
     components:{
-      WOTable,
+      ArrangementTable: () => import('./ArrangementTable'),
       FactorySelection,
+      Gantt: () => import('../Gantt_chart'),
       NewRowButton,
-      Gantt
+      WOTable,
     },
     data() {
       return {
