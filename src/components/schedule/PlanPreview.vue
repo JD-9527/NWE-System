@@ -4,18 +4,20 @@
       計畫預覽
     </div>
     <el-tabs v-model="activeName">
-      <FactorySelection tonlist
-        @lineSelected="handleSelect"
-        @siteSelected="siteSelect"
-        @tonSelected="tonSelect"
-      />
-      <el-button
-        size='mini'
-        style="margin-left: 10px;"
-        @click="submit_plan"
-      >
-        提交
-      </el-button>
+      <el-row type="flex">
+        <FactorySelection tonlist
+          @lineSelected="handleSelect"
+          @siteSelected="siteSelect"
+          @tonSelected="tonSelect"
+        />
+        <el-button
+          size='mini'
+          style="margin-left: 10px; height: 28px;"
+          @click="submit_plan"
+        >
+          提交
+        </el-button>
+      </el-row>
 
       <el-tab-pane label="推薦報表" name="first">
         <report
@@ -44,6 +46,7 @@
 <script>
   import FactorySelection from '../base/FactorySelection.vue'
   import { planPreview,submitarrangement } from '@/api.js'
+  import { workbook2blob, openDownloadDialog } from '@/utils/excel.js'
 
   export default {
     components:{
@@ -77,10 +80,6 @@
       }
     },
     methods: {
-      /* eslint-disable */
-      handleClick(tab, event) {
-        // console.log(tab, event);
-      },
       handleSelect(item) {
         this.line = item
       },
@@ -96,6 +95,7 @@
           this.datas = response.data.data
         })
         .catch((error)=>{
+          // eslint-disable-next-line no-console
           console.log(error)
         })
       },
@@ -110,6 +110,7 @@
             this.$message.error(response.Message)
           }
         })
+        // eslint-disable-next-line no-console
         .catch(error => console.log(error.response));
         this.renderComponent +=1 //refresh component
       },
@@ -119,8 +120,32 @@
           seqList.push(row.Seq)
         })
         this.selection = seqList
-      }
-      /* eslint-enable */
+      },
+      downloadData() {
+        let excelData = []
+        this.filterTable.forEach(row => {
+          excelData.push({
+            '開始時間': row.start,
+            '結束時間': row.end,
+            '生產線別': row.line,
+            '機台號': row.machine_NO,
+            '異常項目': row.abnormal_item,
+            '異常分鐘': row.abnormal_time,
+            '異常I/O': row.abnormal_io,
+            '異常類型': row.abnormal_type,
+            '備註': row.remark,
+          })
+        })
+
+        let wb = this.$xlsx.utils.book_new()
+        let sheet = this.$xlsx.utils.json_to_sheet(excelData)
+
+        this.$xlsx.utils.book_append_sheet(wb, sheet, '監控統計報表')
+        // 创建工作薄blob
+        const workbookBlob = workbook2blob(wb)
+        // 导出工作薄
+        openDownloadDialog(workbookBlob, '監控統計報表.xlsx')
+      },
     },
     mounted() {
       this.getData();
