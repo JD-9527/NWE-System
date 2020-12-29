@@ -335,13 +335,20 @@ export const MoldNoInfo = (part_no,mold_no,ver) => {
 //       }});
 // }
 
-export const planEditPreview = (row) => {
+export const planEditPreview = (row, user) => {
   let formData = new FormData();
-  formData.append('Seq', row.Seq)
-  formData.append('Part_NO', row.Part_NO)
-  formData.append('plan_number', row.plan_number)
-  formData.append('plan_work_time', row.plan_work_time)
-  formData.append('plan_e_time', row.plan_e_time)
+
+  Object.keys(row).forEach(key => {
+    if (key !== 'editMode') {
+      if (key === 'work_list_NO') {
+        if (!row[key]) formData.append(key, 'None')
+        else formData.append(key, row[key])
+      }
+      else formData.append(key, row[key])
+    }
+  })
+  formData.append('user', user)
+
   return NWEPlan.post('/preview/', formData, { headers: {
         'Content-Type': 'multipart/form-data'
       }});

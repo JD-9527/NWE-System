@@ -1,7 +1,6 @@
 <template>
   <div>
-
-    <div>
+    <div style="text-align: center;">
       <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
@@ -14,7 +13,7 @@
         next-text="下一頁">
       </el-pagination>
     </div>
-    <el-table
+    <!-- <el-table
       :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
       style="width: 100%"
       @select="handleSelect"
@@ -32,13 +31,12 @@
         label="料號"
         width="200"
         align="center"
-        fixed="left"
       >
       </el-table-column>
       <el-table-column
         prop="VER"
         label="版次"
-        width="100"
+        width="80"
         align="center"
       >
       </el-table-column>
@@ -206,25 +204,110 @@
             @click="cancelEditMode(row, index)"
           >
           </el-button>
-          <!-- <el-button
-            type="danger"
-            icon="el-icon-delete"
-            size="mini"
-            :disabled="row.status == 1"
-            v-show="!row.editMode"
-          >
-          </el-button> -->
         </template>
       </el-table-column>
-    </el-table>
-
+    </el-table> -->
+    <custom-table
+      :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
+      :tableInfo="tableInfo"
+      @select="handleSelect"
+      @select-all="handleSelect"
+    >
+      <template #head>
+        <el-table-column
+          width="50"
+          align="center"
+          type="selection"
+          fixed="left"
+        ></el-table-column>
+      </template>
+      <template
+        v-for="{prop, component} in tableInfo"
+        #[prop]={row}
+      >
+        <div :key="prop">
+          <span v-show="!row.editMode">
+            {{ row[prop] }}<span v-show="prop==='machine_NO'">#</span>
+            <span v-show="prop==='machine_ton'">T</span>
+          </span>
+          <el-input
+            v-if="row.editMode && component==='input'"
+            v-model="row[prop]"
+            :type="numberList.includes(prop)?'number': 'text'"
+            :disabled="prop==='plan_work_time'"
+          >#</el-input>
+          <el-date-picker
+            v-else-if="row.editMode && component==='time'"
+            v-model="row[prop]"
+            type="datetime"
+            placeholder=""
+            format="yyyy-MM-dd, HH:mm:ss"
+            value-format="yyyy-MM-dd, HH:mm:ss"
+            @change="calTime(row)"
+          />
+          <el-select
+            v-else-if="row.editMode && prop==='machine_NO'"
+            v-model="row[prop]"
+            filterable
+            placeholder=""
+          >
+            <el-option
+              v-for="item in options"
+              :key="item"
+              :label="item"
+              :value="item"
+            >
+            </el-option>
+          </el-select>
+        </div>
+      </template>
+      <template #tail>
+        <el-table-column
+          label="操作"
+          align="center"
+          fixed="right"
+          width="180">
+          <template slot-scope="{ row, index }">
+            <el-button
+              size="mini"
+              icon="el-icon-edit"
+              :disabled="row.status == 1"
+              @click="setEditMode(row, index)"
+            >
+            </el-button>
+            <el-button
+              type="success"
+              icon="el-icon-check"
+              size="mini"
+              v-show="row.editMode"
+              @click="saveRow(row, index)"
+            >
+            </el-button>
+            <el-button
+              type="info"
+              icon="el-icon-close"
+              size="mini"
+              v-show="row.editMode"
+              @click="cancelEditMode(row, index)"
+            >
+            </el-button>
+          </template>
+        </el-table-column>
+      </template>
+    </custom-table>
   </div>
 </template>
 
 <script>
 import { PlanOrder, planEditPreview } from '@/api.js'
 
+const data = require('@/assets/data/common.json')
+
 export default {
+  components: {
+    CustomTable: () => import('../base/CustomTable'),
+  },
+
   data(){
     return{
       tableData: [],
@@ -233,6 +316,38 @@ export default {
       searchTon: 'All',
       pageSize: 10,
       currentPage: 1,
+      tableInfo: [
+        { prop: 'mold_down_t', label: '預計\n下模時間', width: '100', component: 'time' },
+        { prop: 'plan_s_time', label: '預計生產\n開始時間', width: '100', component: 'time' },
+        { prop: 'plan_e_time', label: '預計生產\n結束時間', width: '100', component: 'time' },
+        { prop: 'machine_NO',  label: '機台號', width: '100' },
+        { prop: 'machine_ton', label: '機台噸位', width: '80', component: 'input' },
+        { prop: 'product_name', label: '品名', width: '100', component: 'input' },
+        { prop: 'Part_NO', label: '料號', width: '200', component: 'input' },
+        { prop: 'VER', label: '版次', width: '100', component: 'input' },
+        { prop: 'work_list_NO', label: '工單號', width: '100', component: 'input' },
+        { prop: 'plan_number', label: '排配數量', width: '100', component: 'input' },
+        { prop: 'UPH', label: 'UPH', width: '100', component: 'input' },
+        { prop: 'machine_CT', label: '機器工時', width: '100', component: 'input' },
+        { prop: 'plan_work_time', label: '計畫工時', width: '100', component: 'input' },
+        { prop: 'mold_Serial', label: '模序', width: '100', component: 'input' },
+        { prop: 'mold_NO', label: '模號', width: '100', component: 'input' },
+        { prop: 'mold_position', label: '模具儲位', width: '100', component: 'input' },
+        { prop: 'package_size', label: '包規', width: '100', component: 'input' },
+        { prop: 'emergency', label: '緊急程度', width: '100', component: 'input' },
+        { prop: 'mass_pro', label: '是否量產', width: '100', component: 'input' },
+        { prop: 'need', label: '是否需要\n特殊工料', width: '100', component: 'input' },
+        { prop: 'same_mold+part_NO', label: '共模料號', width: '100', component: 'input' },
+        { prop: 'value', label: '單位產值', width: '100', component: 'input' },
+        { prop: 'total_value', label: '總產值', width: '100', component: 'input' },
+        { prop: 'plastic_Part_NO', label: '原料料號\n(塑膠粒料號)', width: '100', component: 'input' },
+        { prop: 'mold_changeover_time', label: '換膜時間', width: '100', component: 'input' },
+        { prop: 'plastic_color', label: '顏色', width: '100', component: 'input' },
+        { prop: 'note', label: '備註', width: '100', component: 'input' },
+      ],
+      options: data['machine_NO'],
+      numberList: ['work_list_NO', 'plan_number', 'UPH', 'machine_CT',
+                   'emergency', 'value', 'total_value', 'mold_changeover_time']
     }
   },
   props: {
@@ -290,7 +405,8 @@ export default {
     },
     saveRow(row, index) {
       row.editMode = false;
-      planEditPreview(row).then((response)=>{
+      console.log(this.$store.getters.name)
+      planEditPreview(row, this.$store.getters.name).then((response)=>{
         this.$message.success('修改成功！')
       })
       .catch((error)=>{
@@ -315,8 +431,25 @@ export default {
     },
     handleSelect(selection) {
       this.$emit('select', selection)
-    }
-    /* eslint-enable */
+    },
+    calTime(row) {
+      const String2Date = (string) => {
+        // format: 'YYYY-MM-DD, hh:mm:ss'
+        let year        = string.substring(0,4);
+        let month       = string.substring(5,7);
+        let day         = string.substring(8,10);
+        let hour        = string.substring(12,14);
+        let minute      = string.substring(15,17);
+        let second      = string.substring(18,20);
+        return new Date(year, month-1, day, hour, minute, second)
+      }
+
+      const startTime = String2Date(row.plan_s_time).getTime()
+      const endTime = String2Date(row.plan_e_time).getTime()
+
+      const workTime = Math.round((endTime - startTime)/(1000*60*60)*100)/100
+      row.plan_work_time = workTime
+    },
   },
   mounted() {
     this.loadTable()
