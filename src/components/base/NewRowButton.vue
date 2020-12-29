@@ -84,6 +84,7 @@
               v-model="new_row[column.prop]"
               type="date"
               size='small'
+              style="width: 100%"
               :placeholder="column.label"
               editable-component="el-date-picker"
               format="yyyy/MM/dd"
@@ -95,11 +96,11 @@
               v-model="new_row[column.prop]"
               type="date"
               size='small'
+              style="width: 100%"
               :placeholder="column.label"
               editable-component="el-date-picker"
               format="yyyy-MM-dd"
               value-format="yyyy-MM-dd"
-              style='width: 100%;'
               v-else-if="column.type == 'date2'"
             >
             </el-date-picker>
@@ -217,7 +218,7 @@ export default {
           console.log(error)
         })
       }
-     
+
     },
     getColorList() {
       dataColorList().then((response)=>{
