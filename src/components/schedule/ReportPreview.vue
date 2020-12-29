@@ -93,18 +93,23 @@
       <el-table-column
         prop="plastic_Part_NO"
         label="塑膠料號"
-        width="100"
+        width="130"
         align="center"
       >
       </el-table-column>
       <el-table-column
         prop="plan_number"
         label="數量"
-        width="100"
+        width="170"
         align="center"
       >
         <template slot-scope="{ row }">
-          <el-input v-if="row.editMode" v-model="row.plan_number"></el-input>
+          <el-input-number 
+            v-if="row.editMode"
+            v-model="row.plan_number"
+            style="width:140px"
+            @input="changePlanNumber(row)"
+          ></el-input-number>
           <span v-else>{{ row.plan_number }}</span>
         </template>
       </el-table-column>
@@ -309,6 +314,21 @@ export default {
     },
     handleSelect(selection) {
       this.$emit('selecte', selection)
+    },
+    changePlanNumber(row){
+
+       Date.prototype.addHours = function(h) { 
+          this.setTime(this.getTime() +  (h * 60 * 60 * 1000)); 
+          return this; 
+      }
+      
+      let plan_s_time = new Date(row.plan_s_time) //起始時間
+      let plan_work_time =  Number((row.plan_number/row.UPH).toFixed(2)) //計畫工時
+      let plan_e_time = plan_s_time.addHours(plan_work_time+8).toISOString().substring(0, 19).replace("T",",")
+
+      row.plan_e_time = plan_e_time
+      row.plan_work_time = plan_work_time
+      return row
     }
     /* eslint-enable */
   },

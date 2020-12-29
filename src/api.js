@@ -316,8 +316,13 @@ export const WeeksPlan = () => {
 }
 
 //料號資訊
-export const PartNoInfo = (part_no) => {
-  return NWEPlan.get('/partNoInfo/?',{params: { part_no : part_no}})
+export const PartNoInfo = (part_no,ver) => {
+  return NWEPlan.get('/partNoInfo/?',{params: {part_no : part_no, ver : ver}})
+}
+
+//模具資訊
+export const MoldNoInfo = (part_no,mold_no,ver) => {
+  return NWEPlan.get('/moldInfo/?',{params: {part_no : part_no, mold_no : mold_no, ver : ver}})
 }
 
 // export const planEditPreview = (row) => {
@@ -332,9 +337,11 @@ export const PartNoInfo = (part_no) => {
 
 export const planEditPreview = (row) => {
   let formData = new FormData();
+  formData.append('Seq', row.Seq)
   formData.append('Part_NO', row.Part_NO)
   formData.append('plan_number', row.plan_number)
-  formData.append('Seq', row.Seq)
+  formData.append('plan_work_time', row.plan_work_time)
+  formData.append('plan_e_time', row.plan_e_time)
   return NWEPlan.post('/preview/', formData, { headers: {
         'Content-Type': 'multipart/form-data'
       }});
@@ -408,12 +415,8 @@ export const planArrangementHis = (field, line, ton, Part_NO, start_end) => {
 }
 
 // 提交計畫工單
-export const submitarrangement = (field,line,ton) => {
-  let formData = new FormData();
-  formData.append('field', field)
-  formData.append('line', line)
-  formData.append('ton', ton)
-  return NWEPlan.post('/submit/arrangement/', formData, { headers: {
+export const submitarrangement = (SeqList) => {
+  return NWEPlan.post('/submit/arrangement/', SeqList, { headers: {
         'Content-Type': 'multipart/form-data'
       }});
 }
